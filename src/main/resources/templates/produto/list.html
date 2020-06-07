@@ -17,56 +17,57 @@
 			<!-- Card Body -->
 			<div class="card-body">
 				<div>
-				<form method="GET" th:object="${produtoFilter}">
-					<div class="row">						
-						<div class="form-group  col-sm-6" >
-							<label class="control-label" for="nome">Nome</label>
-							<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+					<form method="GET" th:object="${produtoFilter}">
+						<div class="row">						
+							<div class="form-group  col-sm-6" >
+								<label class="control-label" for="nome">Nome</label>
+								<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+							</div>
 						</div>
+						
+						<button type="submit" class="btn  btn-primary">Pesquisar</button>
+					</form>
+					<br/>
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th class="table-produtos-col-foto"></th>
+									<th>Nome</th>
+									<th class="table-produtos-col-cobrado-por">Cobrado por</th>
+									<th class="table-produtos-col-preco">Preço</th>
+									<th class="table-produtos-col-peso-unidade">Peso da Unidade</th>
+									<th class="table-produtos-col-acoes"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item : ${pagina.conteudo}">
+	                                 <td class="text-center">
+	                                 	<i class="fa fa-shopping-basket mock" th:if="${!item.temFoto}"></i>
+	                                 	<img th:if="${item.temFoto}" th:src="@{/fotos/thumbnail.{foto}(foto=${item.foto})}" class="img-responsive"/>	
+	                                 </td>
+	                                 <td th:text="${item.nome}">Nome</td>
+	                                 <td th:text="${item.cobradoPor.descricao}">Tipo de Preço</td>
+	                                 <td th:text="|R$ ${{item.preco}}|">Preço</td>
+	                                 <td th:text="${item.descricaoPeso}">Peso da Unidade</td>
+	                                 <td>
+	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
+	                                         <i class="fa fa-edit"></i>
+	                                     </a>
+	                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
+	                                         <i class="fa fa-trash-alt"></i>
+	                                     </a>
+	                                 </td>
+	                             </tr>
+	                             <tr th:if="${pagina.vazia}">
+	                             	<td colspan="6"><i>Nenhum produto cadastrado.</i></td>
+	                             </tr>
+							</tbody>
+						</table>
 					</div>
 					
-					<button type="submit" class="btn  btn-primary">Pesquisar</button>
-				</form>
-				<br/>
-				<div class="table-responsive">
-					<table class="table table-bordered table-striped table-hover">
-						<thead>
-							<tr>
-								<th class="table-produtos-col-foto"></th>
-								<th>Nome</th>
-								<th class="table-produtos-col-cobrado-por">Cobrado por</th>
-								<th class="table-produtos-col-preco">Preço</th>
-								<th class="table-produtos-col-peso-unidade">Peso da Unidade</th>
-								<th class="table-produtos-col-acoes"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="item : ${pagina.conteudo}">
-                                 <td class="text-center">
-                                 	<i class="fa fa-shopping-basket mock" th:if="${!item.temFoto}"></i>
-                                 	<img th:if="${item.temFoto}" th:src="@{/fotos/thumbnail.{foto}(foto=${item.foto})}" class="img-responsive"/>	
-                                 </td>
-                                 <td th:text="${item.nome}">Nome</td>
-                                 <td th:text="${item.cobradoPor.descricao}">Tipo de Preço</td>
-                                 <td th:text="|R$ ${{item.preco}}|">Preço</td>
-                                 <td th:text="${item.descricaoPeso}">Peso da Unidade</td>
-                                 <td>
-                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
-                                         <i class="fa fa-edit"></i>
-                                     </a>
-                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
-                                         <i class="fa fa-trash-alt"></i>
-                                     </a>
-                                 </td>
-                             </tr>
-                             <tr th:if="${pagina.vazia}">
-                             	<td colspan="6"><i>Nenhum produto cadastrado.</i></td>
-                             </tr>
-						</tbody>
-					</table>
+					<an:paginacao pagina="${pagina}"/>
 				</div>
-				
-				<an:paginacao pagina="${pagina}"/>
 			</div>
 		</div>
 	</div>
