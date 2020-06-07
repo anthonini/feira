@@ -1,0 +1,7 @@
+.compras-listagem-valores {
+	padding-right: 0px;
+}
+.compras-listagem-valores__quantidade {
+	width: 40px;
+	text-align: right;
+}
