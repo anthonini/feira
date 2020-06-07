@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">
+		<h1 class="h3 mb-4 text-gray-800">Produtos</h1>
+
+		<div class="card shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Lista de Produtos</h6>
+				<a th:href="@{/produto/novo}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Cadastrar Produto</a>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped table-hover">
+						<thead>
+							<tr>
+								<th style="width: 8.33%"></th>
+								<th>Nome</th>
+								<th style="width: 16.66%">Data da compra</th>
+								<th style="width: 16.66%">Quantidade de Itens</th>
+								<th style="width: 16.66%">Peso Unidade</th>
+								<th style="width: 78px;"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="item : ${pagina.conteudo}">
+                                 <td>Foto</td>
+                                 <td th:text="${item.nome}">Nome</td>
+                                 <td th:text="${item.tipoPreco.descricao}">Tipo de Preço</td>
+                                 <td th:text="|R$ ${{item.preco}}|">Preço</td>
+                                 <td th:text="${{item.pesoUnidade}}">Peso Unidade</td>
+                                 <td>
+                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
+                                         <i class="fa fa-edit"></i>
+                                     </a>
+                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
+                                         <i class="fa fa-trash-alt"></i>
+                                     </a>
+                                 </td>
+                             </tr>
+                             <tr th:if="${pagina.vazia}">
+                             	<td colspan="6"><i>Nenhum produto cadastrado.</i></td>
+                             </tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<an:paginacao pagina="${pagina}"/>
+			</div>
+		</div>
+	</div>
+</body>

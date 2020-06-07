@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+	
+<head>
+	<title>Cadastro de Produto</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/upload.min.css}">
+</head>
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">		
+		<div class="card shadow mb-4">
+			<!-- Card Header  -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Cadastro de Produto</h6>
+				<a th:href="@{/produto}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+					<i class="fas fa-search fa-sm text-white-50"></i> Pesquisar Produto
+				</a>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="POST" th:object="${produto}" class="form-vertical" th:action="@{/produto/novo}">
+					<div class="form-group required">
+						<label for="nome" class="control-label">Nome</label>
+						<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6  form-group required">
+							<label for="cobradoPor" class="control-label">Cobrado por</label>
+							<select id="cobradoPor" class="form-control" th:field="*{cobradoPor}" an:classforerror="cobradoPor">
+								<option value="">Selecione o tipo</option>
+								<option th:each="cobradoPor : ${cobradosPor}" th:value="${cobradoPor}" th:text="${cobradoPor.descricao}"></option>
+							</select>
+						</div>
+						
+						<div class="col-sm-6  form-group required">
+							<label for="preco" class="control-label">Preço</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+						          <span class="input-group-text">R$</span>
+						        </div>
+								<input id="preco" type="text" class="form-control js-preco" th:field="*{preco}" an:classforerror="preco"/>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6  form-group required">
+							<label for="unidadePeso" class="control-label">Unidade do peso</label>
+							<select id="unidadePeso" class="form-control" th:field="*{unidadePeso}" an:classforerror="unidadePeso">
+								<option value="">Selecione a unidade</option>
+								<option th:each="unidadePeso : ${unidadesPeso}" th:value="${unidadePeso}" th:text="${unidadePeso.descricao}"></option>
+							</select>
+						</div>
+						
+						<div class="col-sm-6  form-group required">
+							<label for="pesoUnidade" class="control-label">Peso por unidade</label>
+							<input id="pesoUnidade" type="text" class="form-control js-peso" th:field="*{pesoUnidade}" an:classforerror="pesoUnidade"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group  col-sm-12">
+							<label class="control-label">Foto</label>
+							
+							<input type="hidden" th:field="*{foto}"/>
+							<input type="hidden" th:field="*{contentType}"/>
+							<div class="js-foto-container" th:attr="data-url-fotos=@{/fotos}">
+								<div id="upload-drop" class="an-upload">
+									<i class="fas fa-cloud-upload-alt"></i>
+									<span>Arraste a foto aqui ou </span>
+									<a class="an-upload-form-file"><span class="text-primary">selecione</span> <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<input type="hidden" th:field="*{id}">
+						<input type="submit" class="btn btn-primary" value="Salvar">
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<th:block th:replace="hbs/FotoProduto"></th:block>
+	</div>
+	
+	<th:block layout:fragment="extra-javascript">
+		<script th:src="@{/javascript/produto.peso-unidade.js}"></script>
+		<script th:src="@{/javascript/vendors/uikit.min.js}"></script>
+		<script th:src="@{/javascript/vendors/upload.min.js}"></script>
+		<script th:src="@{/javascript/vendors/handlebars.min.js}"></script>
+		<script th:src="@{/javascript/foto-upload.js}"></script>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:an="http://www.anthonini.com.br">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" th:attr="content=#{descricao}">
+  <meta name="author" th:attr="content=#{autor}">
+
+  <title th:text="#{titulo}">Título do Sistema</title>
+
+  <!-- Custom fonts for this template-->
+  <link rel="stylesheet" type="text/css" th:href="@{/layout/vendors/fontawesome-free/css/all.min.css}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+
+  <!-- Custom styles for this template-->
+  <link rel="stylesheet" th:href="@{/layout/stylesheets/sb-admin-2.min.css}">
+  <link rel="stylesheet" th:href="@{/stylesheets/style.css}">
+
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<!-- Sidebar -->
+		<ul th:replace="~{layout/fragments/menu/sidebar :: sidebar}"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav th:replace="~{layout/fragments/menu/topbar :: topbar}"></nav>
+
+				<!-- Mensagens -->
+			    <div class="container">
+			    	<an:message/>
+			    </div>
+				
+				<div layout:fragment="conteudo" class="container-fluid"></div>
+
+				<div th:replace="~{layout/fragments/sair-modal :: modal}"></div>
+			</div>
+
+			<!-- Footer -->
+			<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+		</div>
+	</div>
+
+  	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+	  <i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Bootstrap core JavaScript-->
+	<script th:src="@{/layout/vendors/jquery/jquery.min.js}"></script>
+	<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	
+	<!-- Core plugin JavaScript-->
+	<script th:src="@{/layout/vendors/jquery-easing/jquery.easing.min.js}"></script>
+	
+	<!-- Custom scripts for all pages-->
+	<script th:src="@{/layout/js/sb-admin-2.min.js}"></script>
+	
+	<script th:src="@{/javascript/vendors/jquery.mask.min.js}"></script>
+	<script th:src="@{/javascript/feira.js}"></script>
+	
+	<th:block layout:fragment="extra-javascript"></th:block>
+</body>
+
+</html>

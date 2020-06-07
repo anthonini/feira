@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">
+		<h1 class="h3 mb-4 text-gray-800">Cadastro de Feira</h1>
+		
+		<div class="card shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Feira</h6>
+				<a th:href="@{/feira}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+					<i class="fas fa-search fa-sm text-white-50"></i> Pesquisar Feira
+				</a>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="POST" th:object="${feira}" class="form-vertical" th:action="@{/feira/nova}">
+					<div class="row">
+						<div class="col-sm-8 form-group required">
+							<label for="nome" class="control-label">Nome</label>
+							<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
+						</div>
+						<div class="col-sm-4 form-group required">
+							<label for="nome" class="control-label">Data da Compra</label>
+							<input id="nome" type="text" class="form-control" th:field="*{dataCompra}" an:classforerror="nome"/>
+						</div>
+					</div>
+					
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th style="width: 8.33%"></th>
+									<th>Nome</th>
+									<th style="width: 16.66%">Tipo de Preço</th>
+									<th style="width: 16.66%">Quantidade</th>
+									<th style="width: 16.66%">Preço</th>
+									<th style="width: 16.66%">Peso</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item : ${feira.itens}">
+	                                <td>Foto</td>
+	                                <td th:text="${item.produto.nome}">Produto</td>
+	                                <td th:text="${item.produto.tipoPreco.descricao}">Tipo de Preço</td>
+	                                <td th:text="${item.produto.nome}">Quantidade</td>
+	                                <td th:text="|R$ ${{item.produto.preco}}|">Preço</td>
+	                                <td th:text="${{item.pesoUnidade}}">Peso</td>
+	                                <td>
+	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
+	                                         <i class="fa fa-edit"></i>
+	                                     </a>
+	                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
+	                                         <i class="fa fa-trash-alt"></i>
+	                                     </a>
+	                                 </td>
+	                             </tr>
+	                             <tr th:if="${feira.vazia}">
+	                             	<td colspan="6"><i>Nenhum item adicionado.</i></td>
+	                             </tr>
+							</tbody>
+						</table>
+					</div>
+				
+					<input type="hidden" th:field="*{id}">
+					<input type="submit" class="btn btn-primary" value="Salvar">
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<th:block layout:fragment="extra-javascript">
+
+	</th:block>
+</body>
+</html>

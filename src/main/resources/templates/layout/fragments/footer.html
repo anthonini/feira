@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	
+<!-- Footer -->
+<footer class="sticky-footer bg-white" th:fragment="footer">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span th:text="| Copyright &copy; #{nome} ${#dates.format(#dates.createNow(), 'yyyy')}|">Copyright © Nome do sistema 20xx</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+</html>

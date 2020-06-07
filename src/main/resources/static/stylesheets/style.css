@@ -1,0 +1,120 @@
+.text-center {
+  text-align: center;
+}
+.text-center > img {
+	display: inline-block;
+}
+.required > label:after {
+	content: "*";
+}
+div.dataTables_paginate ul.pagination {
+	justify-content: flex-end;
+}
+/* Upload */
+.an-upload {
+	padding: 15px;
+	
+	border: 1px dashed #ddd;
+	border-radius: 4px;
+	background: #fafafa;
+	
+	text-align: center;
+}
+
+.an-upload-form-file {
+	display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1px;
+    padding-bottom: 2px;
+}
+
+.an-upload-form-file > input[type=file] {
+	position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 500px;
+}
+.table-produtos-col-foto {
+	min-width: 50px;
+	width: 8.33%;
+}
+.table-produtos-col-cobrado-por {
+	width: 16.66%;
+}
+.table-produtos-col-preco {
+	width: 16.66%;
+}
+.table-produtos-col-peso-unidade {
+	width: 16.66%;
+}
+.table-produtos-col-acoes {
+	width: 78px;
+}
+i.mock {
+	font-size: 3em;
+    line-height: .75em;
+    vertical-align: -.0667em;
+}
+
+
+/* IMG */
+img {
+  vertical-align: middle;
+}
+.img-responsive,
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.img-rounded {
+  border-radius: 4px;
+}
+.img-thumbnail {
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 2px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+.thumbnail {
+  display: block;
+  padding: 4px;
+  margin-bottom: 18px;
+  line-height: 1.42857143;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 2px;
+  -webkit-transition: border 0.2s ease-in-out;
+  -o-transition: border 0.2s ease-in-out;
+  transition: border 0.2s ease-in-out;
+}
+.thumbnail > img,
+.thumbnail a > img {
+  margin-left: auto;
+  margin-right: auto;
+}
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+  border-color: #1e94d2;
+}
+.thumbnail .caption {
+  padding: 9px;
+  color: #333333;
+}
