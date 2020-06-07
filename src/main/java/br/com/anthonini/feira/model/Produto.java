@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
@@ -58,6 +59,12 @@ public class Produto implements Serializable {
 	
 	@Column(name = "content_type")
 	private String contentType;
+	
+	@Transient
+	private String urlFoto;
+	
+	@Transient
+	private String fotoOriginal;
 	
 	public String getDescricaoPeso() {
 		return this.unidadePeso.getDescricaoAbreviada(pesoUnidade);
@@ -129,6 +136,22 @@ public class Produto implements Serializable {
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+	public String getFotoOriginal() {
+		return fotoOriginal;
+	}
+
+	public void setFotoOriginal(String fotoOriginal) {
+		this.fotoOriginal = fotoOriginal;
 	}
 
 	@Override

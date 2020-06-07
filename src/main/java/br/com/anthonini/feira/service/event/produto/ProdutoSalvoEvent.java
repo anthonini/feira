@@ -19,4 +19,10 @@ public class ProdutoSalvoEvent {
 	public boolean temFoto() {
 		return !StringUtils.isEmpty(produto.getFoto());
 	}
+	
+	public boolean fotoAlterada() {
+		return produto.getFoto() != null && produto.getFotoOriginal() != null
+				&& !produto.getFoto().equals(produto.getFotoOriginal());
+	}
+	
 }

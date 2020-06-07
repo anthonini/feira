@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,6 +70,12 @@ public class ProdutoController extends AbstractController {
         if (produto == null) {
             addMensagemErro(redirect, "Produto não encontrado");
             return "redirect:list";
+        }
+        
+        if(!StringUtils.isEmpty(produto.getFoto())) {
+        	String urlFotos = FotosController.class.getAnnotation(RequestMapping.class).value()[0];
+        	produto.setUrlFoto(urlFotos+"/"+produto.getFoto());
+        	produto.setFotoOriginal(produto.getFoto());
         }
 
         model.addAttribute("produto", produto);

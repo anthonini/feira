@@ -17,8 +17,12 @@ Feira.Peso = (function(){
 	
 	function alterarUnidadePeso() {
 		if(this.unidadePeso.val() && this.unidadePeso.val() !== 'GRAMA') {
+			var peso = this.peso.cleanVal();
 			this.peso.mask('#.##0,000', {reverse: true} );
+			this.peso.val(peso);
 		} else {
+			var peso = this.peso.val().split(',')[0];
+			this.peso.val(peso);
 			this.peso.mask('#.##0', {reverse: true});
 		}
 	}

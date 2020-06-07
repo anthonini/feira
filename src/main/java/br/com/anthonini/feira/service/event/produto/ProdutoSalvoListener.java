@@ -12,9 +12,13 @@ public class ProdutoSalvoListener {
 	@Autowired
 	private FotoStorage fotoStorage;
 
-	@EventListener(condition = "#event.temFoto()")
-	public void produtoSalvo(ProdutoSalvoEvent event) {
-		System.out.println(">>>>>>>> tem foto sim");
+	@EventListener(condition = "#event.temFoto() && #event.fotoAlterada()")
+	public void salvarFoto(ProdutoSalvoEvent event) {
 		fotoStorage.salvar(event.getProduto().getFoto());
+	}
+	
+	@EventListener(condition = "#event.fotoAlterada()")
+	public void removerFoto(ProdutoSalvoEvent event) {
+		fotoStorage.remover(event.getProduto().getFotoOriginal());
 	}
 }

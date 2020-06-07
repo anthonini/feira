@@ -10,7 +10,7 @@ Feira.MascaraNumeros = (function(){
 	MascaraNumeros.prototype.habilitar = function() {
 		this.preco.mask('#.##0,00', {reverse: true});
 		this.numero.mask('000.000.000.000.000', {reverse: true});
-		this.peso.mask('#.##0', {reverse: true});
+		this.peso.mask('#.##0,000', {reverse: true});
 	}
 	
 	return MascaraNumeros;

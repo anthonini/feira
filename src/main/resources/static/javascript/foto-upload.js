@@ -5,6 +5,7 @@ Arquitetura.UploadFoto = (function() {
 	function UploadFoto() {
 		this.inputNomeFoto = $('input[name=foto]');
 		this.inputContentType = $('input[name=contentType]');
+		this.inputUrlFoto = $('input[name=urlFoto]');
 		
 		this.htmlFotoTemplate = $('#foto-template').html();
 		this.template = Handlebars.compile(this.htmlFotoTemplate);
@@ -29,16 +30,17 @@ Arquitetura.UploadFoto = (function() {
 		UIkit.uploadDrop(this.uploadDrop,settings);
 		
 		if(this.inputNomeFoto.val()) {
-			onUploadComplete.call(this, {nome: this.inputNomeFoto.val(), contentType: this.inputContentType.val() });
+			onUploadComplete.call(this, {nome: this.inputNomeFoto.val(), contentType: this.inputContentType.val(), urlFoto: this.inputUrlFoto.val() });
 		}
 	}
 	
 	function onUploadComplete(resposta) {
 		this.inputNomeFoto.val(resposta.nome);
 		this.inputContentType.val(resposta.contentType);
+		this.inputUrlFoto.val(resposta.urlFoto);
 		
 		this.uploadDrop.addClass(this.hiddenClass);
-		var htmlFoto = this.template({nomeFoto: resposta.nome});
+		var htmlFoto = this.template({urlFoto: resposta.urlFoto});
 		this.fotoContainer.append(htmlFoto);
 		
 		$('.js-remove-foto').on('click', onRemoverFoto.bind(this));
@@ -49,12 +51,6 @@ Arquitetura.UploadFoto = (function() {
 		this.uploadDrop.removeClass(this.hiddenClass);
 		this.inputNomeFoto.val('');
 		this.inputContentType.val('');
-	}
-	
-	function addCsrfToken(xhr) {
-		var token = $('input[name=_csrf').val();
-		var header = $('input[name=_csrf_header]').val();
-		xhr.setRequestHeader(header, token);
 	}
 	
 	return UploadFoto;

@@ -18,6 +18,8 @@ import br.com.anthonini.feira.storage.FotoStorageRunnable;
 @RequestMapping("/fotos")
 public class FotosController {
 	
+	public static final String URL_FOTO_TEMPORARIA = "/temp/";
+	
 	@Autowired
 	private FotoStorage fotoStorage;
 
@@ -25,13 +27,14 @@ public class FotosController {
 	public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
 		DeferredResult<FotoDTO> resultado = new DeferredResult<>();
 		
-		Thread thread = new Thread(new FotoStorageRunnable(files, resultado, fotoStorage));
+		String urlFotos = this.getClass().getAnnotation(RequestMapping.class).value()[0];
+		Thread thread = new Thread(new FotoStorageRunnable(files, resultado, fotoStorage, urlFotos+URL_FOTO_TEMPORARIA));
 		thread.start();
 		
 		return resultado;
 	}
 	
-	@GetMapping("/temp/{nome}")
+	@GetMapping(URL_FOTO_TEMPORARIA+"{nome}")
 	public byte[] recuperarFotoTemporaria(@PathVariable String nome) {
 		return fotoStorage.recuperarFotoTemporaria(nome);
 	}

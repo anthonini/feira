@@ -82,6 +82,21 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 	
+	@Override
+	public void remover(String foto) {
+		try {
+			Files.delete(this.local.resolve(foto));
+		} catch (IOException e) {
+			LOGGER.error("Erro ao remover foto", e);
+		}
+		
+		try {
+			Files.delete(this.local.resolve(THUMBNAIL_PREFIX+foto));
+		} catch (IOException e) {
+			LOGGER.error("Erro ao remover thumnail da foto", e);
+		}
+	}
+	
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
