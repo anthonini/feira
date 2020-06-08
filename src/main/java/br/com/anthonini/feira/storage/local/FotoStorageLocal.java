@@ -8,8 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.anthonini.feira.storage.FotoStorage;
@@ -20,18 +24,14 @@ public class FotoStorageLocal implements FotoStorage {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FotoStorageLocal.class);
 	
+	@Value("${feira.foto-storage-local.url-base}")
+	private String urlBase;
+	
+	@Value("${feira.foto-storage-local.local}")
 	private Path local;
+	
+	@Value("${feira.foto-storage-local.local}"+TEMP_SUFFIX)
 	private Path localTemporario;
-	
-	public FotoStorageLocal() {
-		this(getDefault().getPath(".", ".fotos"));
-	}
-	
-	public FotoStorageLocal(Path path) {
-		this.local = path;
-		this.localTemporario = getDefault().getPath(this.local.toString(), "temp");
-		criarPastas();
-	}
 	
 	@Override
 	public String salvarTemporariamente(MultipartFile[] files) {
@@ -97,9 +97,21 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 	
+	@Override
+	public String getUrlFoto(String foto) {
+		return urlBase+foto;
+	}
+	
+	@Override
+	public String getUrlBase() {
+		return urlBase;
+	}
+	
+	@PostConstruct
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
+			FileSystemUtils.deleteRecursively(this.localTemporario);
 			Files.createDirectories(this.localTemporario);
 			
 			if(LOGGER.isDebugEnabled()) {
