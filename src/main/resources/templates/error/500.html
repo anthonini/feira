@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">
+		<div class="text-center">
+			<div class="error mx-auto" data-text="500">500</div>
+			<p class="lead text-gray-800 mb-5">Erro no servidor</p>
+			<p class="text-gray-500 mb-0">Desculpe, algo muito estranho aconteceu e não conseguimos processar a sua requisição.</p>
+			<p class="text-gray-500 mb-0">Tente de novo ou entre em contato com a gente se precisar de ajuda.</p>
+			<a href="javascript:history.back()">&larr; Voltar</a>
+		</div>
+	</div>
+</body>
+</html>
