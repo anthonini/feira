@@ -35,11 +35,9 @@ public class ItemFeira implements Serializable {
 	@JoinColumn(name = "id_feira")
 	private Feira feira;
 	
-	
-	
 	@NotNull(message = "Quantidade é obrigatório")
 	@NumberFormat(pattern = "#,##0.00")
-	private Integer quantidade;
+	private Integer quantidade = 0;
 	
 	@DecimalMax(value = "9999999.99", message = "Preço deve ser menor ou igual a R$9.999.999,99")
 	@NumberFormat(pattern = "#,##0.00")
@@ -47,7 +45,29 @@ public class ItemFeira implements Serializable {
 	private BigDecimal precoCompra;
 	
 	public BigDecimal getPeso() {
-		return null;
+		return produto.getPesoUnidade().multiply(BigDecimal.valueOf(quantidade));
+	}
+	
+	public BigDecimal getValorTotal() {
+		return precoCompra != null ? 
+				precoCompra.multiply(BigDecimal.valueOf(quantidade)) : BigDecimal.ZERO;
+	}
+	
+	public String getDescricaoPeso() {
+		BigDecimal peso = getPeso();
+		if(produto.getUnidadePeso() == UnidadePeso.GRAMA && peso.doubleValue() > 1000) {
+			peso = UnidadePeso.GRAMA.converter(peso, UnidadePeso.QUILOGRAMA);
+			return UnidadePeso.QUILOGRAMA.getDescricaoAbreviada(peso);
+		}
+		return produto.getUnidadePeso().getDescricaoAbreviada(peso);
+	}
+
+	public ItemFeira() {
+	}
+
+	public ItemFeira(Produto produto, Feira feira) {
+		this.produto = produto;
+		this.feira = feira;
 	}
 
 	public Long getId() {

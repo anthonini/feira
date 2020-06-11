@@ -14,32 +14,35 @@
 	<div layout:fragment="conteudo" class="container-fluid">
 		<div class="row">
 
-			<div class="col-xl-4 col-lg-6 mb-4">
+			<div class="col-xl-3 col-lg-4 col-sm-6 mb-4" th:each="item : ${itens}">
 				<div class="card border-left-primary shadow h-100 py-1">
-					<div class="card-body">
-						<div class="row no-gutters align-items-center">
+					<div class="card-body" style="padding-top: 0px; padding-bottom: 0px;">
+						<div class="row">
 							<div class="text-center mx-auto">
-								<img src="/fotos/55a4f5df-cf29-4189-94eb-83f7476ad662_kimimo.jpg" class="img-fluid px-3 px-sm-4 mt-3 mb-4">
+								<img th:src="${item.produto.urlFoto}" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 8rem;" >
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-7">
-								<div class="font-weight-bold text-gray-900">Café Kimimo - 250g</div>
-								<div class="badge badge-secondary">Unidade</div>
-								<div class="text-gray-900 js-peso-unidade">250g</div>
-							</div>
-							<div class="col-5 text-gray-900 text-right compras-listagem-valores">
-								<div style="font-size: .8rem">
-									<input class="compras-listagem-valores__quantidade js-listagem-quantidade-item" type="text" value="0" maxlength="4"/>
-									<span>x R$ 3,50</span>
+							<div class="col-12">
+								<div class="font-weight-bold text-gray-900" th:text="${item.produto.nome}">Café Kimimo - 250g</div>
+								<div class="text-gray-900">
+									<span th:text="|R$ ${{item.produto.preco}}|">R$ 3,50</span>
+									<span class="badge badge-secondary" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
 								</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-900">R$ 3,50</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-900">1000g</div>
-								<div>
-									<a href="#" class="btn btn-sm btn-primary btn-icon-split"> 
-										<span class="icon text-white-50"> <i class="fas fa-shopping-cart"></i>
-										</span> <span class="text">Adicionar</span>
-									</a>
+								<div class="text-gray-900" th:text="${item.produto.pesoUnidade > 0} ? |Peso: ${{item.produto.descricaoPeso}}| : '&nbsp'">250g</div>
+								<div class="text-gray-900"></div>
+								<div class="row" style="font-size: .8rem">
+									<div class="col-12">
+										Qtd:
+										<a href="#" class="btn btn-light btn-circle btn-sm">
+						                	<i class="fas fa-minus-circle"></i>
+						                </a>
+										<input type="text" class="compras-listagem-valores__quantidade js-listagem-quantidade-item" 
+											value="0" maxlength="4" th:classappend="${item.produto.cobradoPor.classeCss}"/>
+										<a href="#" class="btn btn-light btn-circle btn-sm">
+						                	<i class="fas fa-plus-circle"></i>
+						                </a>
+									</div>
 								</div>
 							</div>
 						</div>

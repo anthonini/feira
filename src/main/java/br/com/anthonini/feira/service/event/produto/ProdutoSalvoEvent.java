@@ -16,13 +16,14 @@ public class ProdutoSalvoEvent {
 		return produto;
 	}
 	
-	public boolean temFoto() {
-		return !StringUtils.isEmpty(produto.getFoto());
+	public boolean temFotoNova() {
+		return !StringUtils.isEmpty(produto.getFoto()) && 
+				!produto.getFoto().equals(produto.getFotoOriginal());
 	}
 	
-	public boolean fotoAlterada() {
-		return produto.getFoto() != null && produto.getFotoOriginal() != null
-				&& !produto.getFoto().equals(produto.getFotoOriginal());
+	public boolean removeFotoAntiga() {
+		return !StringUtils.isEmpty(produto.getFotoOriginal()) && 
+				!produto.getFotoOriginal().equals(produto.getFoto());
 	}
 	
 }

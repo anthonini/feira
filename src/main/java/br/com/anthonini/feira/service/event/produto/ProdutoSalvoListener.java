@@ -12,12 +12,12 @@ public class ProdutoSalvoListener {
 	@Autowired
 	private FotoStorage fotoStorage;
 
-	@EventListener(condition = "#event.temFoto() && #event.fotoAlterada()")
+	@EventListener(condition = "#event.temFotoNova()")
 	public void salvarFoto(ProdutoSalvoEvent event) {
 		fotoStorage.salvar(event.getProduto().getFoto());
 	}
 	
-	@EventListener(condition = "#event.fotoAlterada()")
+	@EventListener(condition = "#event.removeFotoAntiga()")
 	public void removerFoto(ProdutoSalvoEvent event) {
 		fotoStorage.remover(event.getProduto().getFotoOriginal());
 	}

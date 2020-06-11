@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -50,7 +49,6 @@ public class Produto implements Serializable {
 	
 	@NotNull(message = "O peso por unidade é obrigatório")
 	@DecimalMax(value = "9999.000", message = "O peso por unidade deve ser menor ou igual a 9.999,000")
-	@DecimalMin(value = "0.001", message = "O peso por unidade deve ser maior ou igual a 0,001")
 	@NumberFormat(pattern = "#,##0.000")
 	@Column(name = "peso_unidade", precision = 19, scale = 3)
 	private BigDecimal pesoUnidade;
