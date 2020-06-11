@@ -3,8 +3,8 @@ package br.com.anthonini.feira.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +36,7 @@ public class Feira implements Serializable {
 	
 	@NotEmpty(message = "É obrigatório adicionar pelo menos um item")
 	@OneToMany(mappedBy = "feira")
-	private Set<ItemFeira> itens = new HashSet<>();
+	private List<ItemFeira> itens = new ArrayList<>();
 	
 	@Transient
 	private BigDecimal valor;
@@ -69,11 +69,11 @@ public class Feira implements Serializable {
 		this.dataCompra = dataCompra;
 	}
 
-	public Set<ItemFeira> getItens() {
+	public List<ItemFeira> getItens() {
 		return itens;
 	}
 
-	public void setItens(Set<ItemFeira> itens) {
+	public void setItens(List<ItemFeira> itens) {
 		this.itens = itens;
 	}
 

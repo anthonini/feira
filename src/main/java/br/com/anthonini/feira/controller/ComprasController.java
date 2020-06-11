@@ -1,12 +1,17 @@
 package br.com.anthonini.feira.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.anthonini.feira.model.ItemFeira;
@@ -39,7 +44,9 @@ public class ComprasController {
 		
 		for(Produto produto : produtos) {
 			produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
-			itens.add(new ItemFeira(produto, null));
+			ItemFeira item = feiraSession.buscarPorProduto(produto).orElse(new ItemFeira());
+			item.setProduto(produto);
+			itens.add(item);
 		}
 		
 		mv.addObject("itens", itens);
@@ -59,6 +66,24 @@ public class ComprasController {
 		}
 		
 		mv.addObject("itens", itens);
+			
+		return mv;
+	}
+	
+
+	@PutMapping("/item/{produtoId}")
+	public @ResponseBody ResponseEntity<?> changeItemQuantity(@PathVariable Long produtoId, BigDecimal quantidade) {
+		Produto produto = produtoRepository.findById(produtoId).get();
+		produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
+		feiraSession.alterarQuantidade(produto, quantidade);
+
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/carrinho")
+	public ModelAndView carrinho() {
+		ModelAndView mv = new ModelAndView("compras/carrinho");
+		mv.addObject("itens", feiraSession.getFeira().getItens());
 			
 		return mv;
 	}

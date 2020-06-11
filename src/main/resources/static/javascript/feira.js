@@ -16,6 +16,16 @@ Feira.MascaraNumeros = (function(){
 	return MascaraNumeros;
 })();
 
+numeral.language('pt-br');
+
+Feira.formatarPeso = function(valor) {	
+	return numeral(valor).format('0,0.000');
+}
+
+Feira.removerFormatoPeso = function(valorFormatado) {
+	return numeral().unformat(valorFormatado);
+}
+
 $(function(){	
 	var mascaraNumeros = new Feira.MascaraNumeros();
 	mascaraNumeros.habilitar();

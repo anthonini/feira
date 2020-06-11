@@ -4,7 +4,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}"
-	xmlns:an="http://www.anthonini.com.br">
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
 	
 <head>
 	<link rel="stylesheet" th:href="@{/stylesheets/listagem.css}">
@@ -30,16 +31,16 @@
 									<span class="badge badge-secondary" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
 								</div>
 								<div class="text-gray-900" th:text="${item.produto.pesoUnidade > 0} ? |Peso: ${{item.produto.descricaoPeso}}| : '&nbsp'">250g</div>
-								<div class="text-gray-900"></div>
 								<div class="row" style="font-size: .8rem">
 									<div class="col-12">
 										Qtd:
-										<a href="#" class="btn btn-light btn-circle btn-sm">
+										<a href="#" class="btn btn-light btn-circle btn-sm js-diminuir-quantidade-item-btn" data:produto-id="${item.produto.id}">
 						                	<i class="fas fa-minus-circle"></i>
 						                </a>
 										<input type="text" class="compras-listagem-valores__quantidade js-listagem-quantidade-item" 
-											value="0" maxlength="4" th:classappend="${item.produto.cobradoPor.classeCss}"/>
-										<a href="#" class="btn btn-light btn-circle btn-sm">
+											th:value="${item.quantidade}" maxlength="4" th:classappend="|${item.produto.cobradoPor.classeCss}-compras|"
+											data:produto-id="${item.produto.id}" th:id="|item_${item.produto.id}|"/>
+										<a href="#" class="btn btn-light btn-circle btn-sm js-aumentar-quantidade-item-btn" data:produto-id="${item.produto.id}">
 						                	<i class="fas fa-plus-circle"></i>
 						                </a>
 									</div>

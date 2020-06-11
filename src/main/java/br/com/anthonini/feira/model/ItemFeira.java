@@ -37,7 +37,7 @@ public class ItemFeira implements Serializable {
 	
 	@NotNull(message = "Quantidade é obrigatório")
 	@NumberFormat(pattern = "#,##0.00")
-	private Integer quantidade = 0;
+	private BigDecimal quantidade = BigDecimal.ZERO;
 	
 	@DecimalMax(value = "9999999.99", message = "Preço deve ser menor ou igual a R$9.999.999,99")
 	@NumberFormat(pattern = "#,##0.00")
@@ -45,12 +45,12 @@ public class ItemFeira implements Serializable {
 	private BigDecimal precoCompra;
 	
 	public BigDecimal getPeso() {
-		return produto.getPesoUnidade().multiply(BigDecimal.valueOf(quantidade));
+		return produto.getPesoUnidade().multiply(quantidade);
 	}
 	
 	public BigDecimal getValorTotal() {
 		return precoCompra != null ? 
-				precoCompra.multiply(BigDecimal.valueOf(quantidade)) : BigDecimal.ZERO;
+				precoCompra.multiply(quantidade) : BigDecimal.ZERO;
 	}
 	
 	public String getDescricaoPeso() {
@@ -94,11 +94,11 @@ public class ItemFeira implements Serializable {
 		this.feira = feira;
 	}
 
-	public Integer getQuantidade() {
+	public BigDecimal getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
 

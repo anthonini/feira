@@ -1,5 +1,6 @@
 package br.com.anthonini.feira.session;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -15,24 +16,33 @@ public class FeiraSession {
 
 	private Feira feira = new Feira();
 	
-	public void adicionarItem(Produto produto, int quantidade) {
-		Optional<ItemFeira> itemFeiraOptional = buscarPorProduto(produto);
+	public void alterarQuantidade(Produto produto, BigDecimal quantidade) {
+		Optional<ItemFeira> itemOptional = buscarPorProduto(produto);
 		
-		ItemFeira itemFeira = itemFeiraOptional.orElse(new ItemFeira()); 
-		if(itemFeiraOptional.isPresent()) {
-			itemFeira.setQuantidade(itemFeira.getQuantidade() + quantidade);
+		ItemFeira item = itemOptional.orElse(new ItemFeira());
+		if(itemOptional.isPresent()) {
+			if(quantidade.compareTo(BigDecimal.ZERO) <= 0 ) {
+				removerItemPorProduto(produto);
+			} else {
+				item.setQuantidade(quantidade);
+			}
 		} else {
-			itemFeira.setProduto(produto);
-			itemFeira.setQuantidade(quantidade);
-			itemFeira.setPrecoCompra(produto.getPreco());
-			feira.getItens().add(itemFeira);
+			item.setProduto(produto);
+			item.setFeira(feira);
+			item.setPrecoCompra(produto.getPreco());
+			item.setQuantidade(quantidade);
+			feira.getItens().add(item);
 		}
 	}
 	
-	private Optional<ItemFeira> buscarPorProduto(Produto produto) {
+	public Optional<ItemFeira> buscarPorProduto(Produto produto) {
 		return feira.getItens().stream()
 			.filter(i -> i.getProduto().equals(produto))
 			.findAny();
+	}
+	
+	private void removerItemPorProduto(Produto produto) {
+		feira.getItens().removeIf(i -> i.getProduto().equals(produto));
 	}
 
 	public Feira getFeira() {
@@ -41,5 +51,9 @@ public class FeiraSession {
 
 	public void setFeira(Feira feira) {
 		this.feira = feira;
+	}
+
+	public Integer getQuantidadeItens() {
+		return feira.getItens().size();
 	}
 }
