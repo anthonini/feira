@@ -55,7 +55,7 @@ public class ItemFeira implements Serializable {
 	
 	public String getDescricaoPeso() {
 		BigDecimal peso = getPeso();
-		if(produto.getUnidadePeso() == UnidadePeso.GRAMA && peso.doubleValue() > 1000) {
+		if(produto.getUnidadePeso() == UnidadePeso.GRAMA && peso.doubleValue() >= 1000) {
 			peso = UnidadePeso.GRAMA.converter(peso, UnidadePeso.QUILOGRAMA);
 			return UnidadePeso.QUILOGRAMA.getDescricaoAbreviada(peso);
 		}
