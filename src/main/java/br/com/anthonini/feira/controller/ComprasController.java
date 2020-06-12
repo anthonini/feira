@@ -72,10 +72,10 @@ public class ComprasController {
 	
 
 	@PutMapping("/item/{produtoId}")
-	public @ResponseBody ResponseEntity<?> changeItemQuantity(@PathVariable Long produtoId, BigDecimal quantidade) {
+	public @ResponseBody ResponseEntity<?> changeItemQuantity(@PathVariable Long produtoId, BigDecimal quantidade, boolean porQuantidade) {
 		Produto produto = produtoRepository.findById(produtoId).get();
 		produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
-		feiraSession.alterarQuantidade(produto, quantidade);
+		feiraSession.alterarQuantidade(produto, quantidade, porQuantidade);
 
 		return ResponseEntity.ok().build();
 	}

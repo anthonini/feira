@@ -1,7 +1,8 @@
 .compras-listagem-valores {
 	padding-right: 0px;
 }
-.compras-listagem-valores__quantidade {
+.compras-input_valor
+ {
 	width: 43px;
 	text-align: right;
 }

@@ -20,4 +20,8 @@ public enum CobradoPor {
 	public String getClasseCss() {
 		return classeCss;
 	}
+	
+	public boolean isUnidade() {
+		return this.equals(UNIDADE);
+	}
 }

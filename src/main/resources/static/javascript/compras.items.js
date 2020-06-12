@@ -2,17 +2,17 @@ var Feira = Feira || {};
 
 Feira.Items = (function() {
 	function Items () {
-		this.inputQuantidadeItem = $('.js-listagem-quantidade-item');
+		this.inputComprasPesoItem = $('.js-compras-peso-item');
+		this.inputComprasQuantidadeItem = $('.js-compras-quantidade-item');
 		this.diminuirQuantidadeItemBtn = $('.js-diminuir-quantidade-item-btn');
 		this.aumentarQuantidadeItemBtn = $('.js-aumentar-quantidade-item-btn');
-		this.numero = $('.js-numero-compras');
-		this.classePeso = 'js-peso-compras';
-		this.peso = $('.'+this.classePeso);
+		this.switchQuantidadePeso = $('.js-switch-quantidade-peso');
 	}
 	
 	Items.prototype.iniciar = function() {
 		aplicarMascaras.call(this);		
 		bindQuantidade.call(this);
+		this.switchQuantidadePeso.on('switchChange.bootstrapSwitch', onSwitchQuantidadePeso.bind(this));
 	}
 	
 	function aplicarMascaras() {
@@ -21,10 +21,11 @@ Feira.Items = (function() {
 				field.val(limitarTamanhoCampo(peso));
 			}
 		};
-		this.numero.mask('#0', {reverse: true});
-		this.peso.mask('#0,000', {reverse: true});
-		this.peso.mask('0999,999', options);
-		this.peso.each(function() {
+
+		this.inputComprasQuantidadeItem.mask('#0', {reverse: true});
+		this.inputComprasPesoItem.mask('#0,000', {reverse: true});
+		this.inputComprasPesoItem.mask('0999,999', options);
+		this.inputComprasPesoItem.each(function() {
 			$(this).val(limitarTamanhoCampo($(this).val()));
 		});
 		
@@ -40,7 +41,8 @@ Feira.Items = (function() {
 	}
 	
 	function bindQuantidade() {
-		this.inputQuantidadeItem.on('change', onQuantidadeItemChange);
+		this.inputComprasQuantidadeItem.on('change', onQuantidadeItemChange);
+		this.inputComprasPesoItem.on('change', onQuantidadeItemChange);
 		this.diminuirQuantidadeItemBtn.on('click', onDiminuirQuantidadeItem);
 		this.aumentarQuantidadeItemBtn.on('click', onAumentarQuantidadeItem);
 	}
@@ -63,36 +65,42 @@ Feira.Items = (function() {
 		}
 		
 		var produtoId = input.data('produto-id');
+		var porQuantidade = $('#switch-quantidade-peso-'+produtoId).data('por-quantidade');
 		
 		var response = $.ajax({
 			url: '/compras/item/'+produtoId,
 			method: 'PUT',
 			data: {
-				quantidade: quantidade
+				quantidade: quantidade,
+				porQuantidade: porQuantidade
 			}
 		});
 	}
 	
-	function onDiminuirQuantidadeItem(event, funcao) {
-		alterarQuantidade(event, diminuirValor);
+	function onDiminuirQuantidadeItem(event) {
+		var dados = getInput(event);
+		alterarQuantidade(event, dados.input, diminuirValor, dados.valor);
 	}
 	
 	function onAumentarQuantidadeItem(event) {
-		alterarQuantidade(event, aumentarValor);
+		var produtoId = $(event.currentTarget).data('produto-id');
+		var input = $('#item_quantidade-'+produtoId);
+		alterarQuantidade(event, input, aumentarValor, 1);
 	}
 	
 	function getInput(event) {
-		var btn = $(event.currentTarget);
-		var produtoId = btn.data('produto-id');
-
-		return $('#item_'+produtoId);
+		var produtoId = $(event.currentTarget).data('produto-id');
+		var porQuantidade = $('#switch-quantidade-peso-'+produtoId).data('por-quantidade');
+		if(porQuantidade) {
+			return {input: $('#item_quantidade-'+produtoId), valor: 1};
+		} else {
+			return {input: $('#item_peso-'+produtoId), valor: 0.1};
+		}
 	}
 	
-	function alterarQuantidade(event, funcao) {
+	function alterarQuantidade(event, input, funcao, valorAlteracao) {
 		event.preventDefault();
-		var input = getInput(event);
-		var valor = numeral(input.val()); 
-		var valorAlteracao = isInputPeso(input) && valor < 1000 ? 0.1 : 1;
+		var valor = numeral(input.val());
 		var quantidade = funcao(valor, valorAlteracao);
 		input.val(quantidade);
 		input.trigger('change');
@@ -107,8 +115,30 @@ Feira.Items = (function() {
 	}
 	
 	function isInputPeso(input) {
-		return input.hasClass('js-peso-compras');
+		return input.hasClass('js-compras-peso-item');
 	}
+	
+	function onSwitchQuantidadePeso(event, state) {
+		var produtoId = $(event.currentTarget).data('produto-id');
+		var itemDescricao = $('#item-descricao-'+produtoId).text('Qtd:');
+		var inputItemQuantidade = $('#item_quantidade-'+produtoId);
+		var inputItemPeso = $('#item_peso-'+produtoId);
+		
+		if(state) {
+			itemDescricao.text('Qtd:');
+			inputItemQuantidade.show()
+			inputItemPeso.hide();
+		} else {
+			itemDescricao.text('Peso:');
+			inputItemQuantidade.hide()
+			inputItemPeso.show();
+		}
+		
+		$('#switch-quantidade-peso-'+produtoId).data('por-quantidade', state);
+		inputItemQuantidade.val(0);
+		inputItemPeso.val(0);
+		inputItemQuantidade.trigger('change');
+	};
 	
 	return Items;
 }());

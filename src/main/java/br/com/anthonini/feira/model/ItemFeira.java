@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 
@@ -43,6 +44,9 @@ public class ItemFeira implements Serializable {
 	@NumberFormat(pattern = "#,##0.00")
 	@Column(name="preco_compra")
 	private BigDecimal precoCompra;
+	
+	@Transient
+	private boolean porQuantidade = true;
 	
 	public BigDecimal getPeso() {
 		return produto.getPesoUnidade().multiply(quantidade);
@@ -108,6 +112,14 @@ public class ItemFeira implements Serializable {
 
 	public void setPrecoCompra(BigDecimal precoCompra) {
 		this.precoCompra = precoCompra;
+	}
+
+	public boolean isPorQuantidade() {
+		return porQuantidade;
+	}
+
+	public void setPorQuantidade(boolean porQuantidade) {
+		this.porQuantidade = porQuantidade;
 	}
 
 	@Override

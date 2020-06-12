@@ -16,22 +16,24 @@ public class FeiraSession {
 
 	private Feira feira = new Feira();
 	
-	public void alterarQuantidade(Produto produto, BigDecimal quantidade) {
+	public void alterarQuantidade(Produto produto, BigDecimal quantidade, boolean porQuantidade) {
 		Optional<ItemFeira> itemOptional = buscarPorProduto(produto);
 		
 		ItemFeira item = itemOptional.orElse(new ItemFeira());
-		if(itemOptional.isPresent()) {
-			if(quantidade.compareTo(BigDecimal.ZERO) <= 0 ) {
-				removerItemPorProduto(produto);
-			} else {
-				item.setQuantidade(quantidade);
-			}
+		item.setPorQuantidade(porQuantidade);
+		
+		if(quantidade.compareTo(BigDecimal.ZERO) <= 0 ) {
+			removerItemPorProduto(produto);
 		} else {
-			item.setProduto(produto);
-			item.setFeira(feira);
-			item.setPrecoCompra(produto.getPreco());
-			item.setQuantidade(quantidade);
-			feira.getItens().add(item);
+			if(itemOptional.isPresent()) {
+				item.setQuantidade(quantidade);
+			} else {
+				item.setProduto(produto);
+				item.setFeira(feira);
+				item.setPrecoCompra(produto.getPreco());
+				item.setQuantidade(quantidade);
+				feira.getItens().add(item);
+			}
 		}
 	}
 	
