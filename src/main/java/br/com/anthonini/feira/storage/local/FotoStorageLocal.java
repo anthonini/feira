@@ -99,7 +99,7 @@ public class FotoStorageLocal implements FotoStorage {
 	
 	@Override
 	public String getUrlFoto(String foto) {
-		return urlBase+foto;
+		return urlBase+"/"+foto;
 	}
 	
 	@Override

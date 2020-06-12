@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,6 +29,7 @@ import br.com.anthonini.feira.model.UnidadePeso;
 import br.com.anthonini.feira.repository.ProdutoRepository;
 import br.com.anthonini.feira.repository.filter.ProdutoFilter;
 import br.com.anthonini.feira.service.ProdutoService;
+import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverProdutoException;
 import br.com.anthonini.feira.storage.FotoStorage;
 
 @Controller
@@ -84,6 +88,16 @@ public class ProdutoController extends AbstractController {
         model.addAttribute("produto", produto);
         return form(produto, model);
     }
+	
+	@DeleteMapping("/{id}")
+	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Produto produto) {
+		try {
+			service.remover(produto);
+		} catch (NaoEPossivelRemoverProdutoException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}		 
+		return ResponseEntity.ok().build();
+	}
 
 	private String retornarErrosValidacao(Produto produto, BindingResult result, ModelMap model) {
 		addMensagensErroValidacao(model, result);

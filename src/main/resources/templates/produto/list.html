@@ -4,7 +4,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}"
-	xmlns:an="http://www.anthonini.com.br">
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
 
 <body>
 	<div layout:fragment="conteudo" class="container-fluid">
@@ -54,7 +55,9 @@
 	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
 	                                         <i class="fa fa-edit"></i>
 	                                     </a>
-	                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
+	                                     <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
+	                                     	data:url="@{/produto/{id}(id=${item.id})}"
+											data:objeto="${item.nome}">
 	                                         <i class="fa fa-trash-alt"></i>
 	                                     </a>
 	                                 </td>
@@ -71,4 +74,7 @@
 			</div>
 		</div>
 	</div>
+	<th:block layout:fragment="extra-javascript">
+		<script th:src="@{/javascript/feira.dialogo-exclusao.js}"></script>
+	</th:block>
 </body>
