@@ -1,7 +1,7 @@
 var Feira = Feira || {};
 
 Feira.Items = (function() {
-	function Items () {
+	function Items() {
 		this.inputComprasPesoItem = $('.js-compras-peso-item');
 		this.inputComprasQuantidadeItem = $('.js-compras-quantidade-item');
 		this.diminuirQuantidadeItemBtn = $('.js-diminuir-quantidade-item-btn');
@@ -41,8 +41,8 @@ Feira.Items = (function() {
 	}
 	
 	function bindQuantidade() {
-		this.inputComprasQuantidadeItem.on('change', onQuantidadeItemChange);
-		this.inputComprasPesoItem.on('change', onQuantidadeItemChange);
+		this.inputComprasQuantidadeItem.on('change', onQuantidadeItemChange.bind(this));
+		this.inputComprasPesoItem.on('change', onQuantidadeItemChange.bind(this));
 		this.diminuirQuantidadeItemBtn.on('click', onDiminuirQuantidadeItem);
 		this.aumentarQuantidadeItemBtn.on('click', onAumentarQuantidadeItem);
 	}
@@ -86,6 +86,12 @@ Feira.Items = (function() {
 				porPeso: porPeso
 			}
 		});
+		
+		response.done(onItemAtualizadoServidor.bind(this, input));
+	}
+	
+	function onItemAtualizadoServidor(input, itemFeiraDTO) {
+		$(input).trigger('feira.carrinho.item-atualizado', itemFeiraDTO);
 	}
 	
 	function onDiminuirQuantidadeItem(event) {

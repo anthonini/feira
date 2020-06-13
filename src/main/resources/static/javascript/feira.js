@@ -18,6 +18,10 @@ Feira.MascaraNumeros = (function(){
 
 numeral.language('pt-br');
 
+Feira.formatarMoeda = function(valor) {	
+	return numeral(valor).format('0,0.00');
+}
+
 Feira.formatarPeso = function(valor) {	
 	return numeral(valor).format('0,0.000');
 }

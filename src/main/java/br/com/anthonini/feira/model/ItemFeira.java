@@ -58,26 +58,22 @@ public class ItemFeira implements Serializable {
 	}
 	
 	public BigDecimal getValorTotal() {
-		return precoCompra != null ? 
-				precoCompra.multiply(BigDecimal.valueOf(quantidade)) : BigDecimal.ZERO;
+		if(produto == null) {
+			return BigDecimal.ZERO;
+		}
+		
+		BigDecimal preco = precoCompra != null ? precoCompra : BigDecimal.ZERO;
+		if(porPeso || produto.isCobradoPorKG())
+			return preco.multiply(peso);
+		else
+			return preco.multiply(BigDecimal.valueOf(quantidade));
 	}
 	
 	public String getDescricaoPeso() {
-		BigDecimal peso = getPeso();
-		UnidadePeso unidadePeso = produto.getUnidadePeso();
-		
-		if(produto.isCobradoPorKG()) {
-			if(peso.doubleValue() < 1) { 
-				unidadePeso = UnidadePeso.GRAMA;
-			} else {
-				unidadePeso = UnidadePeso.QUILOGRAMA;
-			}
-		} else if(produto.getUnidadePeso() == UnidadePeso.GRAMA && peso.doubleValue() >= 1000) {
-			peso = UnidadePeso.GRAMA.converter(peso, UnidadePeso.QUILOGRAMA);
-			unidadePeso = UnidadePeso.QUILOGRAMA;
+		if(peso.compareTo(BigDecimal.valueOf(1)) < 0) {
+			return UnidadePeso.GRAMA.getDescricaoAbreviada(UnidadePeso.QUILOGRAMA.converter(peso, UnidadePeso.GRAMA));
 		}
-		
-		return unidadePeso.getDescricaoAbreviada(peso);
+		return UnidadePeso.QUILOGRAMA.getDescricaoAbreviada(peso);
 	}
 	
 	public String getDescricaoPesoOuQuantidade() {
@@ -89,8 +85,9 @@ public class ItemFeira implements Serializable {
 	}
 	
 	public void calculcarPeso() {
-		if(produto.getCobradoPor().equals(CobradoPor.UNIDADE)) {
-			peso = produto.getPesoUnidade().multiply(BigDecimal.valueOf(quantidade));
+		if(produto.getCobradoPor().equals(CobradoPor.UNIDADE) || (produto.isCobradoPorKG() && !porPeso)) {
+			peso = produto.getUnidadePeso().converter(produto.getPesoUnidade(), UnidadePeso.QUILOGRAMA);
+			peso = peso.multiply(BigDecimal.valueOf(quantidade));
 		}
 	}
 

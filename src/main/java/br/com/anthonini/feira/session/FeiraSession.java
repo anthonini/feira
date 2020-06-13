@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
+import br.com.anthonini.feira.dto.FeiraDTO;
 import br.com.anthonini.feira.model.Feira;
 import br.com.anthonini.feira.model.ItemFeira;
 import br.com.anthonini.feira.model.Produto;
@@ -24,7 +25,7 @@ public class FeiraSession {
 		item.setPeso(peso);
 		item.setQuantidade(quantidade);
 		
-		if((porPeso && peso.compareTo(BigDecimal.ZERO) <= 0) || (!porPeso && quantidade == 0)) {
+		if((porPeso && peso.compareTo(BigDecimal.ZERO) <= 0) || (!porPeso && quantidade <= 0)) {
 			removerItemPorProduto(produto);
 		} else {
 			if(!itemOptional.isPresent()) {
@@ -33,9 +34,9 @@ public class FeiraSession {
 				item.setPrecoCompra(produto.getPreco());
 				feira.getItens().add(item);
 			}
+			
+			item.calculcarPeso();
 		}
-		
-		item.calculcarPeso();
 	}
 	
 	public Optional<ItemFeira> buscarPorProduto(Produto produto) {
@@ -55,8 +56,8 @@ public class FeiraSession {
 	public void setFeira(Feira feira) {
 		this.feira = feira;
 	}
-
-	public Integer getQuantidadeItens() {
-		return feira.getItens().size();
+	
+	public FeiraDTO getFeiraDTO() {
+		return new FeiraDTO(feira.getQuantidadeItens(), feira.getPesoTotal(), feira.getValorTotal());
 	}
 }

@@ -1,0 +1,19 @@
+.carrinho-quantidade_div {
+	
+}
+.col-lg-5.carrinho-valores {
+	flex: 0 0 37%;
+}
+.compras-input_valor {
+	font-size: .85rem;
+	width: 45px;
+	text-align: right;
+}
+.card-footer {
+	padding-right: 5px;
+	font-size: 15px;
+}
+.col-lg-4.carrinho-totais-item {
+	flex: 0 0 29%;
+	padding-right: 0px;
+}

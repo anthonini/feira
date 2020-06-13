@@ -44,6 +44,28 @@ public class Feira implements Serializable {
 	public boolean isVazia() {
 		return itens.isEmpty();
 	}
+	
+	public Integer getQuantidadeItens() {
+		return itens.size();
+	}
+	
+	public BigDecimal getPesoTotal() {
+		 return itens.stream()
+				.map(ItemFeira::getPeso)
+				.reduce(BigDecimal::add)
+				.orElse(BigDecimal.ZERO);
+	}
+	
+	public String getDescricaoPesoTotal() {
+		return UnidadePeso.QUILOGRAMA.getDescricaoAbreviada(getPesoTotal());
+	}
+	
+	public BigDecimal getValorTotal() {
+		 return itens.stream()
+				.map(ItemFeira::getValorTotal)
+				.reduce(BigDecimal::add)
+				.orElse(BigDecimal.ZERO);
+	}
 
 	public Long getId() {
 		return id;
