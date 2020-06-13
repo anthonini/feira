@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,9 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.NumberFormat;
 
+import br.com.anthonini.feira.repository.listener.ProdutoEntityListener;
+
+@EntityListeners(ProdutoEntityListener.class)
 @Entity
 @Table(name="produto")
 public class Produto implements Serializable {
@@ -60,6 +64,9 @@ public class Produto implements Serializable {
 	
 	@Transient
 	private String urlFoto;
+	
+	@Transient
+	private String urlThumbnailFoto;
 	
 	@Transient
 	private String fotoOriginal;
@@ -146,6 +153,14 @@ public class Produto implements Serializable {
 
 	public void setUrlFoto(String urlFoto) {
 		this.urlFoto = urlFoto;
+	}
+
+	public String getUrlThumbnailFoto() {
+		return urlThumbnailFoto;
+	}
+
+	public void setUrlThumbnailFoto(String urlThumbnailFoto) {
+		this.urlThumbnailFoto = urlThumbnailFoto;
 	}
 
 	public String getFotoOriginal() {

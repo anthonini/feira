@@ -19,7 +19,6 @@ import br.com.anthonini.feira.model.ItemFeira;
 import br.com.anthonini.feira.model.Produto;
 import br.com.anthonini.feira.repository.ProdutoRepository;
 import br.com.anthonini.feira.session.FeiraSession;
-import br.com.anthonini.feira.storage.FotoStorage;
 
 /**
  * @author Anthonini
@@ -34,9 +33,6 @@ public class ComprasController {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
-	@Autowired
-	private FotoStorage fotoStorage;
-	
 	@GetMapping
 	public ModelAndView listar() {
 		ModelAndView mv = new ModelAndView("compras/listagem");
@@ -44,7 +40,6 @@ public class ComprasController {
 		List<ItemFeira> itens = new ArrayList<>();
 		
 		for(Produto produto : produtos) {
-			produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
 			Optional<ItemFeira> itemOptional = feiraSession.buscarPorProduto(produto);
 			ItemFeira item = itemOptional.orElse(new ItemFeira());
 			if(!itemOptional.isPresent()) {
@@ -62,7 +57,6 @@ public class ComprasController {
 	@PutMapping("/item/{produtoId}")
 	public @ResponseBody ItemFeiraDTO alterarQuantidadeItem(@PathVariable Long produtoId, Integer quantidade, BigDecimal peso, boolean porPeso) {
 		Produto produto = produtoRepository.findById(produtoId).get();
-		produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
 		feiraSession.alterarQuantidade(produto, quantidade, peso, porPeso);
 		
 		ItemFeira item = feiraSession.buscarPorProduto(produto).orElse(new ItemFeira());		

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.anthonini.feira.storage.FotoStorage;
@@ -99,6 +100,9 @@ public class FotoStorageLocal implements FotoStorage {
 	
 	@Override
 	public String getUrlFoto(String foto) {
+		if(StringUtils.isEmpty(foto) || foto.equals(THUMBNAIL_PREFIX)) {
+			return "/img/semFoto.png";
+		}
 		return urlBase+"/"+foto;
 	}
 	

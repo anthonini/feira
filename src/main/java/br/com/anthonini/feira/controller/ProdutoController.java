@@ -30,7 +30,6 @@ import br.com.anthonini.feira.repository.ProdutoRepository;
 import br.com.anthonini.feira.repository.filter.ProdutoFilter;
 import br.com.anthonini.feira.service.ProdutoService;
 import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverProdutoException;
-import br.com.anthonini.feira.storage.FotoStorage;
 
 @Controller
 @RequestMapping("/produto")
@@ -41,9 +40,6 @@ public class ProdutoController extends AbstractController {
 	
 	@Autowired
 	private ProdutoRepository repository;
-	
-	@Autowired
-	private FotoStorage fotoStorage;
 
 	@GetMapping("/novo")
 	public String form(Produto produto, ModelMap model) {
@@ -81,7 +77,6 @@ public class ProdutoController extends AbstractController {
         }
         
         if(!StringUtils.isEmpty(produto.getFoto())) {
-        	produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
         	produto.setFotoOriginal(produto.getFoto());
         }
 

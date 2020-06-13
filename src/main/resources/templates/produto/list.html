@@ -44,8 +44,7 @@
 							<tbody>
 								<tr th:each="item : ${pagina.conteudo}">
 	                                 <td class="text-center">
-	                                 	<i class="fa fa-shopping-basket mock" th:if="${!item.temFoto}"></i>
-	                                 	<img th:if="${item.temFoto}" th:src="@{/fotos/thumbnail.{foto}(foto=${item.foto})}" class="img-responsive"/>	
+	                                 	<img th:src="${item.urlThumbnailFoto}" class="img-responsive"/>	
 	                                 </td>
 	                                 <td th:text="${item.nome}">Nome</td>
 	                                 <td th:text="${item.cobradoPor.descricao}">Tipo de Preço</td>
