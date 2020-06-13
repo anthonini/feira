@@ -71,6 +71,10 @@ public class Produto implements Serializable {
 	public boolean isTemFoto() {
 		return foto != null && !foto.isEmpty();
 	}
+	
+	public boolean isCobradoPorKG() {
+		return this.cobradoPor.equals(CobradoPor.KG);
+	}
 
 	public Long getId() {
 		return id;

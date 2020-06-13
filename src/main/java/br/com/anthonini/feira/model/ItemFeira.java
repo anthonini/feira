@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
@@ -37,33 +38,60 @@ public class ItemFeira implements Serializable {
 	private Feira feira;
 	
 	@NotNull(message = "Quantidade é obrigatório")
-	@NumberFormat(pattern = "#,##0.00")
-	private BigDecimal quantidade = BigDecimal.ZERO;
+	private Integer quantidade = 0;
 	
 	@DecimalMax(value = "9999999.99", message = "Preço deve ser menor ou igual a R$9.999.999,99")
 	@NumberFormat(pattern = "#,##0.00")
 	@Column(name="preco_compra")
 	private BigDecimal precoCompra;
 	
-	@Transient
-	private boolean porQuantidade = true;
+	@NotNull(message = "Peso é obrigatório")
+	@NumberFormat(pattern = "#,##0.00")
+	private BigDecimal peso = BigDecimal.ZERO;
 	
-	public BigDecimal getPeso() {
-		return produto.getPesoUnidade().multiply(quantidade);
+	@Transient
+	private boolean porPeso;
+	
+	@PostLoad
+	private void inicializarPorPeso() {
+		porPeso = produto.isCobradoPorKG();
 	}
 	
 	public BigDecimal getValorTotal() {
 		return precoCompra != null ? 
-				precoCompra.multiply(quantidade) : BigDecimal.ZERO;
+				precoCompra.multiply(BigDecimal.valueOf(quantidade)) : BigDecimal.ZERO;
 	}
 	
 	public String getDescricaoPeso() {
 		BigDecimal peso = getPeso();
-		if(produto.getUnidadePeso() == UnidadePeso.GRAMA && peso.doubleValue() >= 1000) {
+		UnidadePeso unidadePeso = produto.getUnidadePeso();
+		
+		if(produto.isCobradoPorKG()) {
+			if(peso.doubleValue() < 1) { 
+				unidadePeso = UnidadePeso.GRAMA;
+			} else {
+				unidadePeso = UnidadePeso.QUILOGRAMA;
+			}
+		} else if(produto.getUnidadePeso() == UnidadePeso.GRAMA && peso.doubleValue() >= 1000) {
 			peso = UnidadePeso.GRAMA.converter(peso, UnidadePeso.QUILOGRAMA);
-			return UnidadePeso.QUILOGRAMA.getDescricaoAbreviada(peso);
+			unidadePeso = UnidadePeso.QUILOGRAMA;
 		}
-		return produto.getUnidadePeso().getDescricaoAbreviada(peso);
+		
+		return unidadePeso.getDescricaoAbreviada(peso);
+	}
+	
+	public String getDescricaoPesoOuQuantidade() {
+		if(porPeso) {
+			return String.format("Peso (%s)", UnidadePeso.QUILOGRAMA.getSimbolo());
+		} else {
+			return "Qtd";
+		}
+	}
+	
+	public void calculcarPeso() {
+		if(produto.getCobradoPor().equals(CobradoPor.UNIDADE)) {
+			peso = produto.getPesoUnidade().multiply(BigDecimal.valueOf(quantidade));
+		}
 	}
 
 	public ItemFeira() {
@@ -98,12 +126,20 @@ public class ItemFeira implements Serializable {
 		this.feira = feira;
 	}
 
-	public BigDecimal getQuantidade() {
+	public Integer getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(BigDecimal quantidade) {
+	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public BigDecimal getPeso() {
+		return peso;
+	}
+
+	public void setPeso(BigDecimal peso) {
+		this.peso = peso;
 	}
 
 	public BigDecimal getPrecoCompra() {
@@ -114,12 +150,12 @@ public class ItemFeira implements Serializable {
 		this.precoCompra = precoCompra;
 	}
 
-	public boolean isPorQuantidade() {
-		return porQuantidade;
+	public boolean isPorPeso() {
+		return porPeso;
 	}
 
-	public void setPorQuantidade(boolean porQuantidade) {
-		this.porQuantidade = porQuantidade;
+	public void setPorPeso(boolean porPeso) {
+		this.porPeso = porPeso;
 	}
 
 	@Override

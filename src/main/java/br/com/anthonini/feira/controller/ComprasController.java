@@ -46,6 +46,7 @@ public class ComprasController {
 			produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
 			ItemFeira item = feiraSession.buscarPorProduto(produto).orElse(new ItemFeira());
 			item.setProduto(produto);
+			item.setPorPeso(produto.isCobradoPorKG());
 			itens.add(item);
 		}
 		
@@ -72,10 +73,10 @@ public class ComprasController {
 	
 
 	@PutMapping("/item/{produtoId}")
-	public @ResponseBody ResponseEntity<?> changeItemQuantity(@PathVariable Long produtoId, BigDecimal quantidade, boolean porQuantidade) {
+	public @ResponseBody ResponseEntity<?> alterarQuantidadeItem(@PathVariable Long produtoId, Integer quantidade, BigDecimal peso, boolean porPeso) {
 		Produto produto = produtoRepository.findById(produtoId).get();
 		produto.setUrlFoto(fotoStorage.getUrlFoto(produto.getFoto()));
-		feiraSession.alterarQuantidade(produto, quantidade, porQuantidade);
+		feiraSession.alterarQuantidade(produto, quantidade, peso, porPeso);
 
 		return ResponseEntity.ok().build();
 	}

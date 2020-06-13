@@ -50,6 +50,7 @@ Feira.Items = (function() {
 	function onQuantidadeItemChange(event) {
 		var input = $(event.target);
 		var quantidade = input.val();
+		var peso = 0;
 		
 		if(numeral(quantidade) < 0) {
 			input.val(0);
@@ -65,14 +66,24 @@ Feira.Items = (function() {
 		}
 		
 		var produtoId = input.data('produto-id');
-		var porQuantidade = $('#switch-quantidade-peso-'+produtoId).data('por-quantidade');
+		var porPeso = $('#switch-quantidade-peso-'+produtoId).data('por-peso');
+		
+		if(porPeso === undefined) {
+			porPeso = false;
+		}
+		
+		if(porPeso) {
+			peso = quantidade;
+			quantidade = 0;
+		}
 		
 		var response = $.ajax({
 			url: '/compras/item/'+produtoId,
 			method: 'PUT',
 			data: {
 				quantidade: quantidade,
-				porQuantidade: porQuantidade
+				peso: peso,
+				porPeso: porPeso
 			}
 		});
 	}
@@ -83,18 +94,17 @@ Feira.Items = (function() {
 	}
 	
 	function onAumentarQuantidadeItem(event) {
-		var produtoId = $(event.currentTarget).data('produto-id');
-		var input = $('#item_quantidade-'+produtoId);
-		alterarQuantidade(event, input, aumentarValor, 1);
+		var dados = getInput(event);
+		alterarQuantidade(event, dados.input, aumentarValor, dados.valor);
 	}
 	
 	function getInput(event) {
 		var produtoId = $(event.currentTarget).data('produto-id');
-		var porQuantidade = $('#switch-quantidade-peso-'+produtoId).data('por-quantidade');
-		if(porQuantidade) {
-			return {input: $('#item_quantidade-'+produtoId), valor: 1};
-		} else {
+		var porPeso = $('#switch-quantidade-peso-'+produtoId).data('por-peso');
+		if(porPeso) {
 			return {input: $('#item_peso-'+produtoId), valor: 0.1};
+		} else {
+			return {input: $('#item_quantidade-'+produtoId), valor: 1};
 		}
 	}
 	
@@ -125,16 +135,16 @@ Feira.Items = (function() {
 		var inputItemPeso = $('#item_peso-'+produtoId);
 		
 		if(state) {
+			itemDescricao.text('Peso (Kg):');
+			inputItemQuantidade.hide()
+			inputItemPeso.show();
+		} else {
 			itemDescricao.text('Qtd:');
 			inputItemQuantidade.show()
 			inputItemPeso.hide();
-		} else {
-			itemDescricao.text('Peso:');
-			inputItemQuantidade.hide()
-			inputItemPeso.show();
 		}
 		
-		$('#switch-quantidade-peso-'+produtoId).data('por-quantidade', state);
+		$('#switch-quantidade-peso-'+produtoId).data('por-peso', state);
 		inputItemQuantidade.val(0);
 		inputItemPeso.val(0);
 		inputItemQuantidade.trigger('change');

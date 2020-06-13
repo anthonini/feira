@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+	
+<div class="row" style="font-size:.8rem" th:fragment="quantidade-itens">
+	<div class="col-12 mb-1">
+		<span th:if="${item.produto.cobradoPor.unidade}" th:text="'&nbsp'"></span>
+		<input type="checkbox" th:id="|switch-quantidade-peso-${item.produto.id}|" class="js-switch-quantidade-peso" 
+			data:produto-id="${item.produto.id}" data:por-peso="${item.porPeso}"
+			th:unless="${item.produto.cobradoPor.unidade}" th:checked="${item.porPeso}" th:value="${item.porPeso}"
+			data-size="small" data-off-color="success" data-on-text="Peso" data-off-text="Qtd" >
+	</div>
+	<div class="col-12">
+		<span th:id="|item-descricao-${item.produto.id}|" th:text="|${item.descricaoPesoOuQuantidade}:|"></span>
+		<a href="#" class="btn btn-light btn-circle btn-sm js-diminuir-quantidade-item-btn" 
+			data:produto-id="${item.produto.id}" data:input-id="${item.porPeso} ? |item_quantidade-${item.produto.id}| : |item_peso-${item.produto.id}">
+              	<i class="fas fa-minus-circle"></i>
+              </a>
+		<input type="text" class="compras-input_valor js-compras-quantidade-item" 
+			th:value="${item.quantidade}" maxlength="4" th:style="${item.porPeso} ? 'display: none' : '' "
+			data:produto-id="${item.produto.id}" th:id="|item_quantidade-${item.produto.id}|"/>
+		<input type="text" class="compras-input_valor js-compras-peso-item" th:style="${!item.porPeso} ? 'display: none' : '' "
+			th:value="${item.peso}" maxlength="4"
+			data:produto-id="${item.produto.id}" th:id="|item_peso-${item.produto.id}|"/>
+		<a href="#" class="btn btn-light btn-circle btn-sm js-aumentar-quantidade-item-btn" 
+			data:produto-id="${item.produto.id}" data:input-id="${item.porPeso} ? |item_quantidade-${item.produto.id}| : |item_peso-${item.produto.id}">
+              	<i class="fas fa-plus-circle"></i>
+              </a>
+	</div>
+</div>
+</html>
