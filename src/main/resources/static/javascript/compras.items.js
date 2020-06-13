@@ -68,10 +68,6 @@ Feira.Items = (function() {
 		var produtoId = input.data('produto-id');
 		var porPeso = $('#switch-quantidade-peso-'+produtoId).data('por-peso');
 		
-		if(porPeso === undefined) {
-			porPeso = false;
-		}
-		
 		if(porPeso) {
 			peso = quantidade;
 			quantidade = 0;

@@ -31,7 +31,7 @@
 									<span th:text="|R$ ${{item.produto.preco}}|">R$ 3,50</span>
 									<span class="badge badge-secondary" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
 								</div>
-								<div class="text-gray-900" th:text="${item.produto.pesoUnidade > 0} ? |Peso: ${{item.produto.descricaoPeso}}| : '&nbsp'">250g</div>
+								<div class="text-gray-900" th:text="${item.produto.pesoUnidade > 0} ? |Peso unidade: ${{item.produto.descricaoPeso}}| : '&nbsp'">250g</div>
 								<th:block th:replace="~{compras/fragments/quantidade-itens :: quantidade-itens}"></th:block>
 							</div>
 						</div>
