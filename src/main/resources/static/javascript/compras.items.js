@@ -69,7 +69,7 @@ Feira.Items = (function() {
 		var porPeso = $('#switch-quantidade-peso-'+produtoId).data('por-peso');
 		
 		if(porPeso) {
-			peso = quantidade;
+			peso = Feira.formatarBigDecimal(quantidade);
 			quantidade = 0;
 		}
 		
@@ -91,20 +91,22 @@ Feira.Items = (function() {
 	}
 	
 	function onDiminuirQuantidadeItem(event) {
-		var dados = getInput(event);
+		var dados = getDados(event);
 		alterarQuantidade(event, dados.input, diminuirValor, dados.valor);
 	}
 	
 	function onAumentarQuantidadeItem(event) {
-		var dados = getInput(event);
+		var dados = getDados(event);
 		alterarQuantidade(event, dados.input, aumentarValor, dados.valor);
 	}
 	
-	function getInput(event) {
+	function getDados(event) {
 		var produtoId = $(event.currentTarget).data('produto-id');
 		var porPeso = $('#switch-quantidade-peso-'+produtoId).data('por-peso');
 		if(porPeso) {
-			return {input: $('#item_peso-'+produtoId), valor: 0.1};
+			var input = $('#item_peso-'+produtoId);
+			var valor = numeral(input.val()) < 1000 ? 0.1 : 1; 
+			return {input: input, valor: valor};
 		} else {
 			return {input: $('#item_quantidade-'+produtoId), valor: 1};
 		}

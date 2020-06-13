@@ -30,6 +30,10 @@ Feira.removerFormatoPeso = function(valorFormatado) {
 	return numeral().unformat(valorFormatado);
 }
 
+Feira.formatarBigDecimal = function(valor) {	
+	return numeral(valor).format('#0.000').replace(',', '.');
+}
+
 $(function(){	
 	var mascaraNumeros = new Feira.MascaraNumeros();
 	mascaraNumeros.habilitar();
