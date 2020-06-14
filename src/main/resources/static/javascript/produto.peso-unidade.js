@@ -8,7 +8,8 @@ Feira.Peso = (function(){
 	
 	Peso.prototype.iniciar = function() {
 		this.unidadePeso.on('change', onPesoUnidadeAlterado.bind(this));
-		alterarUnidadePeso.call(this);
+		if(this.unidadePeso.val() === 'GRAMA')
+			alterarUnidadePesoParaGrama.call(this);
 	}
 	
 	function onPesoUnidadeAlterado() {
@@ -21,10 +22,14 @@ Feira.Peso = (function(){
 			this.peso.mask('#.##0,000', {reverse: true} );
 			this.peso.val(peso);
 		} else {
-			var peso = this.peso.val().split(',')[0];
-			this.peso.val(peso);
-			this.peso.mask('#.##0', {reverse: true});
+			alterarUnidadePesoParaGrama.call(this);
 		}
+	}
+	
+	function alterarUnidadePesoParaGrama() {
+		var peso = this.peso.val().split(',')[0];
+		this.peso.val(peso);
+		this.peso.mask('#.##0', {reverse: true});
 	}
 	
 	return Peso;
