@@ -45,7 +45,7 @@ public class FeiraSession {
 			.findAny();
 	}
 	
-	private void removerItemPorProduto(Produto produto) {
+	public void removerItemPorProduto(Produto produto) {
 		feira.getItens().removeIf(i -> i.getProduto().equals(produto));
 	}
 

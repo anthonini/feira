@@ -37,7 +37,7 @@
 										<div class="text-gray-900" th:text="${item.produto.pesoUnidade > 0} ? |Peso: ${{item.produto.descricaoPeso}}| : '&nbsp'">250g</div>
 									</div>
 									<div class="text-right col-2">
-										<a href="#" class="btn btn-light btn-circle btn-sm" >
+										<a href="#" class="btn btn-light btn-circle btn-sm js-remover-item" data:produto-id="${item.produto.id}" >
 						                	<i class="fas fa-trash-alt"></i>
 						                </a>
 									</div>
