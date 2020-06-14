@@ -33,11 +33,11 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 	public Page<Produto> filtrar(ProdutoFilter filter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Produto> criteriaQuery = builder.createQuery(Produto.class);
-		Root<Produto> beer = criteriaQuery.from(Produto.class);
+		Root<Produto> produto = criteriaQuery.from(Produto.class);
 		
-		criteriaQuery.where(getWhere(filter, builder, beer));
+		criteriaQuery.where(getWhere(filter, builder, produto));
 		
-		TypedQuery<Produto> query = paginationUtil.prepare(builder, criteriaQuery, beer, pageable);
+		TypedQuery<Produto> query = paginationUtil.prepare(builder, criteriaQuery, produto, pageable);
 		
 		return new PageImpl<>(query.getResultList(), pageable, total(filter));
 	}
@@ -45,9 +45,9 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 	private Long total(ProdutoFilter filter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-		Root<Produto> beer = criteriaQuery.from(Produto.class);
+		Root<Produto> produto = criteriaQuery.from(Produto.class);
 		
-		criteriaQuery.select(builder.count(beer)).where(getWhere(filter, builder, beer));
+		criteriaQuery.select(builder.count(produto)).where(getWhere(filter, builder, produto));
 		
 		return manager.createQuery(criteriaQuery).getSingleResult();
 	}

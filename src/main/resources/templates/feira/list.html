@@ -4,50 +4,77 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}"
-	xmlns:an="http://www.anthonini.com.br">
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
 
 <body>
 	<div layout:fragment="conteudo" class="container-fluid">
-		<h1 class="h3 mb-4 text-gray-800">Produtos</h1>
-
 		<div class="card shadow mb-4">
 			<!-- Card Header - Dropdown -->
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Lista de Produtos</h6>
-				<a th:href="@{/produto/novo}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Cadastrar Produto</a>
+				<h6 class="m-0 font-weight-bold text-primary">Buscar Feira</h6>
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
+				<form method="GET" th:object="${feiraFilter}">
+						<div class="row">
+							<div class="form-group  col-sm-6" >
+								<label class="control-label" for="nome">Nome</label>
+								<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+							</div>
+							<div class="form-group  col-sm-6" >
+								<label for="inicioDataCompra">Data da Compra</label>
+								<div class="form-inline">
+									<input type="text" class="form-control js-data" id="inicioDataCompra" 
+										th:field="*{de}" autocomplete="off"/>
+									<label for="fimDataCompra">&nbsp; até &nbsp;</label>
+									<input type="text" class="form-control js-data" id="fimDataCompra" 
+										th:field="*{ate}" autocomplete="off"/>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-sm-4" >
+								<label class="control-label" for="nome">Nome do item</label>
+								<input type="text" class="form-control" id="nome" th:field="*{nomeItem}"/>
+							</div>
+						</div>
+						
+						<button type="submit" class="btn  btn-primary">Pesquisar</button>
+					</form>
+					<br/>
 				<div class="table-responsive">
 					<table class="table table-bordered table-striped table-hover">
 						<thead>
-							<tr>
-								<th style="width: 8.33%"></th>
+							<tr>								
 								<th>Nome</th>
-								<th style="width: 16.66%">Data da compra</th>
-								<th style="width: 16.66%">Quantidade de Itens</th>
-								<th style="width: 16.66%">Peso Unidade</th>
+								<th style="width: 14%">Data da compra</th>
+								<th style="width: 14%">Itens</th>								
+								<th style="width: 14%">Peso</th>
+								<th style="width: 14%">Valor Total</th>
 								<th style="width: 78px;"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="item : ${pagina.conteudo}">
-                                 <td>Foto</td>
-                                 <td th:text="${item.nome}">Nome</td>
-                                 <td th:text="${item.tipoPreco.descricao}">Tipo de Preço</td>
-                                 <td th:text="|R$ ${{item.preco}}|">Preço</td>
-                                 <td th:text="${{item.pesoUnidade}}">Peso Unidade</td>
+							<tr th:each="feira : ${pagina.conteudo}">
+                                 <td th:text="${feira.nome}">Nome</td>
+                                 <td th:text="${{feira.dataCompra}}">Data da compra</td>
+                                 <td th:text="${feira.quantidadeItens}" class="text-center">15</td>
+                                 <td th:text="${feira.descricaoPesoTotal}">8,750Kg</td>
+                                 <td th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 165,00</td>
                                  <td>
-                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
+                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/alterar/{id}(id=${feira.id})}" title="Alterar">
                                          <i class="fa fa-edit"></i>
                                      </a>
-                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
+                                     <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
+                                     	data:url="@{/feira/{id}(id=${feira.id})}"
+										data:objeto="${feira.nome}">
                                          <i class="fa fa-trash-alt"></i>
                                      </a>
                                  </td>
                              </tr>
                              <tr th:if="${pagina.vazia}">
-                             	<td colspan="6"><i>Nenhum produto cadastrado.</i></td>
+                             	<td colspan="6"><i>Nenhuma feira cadastrada.</i></td>
                              </tr>
 						</tbody>
 					</table>
@@ -57,4 +84,7 @@
 			</div>
 		</div>
 	</div>
+	<th:block layout:fragment="extra-javascript">
+		<script th:src="@{/javascript/feira.dialogo-exclusao.js}"></script>
+	</th:block>
 </body>
