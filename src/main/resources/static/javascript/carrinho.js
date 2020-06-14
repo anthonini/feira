@@ -6,12 +6,13 @@ Feira.Carrinho = (function(){
 		this.inputComprasQuantidadeItem = $('.js-compras-quantidade-item');
 		this.inputComprasPesoItem = $('.js-compras-peso-item');
 		this.removerItem = $('.js-remover-item');
+		this.badgeCarrinho = $('#badge-carrinho');
 	}
 	
 	Carrinho.prototype.iniciar = function() {
-		this.inputComprasQuantidadeItem.on('feira.carrinho.item-atualizado', onItemCarrinhoAtualizado);
-		this.inputComprasPesoItem.on('feira.carrinho.item-atualizado', onItemCarrinhoAtualizado);
-		this.removerItem.on('click', onRemoverItemClicked);
+		this.inputComprasQuantidadeItem.on('feira.carrinho.item-atualizado', onItemCarrinhoAtualizado.bind(this));
+		this.inputComprasPesoItem.on('feira.carrinho.item-atualizado', onItemCarrinhoAtualizado.bind(this));
+		this.removerItem.on('click', onRemoverItemClicked.bind(this));
 	}
 	
 	function onItemCarrinhoAtualizado(event, itemFeiraDTO) {		
@@ -31,7 +32,7 @@ Feira.Carrinho = (function(){
 	
 	function onRemoverItemClicked(event) {
 		event.preventDefault();
-		var produtoId = $(this).data('produto-id');
+		var produtoId = $(event.currentTarget).data('produto-id');
 		
 		var response = $.ajax({
 			url: '/carrinho/'+produtoId,
@@ -44,6 +45,15 @@ Feira.Carrinho = (function(){
 	function onItemRemovido(produtoId, feiraDTO) {
 		$('#div-item-'+produtoId).remove();
 		atualizarTotais(feiraDTO);
+		
+		var quantidadeItens = feiraDTO.quantidadeItens;
+		
+		if(quantidadeItens > 0){
+			this.badgeCarrinho.show();
+		} else {
+			this.badgeCarrinho.hide();
+		}
+		this.badgeCarrinho.html(quantidadeItens);
 	}
 	
 	return Carrinho;

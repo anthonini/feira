@@ -45,9 +45,6 @@ Feira.Items = (function() {
 		this.inputComprasPesoItem.on('change', onQuantidadeItemChange.bind(this));
 		this.diminuirQuantidadeItemBtn.on('click', onDiminuirQuantidadeItem);
 		this.aumentarQuantidadeItemBtn.on('click', onAumentarQuantidadeItem);
-		
-		this.inputComprasQuantidadeItem.on('feira.carrinho.item-atualizado', onItemCarrinhoAtualizado);
-		this.inputComprasPesoItem.on('feira.carrinho.item-atualizado', onItemCarrinhoAtualizado);
 	}
 	
 	function onQuantidadeItemChange(event) {
@@ -156,10 +153,6 @@ Feira.Items = (function() {
 		inputItemPeso.val(0);
 		inputItemQuantidade.trigger('change');
 	};
-	
-	function onItemCarrinhoAtualizado(event, itemFeiraDTO) {
-		$('#badge-carrinho').html(itemFeiraDTO.feiraDTO.quantidadeItens);
-	}
 	
 	return Items;
 }());
