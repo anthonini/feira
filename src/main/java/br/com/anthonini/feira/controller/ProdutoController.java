@@ -73,7 +73,7 @@ public class ProdutoController extends AbstractController {
 	public String alterar(@PathVariable("id") Produto produto, ModelMap model, RedirectAttributes redirect) {
         if (produto == null) {
             addMensagemErro(redirect, "Produto não encontrado");
-            return "redirect:list";
+            return "redirect:/produto";
         }
         
         if(!StringUtils.isEmpty(produto.getFoto())) {

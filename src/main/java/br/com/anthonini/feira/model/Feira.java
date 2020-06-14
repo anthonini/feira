@@ -45,6 +45,10 @@ public class Feira implements Serializable {
 	@Transient
 	private BigDecimal valor;
 	
+	public boolean isNova() {
+		return id == null;
+	}
+	
 	public boolean isVazia() {
 		return itens.isEmpty();
 	}
@@ -69,11 +73,6 @@ public class Feira implements Serializable {
 				.map(ItemFeira::getValorTotal)
 				.reduce(BigDecimal::add)
 				.orElse(BigDecimal.ZERO);
-	}
-	
-	public void adicionarItens(List<ItemFeira> itens) {
-		this.itens = itens;
-		this.itens.forEach(i -> i.setFeira(this));
 	}
 
 	public Long getId() {

@@ -53,7 +53,8 @@ public class FeiraController extends AbstractController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Feira feira, ModelMap model) {
 		ModelAndView mv = new ModelAndView("feira/form");
-		feira.setItens(feiraSession.getFeira().getItens());
+		if(feira.isNova())
+			feira.setItens(feiraSession.getFeira().getItens());
 		
 		return mv;
 	}
@@ -64,8 +65,6 @@ public class FeiraController extends AbstractController {
 			return retornarErrosValidacao(feira, result, model);
 		}
 		
-		feira.adicionarItens(feiraSession.getFeira().getItens());
-		
 		try {
 			service.salvar(feira);
 		} catch (FeiraVaziaException e) {
@@ -73,9 +72,8 @@ public class FeiraController extends AbstractController {
 			return retornarErrosValidacao(feira, result, model);
 		}
 		
-		feiraSession.setFeira(new Feira());
 		addMensagemSucess(redirectAttributes, "Feira salva com sucesso!");
-		return new ModelAndView("redirect:nova");
+		return new ModelAndView("redirect:list");
 	}
 	
 	@GetMapping("/list")
@@ -86,6 +84,17 @@ public class FeiraController extends AbstractController {
 		
 		return mv;
 	}
+	
+	@GetMapping("/alterar/{id}")
+	public ModelAndView alterar(@PathVariable("id") Feira feira, ModelMap model, RedirectAttributes redirect) {
+		if (feira == null) {
+            addMensagemErro(redirect, "Feira não encontrada");
+            return new ModelAndView("redirect:/feira/list");
+        }
+
+		model.addAttribute("feira", feira);
+        return nova(feira, model);
+    }
 	
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Feira feira) {

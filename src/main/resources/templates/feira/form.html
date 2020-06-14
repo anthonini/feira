@@ -99,10 +99,16 @@
 						<input type="submit" class="btn btn-primary" value="Salvar">
 					</div>
 					
-					<div >
+					<div>
 						<h6 class="feira-header">Produtos Adicionados</h6>
-						<div class="card lista-itens-feira" th:each="item : ${feira.itens}">
-							<div class="card-body" >
+						<div class="card lista-itens-feira" th:each="item, itemStat : *{itens}">
+							<div class="card-body">
+								<input type="hidden" th:field="*{itens[__${itemStat.index}__].id}"/>
+								<input type="hidden" th:field="*{itens[__${itemStat.index}__].produto.id}">
+								<input type="hidden" th:field="*{itens[__${itemStat.index}__].feira.id}">
+								<input type="hidden" th:field="*{itens[__${itemStat.index}__].quantidade}">
+								<input type="hidden" th:field="*{itens[__${itemStat.index}__].precoCompra}">
+								<input type="hidden" th:field="*{itens[__${itemStat.index}__].peso}">
 								<div class="row" >
 									<div class="text-center col-4 col-sm-2 col-xl-2 feira-imagem">
 										<img th:src="${item.produto.urlFoto}" class="img-fluid" style="height: 4rem;">
