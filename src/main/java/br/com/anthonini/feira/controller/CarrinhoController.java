@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +26,7 @@ public class CarrinhoController {
 	
 	@GetMapping
 	public ModelAndView carrinho() {
-		ModelAndView mv = new ModelAndView("compras/carrinho");
+		ModelAndView mv = new ModelAndView("carrinho/carrinho");
 		mv.addObject("feira", feiraSession.getFeira());
 			
 		return mv;
@@ -38,5 +39,13 @@ public class CarrinhoController {
 		feiraSession.removerItemPorProduto(produto);
 		
 		return feiraSession.getFeiraDTO();
-	} 
+	}
+	
+	@PutMapping("/itens")
+	public ModelAndView itensCarrinho() {
+		ModelAndView mv = new ModelAndView("carrinho/itensMiniCarrinho");
+		mv.addObject("itens", feiraSession.getFeira().getItens());
+		
+		return mv;
+	}
 }

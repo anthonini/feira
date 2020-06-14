@@ -50,6 +50,7 @@ public class ComprasController {
 		}
 		
 		mv.addObject("itens", itens);
+		mv.addObject("adicionados", feiraSession.getFeira().getItens());
 			
 		return mv;
 	}
