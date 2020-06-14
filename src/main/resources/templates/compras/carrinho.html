@@ -54,8 +54,8 @@
 											<span th:id="|peso-produto-${item.produto.id}|">[[${item.descricaoPeso}]]</span>
 										</div>
 										<div class="carrinho-valor-total font-weight-bold">
-											R$ <span
-												th:id="|valor-total-produto-${item.produto.id}|">[[${{item.valorTotal}}]] </span>
+											<span
+												th:id="|valor-total-produto-${item.produto.id}|" th:text="${#numbers.formatCurrency(item.valorTotal)}"></span>
 										</div>
 									</div>
 								</div>
@@ -87,7 +87,7 @@
 		                <hr class="sidebar-divider my-0">
 		                <div class="mb-3 mt-3 font-weight-bold">
 	                		Valor Total: 
-	                		<span class="text-gray-900" th:text="|R$ ${{feira.valorTotal}}|" id="feira-valor-total">
+	                		<span class="text-gray-900" th:text="${#numbers.formatCurrency(feira.valorTotal)}" id="feira-valor-total">
 	                			R$ 185,00
 	                		</span>
 	                	</div>
