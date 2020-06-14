@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class PageWrapper<T> {
+	
+	private static final int QUANTIDADE_PAGINAS = 3;
 
 	private Page<T> page;
 	private UriComponentsBuilder uriBuilder;
@@ -32,6 +34,18 @@ public class PageWrapper<T> {
 	
 	public int getAtual() {
 		return page.getNumber();
+	}
+	
+	public int getPrimeiraPagina() {
+		return Math.max(1, getAtual()+2 - QUANTIDADE_PAGINAS);
+	}
+	
+	public int getUltimaPagina() {
+		return Math.min(getTotal(), getPrimeiraPagina()+QUANTIDADE_PAGINAS-1);
+	}
+	
+	public int getQuantidadePaginas() {
+		return QUANTIDADE_PAGINAS;
 	}
 	
 	public boolean isPrimeira() {
