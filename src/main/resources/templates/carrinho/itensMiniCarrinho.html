@@ -5,7 +5,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:data="http://www.thymeleaf.com/extras/data">
 
-<div class="dropdown-item align-items-center" th:each="item : ${itens}">
+<div class="dropdown-item align-items-center" th:each="item : ${itens}" th:fragment="itensMiniCarrinho">
 	<div class="row">
 		<div class="text-center col-3">
 			<img th:src="${item.produto.urlFoto}" class="img-fluid" style="height: 3rem;">
@@ -23,6 +23,6 @@
 <div class="dropdown-item align-items-center" th:if="${#lists.isEmpty(itens)}">
 	<div class="text-center small text-gray-500">Nenhum produto adicionado.</div>
 </div>
-<a class="dropdown-item text-center small text-gray-500" th:href="@{/feira/nova}" th:unless="${#lists.isEmpty(itens)}">Finalizar Feira</a>
+<a class="dropdown-item text-center small text-gray-800" th:href="@{/feira/nova}" th:unless="${#lists.isEmpty(itens)}">Finalizar Feira</a>
 
 </html>

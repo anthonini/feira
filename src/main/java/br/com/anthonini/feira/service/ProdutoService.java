@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class ProdutoService {
 			repository.delete(produto);
 			repository.flush();
 			publisher.publishEvent(new ProdutoRemovidoEvent(produto));
-		} catch (PersistenceException e) {
+		} catch (PersistenceException | DataIntegrityViolationException e) {
 			throw new NaoEPossivelRemoverProdutoException("Não é possivel remover o produto. Produto já associado com alguma feira.");
 		}
 	}

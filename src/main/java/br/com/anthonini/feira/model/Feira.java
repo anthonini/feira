@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="feira")
@@ -28,14 +31,15 @@ public class Feira implements Serializable {
 	@Column(name = "id_feira")
 	private Long id;
 	
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
-	@NotNull(message = "Data da compra é obrigatório")
+	@NotNull(message = "Data da Compra é obrigatório")
+	@DateTimeFormat(pattern =  "dd/MM/yyyy")
 	@Column(name = "data_compra")
 	private LocalDate dataCompra;
 	
-	@NotEmpty(message = "É obrigatório adicionar pelo menos um item")
-	@OneToMany(mappedBy = "feira")
+	@OneToMany(mappedBy = "feira", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemFeira> itens = new ArrayList<>();
 	
 	@Transient
@@ -65,6 +69,11 @@ public class Feira implements Serializable {
 				.map(ItemFeira::getValorTotal)
 				.reduce(BigDecimal::add)
 				.orElse(BigDecimal.ZERO);
+	}
+	
+	public void adicionarItens(List<ItemFeira> itens) {
+		this.itens = itens;
+		this.itens.forEach(i -> i.setFeira(this));
 	}
 
 	public Long getId() {

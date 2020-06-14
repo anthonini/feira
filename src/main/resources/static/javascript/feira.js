@@ -34,7 +34,29 @@ Feira.formatarBigDecimal = function(valor) {
 	return numeral(valor).format('#0.000').replace(',', '.');
 }
 
+Feira.MascararData = (function() {
+	
+	function MascararData() {
+		this.inputData = $('.js-data');
+	}
+	
+	MascararData.prototype.habilitar = function() {
+		this.inputData.mask('00/00/0000');
+		this.inputData.datepicker({
+			orientation: 'bottom',
+			language: 'pt-BR',
+			autoclose: true
+		});
+	}
+	
+	return MascararData;
+	
+}());
+
 $(function(){	
 	var mascaraNumeros = new Feira.MascaraNumeros();
 	mascaraNumeros.habilitar();
+	
+	var mascararData = new Feira.MascararData();
+	mascararData.habilitar();
 });

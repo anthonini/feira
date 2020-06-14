@@ -1,0 +1,55 @@
+.card-body {
+	padding: 1.0rem;
+}
+.feira-header {
+	text-transform: uppercase; 
+	font-weight: 800;
+    font-size: .75rem; 
+    background-color: #4e73df; 
+    border: 1px solid #4e73df; 
+    padding-top: .75rem;
+    padding-bottom: .75rem; 
+    padding: .5rem 1.5rem;
+    color: #fff; 
+    margin-bottom: 0px;
+}
+.card.lista-itens-feira {
+	border-radius: 0px; 
+	border-top: none;
+}
+.card.lista-itens-feira:hover {
+	color: #2e2f37;
+    text-decoration: none;
+    background-color: #f8f9fc;
+}
+.feira-nenhum-produto {
+	display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #3a3b45;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 1px solid #e3e6f0;
+}
+.feira-nenhum-produto:hover {
+	color: #2e2f37;
+    text-decoration: none;
+    background-color: #f8f9fc;
+}
+@media (max-width: 575px){
+	.feira-quantidade {
+		padding-left: .75rem;
+	}
+	.hide-sm {
+		display: none;
+	}
+}
+
+@media (min-width: 576px) and (max-width: 620px){
+	.feira-quantidade {
+		padding-left: 0px;
+	}
+}

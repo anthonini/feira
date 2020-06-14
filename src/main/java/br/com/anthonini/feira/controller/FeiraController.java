@@ -1,17 +1,35 @@
 package br.com.anthonini.feira.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.feira.model.Feira;
+import br.com.anthonini.feira.service.FeiraService;
+import br.com.anthonini.feira.service.FeiraVaziaException;
+import br.com.anthonini.feira.session.FeiraSession;
 
 /**
  * @author Anthonini
  */
 @Controller
 @RequestMapping("/feira")
-public class FeiraController {
+public class FeiraController extends AbstractController {
+	
+	@Autowired
+	private FeiraSession feiraSession;
+	
+	@Autowired
+	private FeiraService service;
 
 	@GetMapping
 	public String index() {
@@ -19,7 +37,35 @@ public class FeiraController {
 	}
 	
 	@GetMapping("/nova")
-	public String novo(Feira feira) {
-		return "feira/form";
+	public ModelAndView nova(Feira feira, ModelMap model) {
+		ModelAndView mv = new ModelAndView("feira/form");
+		feira.setItens(feiraSession.getFeira().getItens());
+		
+		return mv;
+	}
+	
+	@PostMapping("/nova")
+	public ModelAndView cadastrar(@Valid Feira feira, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
+		if(result.hasErrors()) {
+			return retornarErrosValidacao(feira, result, model);
+		}
+		
+		feira.adicionarItens(feiraSession.getFeira().getItens());
+		
+		try {
+			service.salvar(feira);
+		} catch (FeiraVaziaException e) {
+			result.rejectValue("itens", e.getMessage(), e.getMessage());
+			return retornarErrosValidacao(feira, result, model);
+		}
+		
+		feiraSession.setFeira(new Feira());
+		addMensagemSucess(redirectAttributes, "Feira salva com sucesso!");
+		return new ModelAndView("redirect:nova");
+	}
+	
+	private ModelAndView retornarErrosValidacao(Feira feira, BindingResult result, ModelMap model) {
+		addMensagensErroValidacao(model, result);
+		return nova(feira, model);
 	}
 }

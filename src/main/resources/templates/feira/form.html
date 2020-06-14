@@ -5,10 +5,72 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}"
 	xmlns:an="http://www.anthonini.com.br">
+	
+<head>
+	<link rel="stylesheet" th:href="@{/stylesheets/feira.css}">
+</head>
 
 <body>
 	<div layout:fragment="conteudo" class="container-fluid">
-		<h1 class="h3 mb-4 text-gray-800">Cadastro de Feira</h1>
+		<div class="row">
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Quantidade de Produtos</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${feira.quantidadeItens}">15</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-shopping-basket fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-success shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Valor Total</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800"th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 215,00</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-4 col-md-6 mb-4">
+				<div class="card border-left-info shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Peso</div>
+								<div class="row no-gutters align-items-center">
+									<div class="col-auto">
+										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${feira.descricaoPesoTotal}">8,750Kg</div>
+									</div>
+									<div class="col">
+										<div class="progress progress-sm mr-2">
+											<div class="progress-bar bg-info" role="progressbar" th:style="|width: ${feira.pesoTotal/9*100}%|" th:attr="aria-valuenow=${feira.pesoTotal}" aria-valuemin="0" aria-valuemax="9"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-weight-hanging fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<div class="card shadow mb-4">
 			<!-- Card Header - Dropdown -->
@@ -28,48 +90,59 @@
 						</div>
 						<div class="col-sm-4 form-group required">
 							<label for="nome" class="control-label">Data da Compra</label>
-							<input id="nome" type="text" class="form-control" th:field="*{dataCompra}" an:classforerror="nome"/>
+							<input id="nome" type="text" class="form-control js-data" th:field="*{dataCompra}" an:classforerror="dataCompra"/>
 						</div>
 					</div>
 					
-					<div class="table-responsive">
-						<table class="table table-bordered table-striped table-hover">
-							<thead>
-								<tr>
-									<th style="width: 8.33%"></th>
-									<th>Nome</th>
-									<th style="width: 16.66%">Tipo de Preço</th>
-									<th style="width: 16.66%">Quantidade</th>
-									<th style="width: 16.66%">Preço</th>
-									<th style="width: 16.66%">Peso</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="item : ${feira.itens}">
-	                                <td>Foto</td>
-	                                <td th:text="${item.produto.nome}">Produto</td>
-	                                <td th:text="${item.produto.tipoPreco.descricao}">Tipo de Preço</td>
-	                                <td th:text="${item.produto.nome}">Quantidade</td>
-	                                <td th:text="|R$ ${{item.produto.preco}}|">Preço</td>
-	                                <td th:text="${{item.pesoUnidade}}">Peso</td>
-	                                <td>
-	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
-	                                         <i class="fa fa-edit"></i>
-	                                     </a>
-	                                     <a class="btn btn-sm text-danger" style="padding: .20rem;" th:href="@{/produto/remover/{id}(id=${item.id})}" title="Remover">
-	                                         <i class="fa fa-trash-alt"></i>
-	                                     </a>
-	                                 </td>
-	                             </tr>
-	                             <tr th:if="${feira.vazia}">
-	                             	<td colspan="6"><i>Nenhum item adicionado.</i></td>
-	                             </tr>
-							</tbody>
-						</table>
+					<div class="mb-4">
+						<input type="hidden" th:field="*{id}">
+						<input type="submit" class="btn btn-primary" value="Salvar">
 					</div>
-				
-					<input type="hidden" th:field="*{id}">
-					<input type="submit" class="btn btn-primary" value="Salvar">
+					
+					<div >
+						<h6 class="feira-header">Produtos Adicionados</h6>
+						<div class="card lista-itens-feira" th:each="item : ${feira.itens}">
+							<div class="card-body" >
+								<div class="row" >
+									<div class="text-center col-4 col-sm-2 col-xl-2 feira-imagem">
+										<img th:src="${item.produto.urlFoto}" class="img-fluid" style="height: 4rem;">
+									</div>
+									<div class="text-left col-8 col-sm-6 col-xl-7">
+										<div class="font-weight-bold text-gray-900" th:text="${item.produto.nome}">Café Kimimo - 250g</div>
+										<div class="text-gray-900">
+											<span th:text="|R$ ${{item.produto.preco}}|">R$ 3,50</span>
+											<span class="badge badge-secondary" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
+										</div>
+										<div class="text-gray-900">
+											<span class="hide-sm" th:unless="${item.produto.pesoUnidade > 0}" th:text="'&nbsp'"></span>
+											<span th:if="${item.produto.pesoUnidade > 0}" th:text="|Peso unidade: ${{item.produto.descricaoPeso}}|">250g</span>
+										</div>
+									</div>
+									<div class="text-sm-right offset-4 offset-sm-0 col-8 col-sm-4 col-xl-3 text-gray-900 feira-quantidade">
+										<div>
+											<div th:if="${item.porPeso}" class="hide-sm">
+												<span th:text="'&nbsp'"></span>
+											</div>
+											<div th:unless="${item.porPeso}">
+												<span class="font-weight-bold">Quantidade:</span>
+												<span th:text="${item.quantidade}">5</span>
+											</div>
+										</div>
+										<div>
+											<span class="font-weight-bold">Peso: </span>
+											<span id="peso-produto-1" th:text="${item.descricaoPeso}">250g</span>
+										</div>
+										<div class="font-weight-bold">
+											<span id="valor-total-produto-1" th:text="${#numbers.formatCurrency(item.valorTotal)}">R$ 3,50</span>
+										</div>									
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="feira-nenhum-produto align-items-center" th:if="${#lists.isEmpty(feira.itens)}" >
+							<div class="text-center text-gray-500">Nenhum produto adicionado.</div>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
