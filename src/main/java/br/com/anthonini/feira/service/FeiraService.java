@@ -21,4 +21,9 @@ public class FeiraService {
 		}
 		feiraRepository.save(feira);
 	}
+
+	@Transactional
+	public void remover(Feira feira) {
+		feiraRepository.delete(feira);
+	}
 }
