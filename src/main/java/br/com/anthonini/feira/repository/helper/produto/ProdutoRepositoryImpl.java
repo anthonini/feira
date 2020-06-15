@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import br.com.anthonini.feira.dto.ProdutosCadastrados;
 import br.com.anthonini.feira.model.Produto;
 import br.com.anthonini.feira.repository.PaginationUtil;
 import br.com.anthonini.feira.repository.filter.ProdutoFilter;
@@ -63,6 +64,12 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 		}
 		
 		return where.stream().toArray(Predicate[]::new);
+	}
+
+	@Override
+	public ProdutosCadastrados produtosCadastrados() {
+		String query = "select new " + ProdutosCadastrados.class.getName() + "(sum(preco), count(*)) from Produto";
+		return manager.createQuery(query, ProdutosCadastrados.class).getSingleResult();
 	}
 
 }

@@ -44,10 +44,14 @@ public class FeiraController extends AbstractController {
 	
 	@Autowired
 	private FeiraRepository repository;
-
+	
 	@GetMapping
-	public String index() {
-		return "index";
+	public ModelAndView listar(FeiraFilter feiraFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="dataCompra") Pageable pageable) {
+		ModelAndView mv = new ModelAndView("feira/list");
+		PageWrapper<Feira> paginaWrapper = new PageWrapper<>(repository.filtrar(feiraFilter,pageable),httpServletRequest);
+        mv.addObject("pagina", paginaWrapper);
+		
+		return mv;
 	}
 	
 	@GetMapping("/nova")
@@ -73,17 +77,8 @@ public class FeiraController extends AbstractController {
 		}
 		
 		addMensagemSucess(redirectAttributes, "Feira salva com sucesso!");
-		return new ModelAndView("redirect:list");
-	}
-	
-	@GetMapping("/list")
-	public ModelAndView listar(FeiraFilter feiraFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="dataCompra") Pageable pageable) {
-		ModelAndView mv = new ModelAndView("feira/list");
-		PageWrapper<Feira> paginaWrapper = new PageWrapper<>(repository.filtrar(feiraFilter,pageable),httpServletRequest);
-        mv.addObject("pagina", paginaWrapper);
-		
-		return mv;
-	}
+		return new ModelAndView("redirect:");
+	}	
 	
 	@GetMapping("/alterar/{id}")
 	public ModelAndView alterar(@PathVariable("id") Feira feira, ModelMap model, RedirectAttributes redirect) {

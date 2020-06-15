@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		  <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+		</div>
+		
+		<div class="row">
+		
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-success shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Valor dos Produtos</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatCurrency(produtosCadastrados.valor)}">R$ 215,00</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-list-ul fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Quantidade de Produtos</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${produtosCadastrados.total}">15</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-shopping-basket fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-info shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Peso Médio da Feira</div>
+								<div class="row no-gutters align-items-center">
+									<div class="col-auto">
+										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${pesoMedio}">8,750Kg</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-weight fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-warning shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Peso Médio da Feira no Mês</div>
+								<div class="row no-gutters align-items-center">
+									<div class="col-auto">
+										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${pesoMedioMes}">8,750Kg</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-weight-hanging fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-danger shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Valor Total das Feiras</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatCurrency(valorTotalFeiras)}">R$ 215,00</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-info shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Valor Médio das Feiras</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatCurrency(valorMedioFeiras)}">R$ 215,00</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-money-check-alt fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Feiras no Ano</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatCurrency(valorFeirasAno)}"></div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-secondary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Feiras no Mês</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatCurrency(valorFeirasMes)}">R$ 215,00</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-money-bill-alt fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

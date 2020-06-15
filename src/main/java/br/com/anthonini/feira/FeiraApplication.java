@@ -47,7 +47,7 @@ public class FeiraApplication {
 
 		@Override
 		public void addViewControllers(ViewControllerRegistry registry) {
-			registry.addRedirectViewController("/", "/feira");
+			registry.addRedirectViewController("/", "/dashboard");
 		}
 	}
 	
