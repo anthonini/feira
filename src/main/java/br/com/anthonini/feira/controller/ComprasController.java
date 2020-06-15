@@ -34,9 +34,11 @@ public class ComprasController {
 	private ProdutoRepository produtoRepository;
 	
 	@GetMapping
-	public ModelAndView listar() {
+	public ModelAndView listar(String nome) {
 		ModelAndView mv = new ModelAndView("compras/listagem");
-		List<Produto> produtos = produtoRepository.findAll();		
+		nome = nome != null ? nome : "";
+		
+		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);		
 		List<ItemFeira> itens = new ArrayList<>();
 		
 		for(Produto produto : produtos) {
