@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,9 +35,8 @@ public class ComprasController {
 	private ProdutoRepository produtoRepository;
 	
 	@GetMapping
-	public ModelAndView listar(String nome) {
+	public ModelAndView listar(@RequestParam(defaultValue = "") String nome) {
 		ModelAndView mv = new ModelAndView("compras/listagem");
-		nome = nome != null ? nome : "";
 		
 		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);		
 		List<ItemFeira> itens = new ArrayList<>();
