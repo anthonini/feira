@@ -14,7 +14,7 @@ import br.com.anthonini.feira.model.Produto;
 import br.com.anthonini.feira.repository.ProdutoRepository;
 import br.com.anthonini.feira.service.event.produto.ProdutoRemovidoEvent;
 import br.com.anthonini.feira.service.event.produto.ProdutoSalvoEvent;
-import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverProdutoException;
+import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverEntidadeException;
 
 @Controller
 public class ProdutoService {
@@ -38,7 +38,7 @@ public class ProdutoService {
 			repository.flush();
 			publisher.publishEvent(new ProdutoRemovidoEvent(produto));
 		} catch (PersistenceException | DataIntegrityViolationException e) {
-			throw new NaoEPossivelRemoverProdutoException("Não é possivel remover o produto. Produto já associado com alguma feira.");
+			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover o produto. Produto já associado com alguma feira.");
 		}
 	}
 	

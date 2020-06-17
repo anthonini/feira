@@ -11,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
@@ -56,6 +58,10 @@ public class Produto implements Serializable {
 	@NumberFormat(pattern = "#,##0.000")
 	@Column(name = "peso_unidade", precision = 19, scale = 3)
 	private BigDecimal pesoUnidade;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_categoria")
+	private Categoria categoria;
 	
 	private String foto;
 	

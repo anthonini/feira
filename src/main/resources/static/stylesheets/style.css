@@ -53,8 +53,13 @@ div.dataTables_paginate ul.pagination {
 .table-produtos-col-peso-unidade {
 	width: 16.66%;
 }
-.table-produtos-col-acoes {
-	width: 78px;
+.table-produtos-col-acoes,
+.table-col-acoes
+ {
+	width: 75px;
+}
+.col-numero {
+	width: 50px;
 }
 i.mock {
 	font-size: 3em;

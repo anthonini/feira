@@ -29,7 +29,7 @@ import br.com.anthonini.feira.model.UnidadePeso;
 import br.com.anthonini.feira.repository.ProdutoRepository;
 import br.com.anthonini.feira.repository.filter.ProdutoFilter;
 import br.com.anthonini.feira.service.ProdutoService;
-import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverProdutoException;
+import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverEntidadeException;
 
 @Controller
 @RequestMapping("/produto")
@@ -88,7 +88,7 @@ public class ProdutoController extends AbstractController {
 	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Produto produto) {
 		try {
 			service.remover(produto);
-		} catch (NaoEPossivelRemoverProdutoException e) {
+		} catch (NaoEPossivelRemoverEntidadeException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}		 
 		return ResponseEntity.ok().build();
