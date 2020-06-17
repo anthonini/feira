@@ -1,5 +1,7 @@
 package br.com.anthonini.feira.service;
 
+import java.util.Optional;
+
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.anthonini.feira.model.Categoria;
 import br.com.anthonini.feira.repository.CategoriaRepository;
 import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverEntidadeException;
+import br.com.anthonini.feira.service.exception.NomeCategoriaJaExisteException;
 
 @Service
 public class CategoriaService {
@@ -19,6 +22,11 @@ public class CategoriaService {
 	
 	@Transactional
 	public void salvar(Categoria categoria) {
+		Optional<Categoria> categoriaOptional = repository.findByNomeIgnoreCase(categoria.getNome());
+		
+		if(categoriaOptional.isPresent() && !categoriaOptional.get().equals(categoria)) {
+			throw new NomeCategoriaJaExisteException();
+		}
 		repository.save(categoria);
 	}
 	
