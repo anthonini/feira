@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import br.com.anthonini.arquitetura.controller.page.PageWrapper;
 import br.com.anthonini.feira.model.CobradoPor;
 import br.com.anthonini.feira.model.Produto;
 import br.com.anthonini.feira.model.UnidadePeso;
+import br.com.anthonini.feira.repository.CategoriaRepository;
 import br.com.anthonini.feira.repository.ProdutoRepository;
 import br.com.anthonini.feira.repository.filter.ProdutoFilter;
 import br.com.anthonini.feira.service.ProdutoService;
@@ -40,11 +42,16 @@ public class ProdutoController extends AbstractController {
 	
 	@Autowired
 	private ProdutoRepository repository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@GetMapping("/novo")
 	public String form(Produto produto, ModelMap model) {
 		model.addAttribute("cobradosPor", CobradoPor.values());
 		model.addAttribute("unidadesPeso", UnidadePeso.values());
+		model.addAttribute("categorias", categoriaRepository.findAll(Sort.by(Sort.Direction.ASC, "nome" )));
+		
 		return "produto/form";
 	}
 	

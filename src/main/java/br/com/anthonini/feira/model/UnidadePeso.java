@@ -5,8 +5,8 @@ import java.text.DecimalFormat;
 
 public enum UnidadePeso {
 
-	GRAMA("Grama", "g", 1, "#,##0"),
-	QUILOGRAMA("Quilograma", "Kg", 1000, "#,##0.000");
+	GRAMA("grama", "g", 1, "#,##0"),
+	QUILOGRAMA("quilograma", "Kg", 1000, "#,##0.000");
 	
 	private String descricao;
 	private String simbolo;
