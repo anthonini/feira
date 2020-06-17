@@ -68,7 +68,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 
 	@Override
 	public ProdutosCadastrados produtosCadastrados() {
-		String query = "select new " + ProdutosCadastrados.class.getName() + "(sum(preco), count(*)) from Produto";
+		String query = "select new " + ProdutosCadastrados.class.getName() + "(coalesce(sum(preco), 0), count(*)) from Produto";
 		return manager.createQuery(query, ProdutosCadastrados.class).getSingleResult();
 	}
 
