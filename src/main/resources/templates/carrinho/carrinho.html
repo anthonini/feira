@@ -61,6 +61,9 @@
 								</div>
 							</div>
 						</div>
+						<div class="align-items-center" th:if="${#lists.isEmpty(feira.itens)}" >
+							<div class="text-center text-gray-500">Nenhum produto adicionado.</div>
+						</div>
 	              	</div>
 				</div>
 			</div>

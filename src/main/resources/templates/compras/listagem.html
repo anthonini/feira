@@ -39,6 +39,10 @@
 				</div>
 			</div>
 			
+			<div class="col-12 align-items-center" th:if="${#lists.isEmpty(itens)}" >
+				<div class="text-center text-gray-800">Nenhum produto encontrado.</div>
+			</div>
+			
 		</div>
 	</div>
 	<th:block layout:fragment="extra-javascript">
