@@ -1,0 +1,26 @@
+.card-body {
+	padding: 1.0rem;
+}
+.card.lista-itens-feira {
+	border-radius: 0px; 
+	border-top: none;
+}
+.card.lista-itens-feira:hover {
+	color: #2e2f37;
+    text-decoration: none;
+    background-color: #f8f9fc;
+}
+@media (max-width: 575px){
+	.feira-quantidade {
+		padding-left: .75rem;
+	}
+	.hide-sm {
+		display: none;
+	}
+}
+
+@media (min-width: 576px) and (max-width: 620px){
+	.feira-quantidade {
+		padding-left: 0px;
+	}
+}

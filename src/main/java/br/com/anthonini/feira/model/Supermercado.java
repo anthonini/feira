@@ -30,7 +30,7 @@ public class Supermercado implements Serializable {
 	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
-	@NotEmpty
+	@NotEmpty(message = "Categorias não pode estar vazia. É obrigatório adicionar pelo menos uma categoria.")
 	@OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<CategoriaSupermercado> categoriasSupermercado = new ArrayList<>();
 

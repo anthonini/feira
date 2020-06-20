@@ -6,6 +6,10 @@
 	layout:decorate="~{layout/layout}"
 	xmlns:an="http://www.anthonini.com.br">
 
+<head>
+	<link rel="stylesheet" th:href="@{/stylesheets/feira.css}">
+</head>
+
 <body>
 	<div layout:fragment="conteudo" class="container-fluid">		
 		<div class="card shadow mb-4">
@@ -28,11 +32,95 @@
 						<input type="hidden" th:field="*{id}">
 						<input type="submit" class="btn btn-primary" value="Salvar">
 					</div>
+					
+					<div class="form-group">
+						<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#adicionarCategoriaModal"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Categoria</a>
+					</div>
+					
+					<div>
+						<h6 class="feira-header">Categorias Adicionadas</h6>
+						<th:block th:replace="~{supermercado/categoriasSupermercado :: categoriasSupermercado}"></th:block>
+					</div>
 				</form>
+				
+				<div class="modal fade" id="adicionarCategoriaModal" role="dialog" aria-labelledby="tituloAdicionarCategoriaModal" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<form method="POST">
+								<div class="modal-header">
+									<h5 class="modal-title" id="tituloAdicionarCategoriaModal">Adicionar Categoria</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group required">
+										<label for="categoria" class="control-label">Categoria</label>
+										<select class="form-control">
+											<option value="">Selecione a categoria</option>
+										</select>
+									</div>
+									<div class="form-group required">
+										<label for="numeroCorredor" class="control-label">Número do Corredor</label>
+										<div class="input-group">
+											<input type="text" id="numeroCorredor" class="form-control js-numero"/>
+											<div class="input-group-prepend">
+												<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover"
+													title="Número do Corredor" 
+													data-content="Indica o número do corredor onde a categoria está localizada. Esse número ajudará 
+														na ordenação dos itens da feira, por exemplo, um produto de uma categoria no corredor 1 
+														aparecerá na lista de feira primeiro do que um produto que esteja no corredor 2.">
+														<i class="fas fa-question"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-6">
+											<div class="form-group required">
+												<label for="posicaoCorredor" class="control-label">Posição no Corredor</label>
+												<div class="input-group">
+													<input type="text" id="posicaoCorredor" class="form-control js-numero">
+													<div class="input-group-prepend">
+														<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover"
+															title="Posição no Corredor" 
+															data-content="Indica a posição que a categoria ocupa no corredor de acordo com o sentido.
+																Quanto maior a posição mais distante o produto dessa categaoria estará em relação ao sentido. 
+																Assim como o número do corredor, a posição no corredor ajudará na ordenação da lista da feira.">
+																<i class="fas fa-question"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="form-group required">
+												<label for="sentido" class="control-label">Sentido</label>
+												<select class="form-control" id="sentido">
+													<option value="">Selecione o sentido</option>
+												</select>
+											</div>
+										</div>											
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+									<button type="submit" class="btn btn-primary">Adicionar</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<th:block th:replace="hbs/FotoProduto"></th:block>
 	</div>
+	<th:block layout:fragment="extra-javascript">
+		<script th:src="@{/javascript/supermercado.js}"></script>
+		<script>
+			$(function () {
+			  $('[data-toggle="popover"]').popover()
+			})
+		</script>
+	</th:block>
 </body>
 </html>

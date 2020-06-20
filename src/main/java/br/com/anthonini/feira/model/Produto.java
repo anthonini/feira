@@ -59,7 +59,6 @@ public class Produto implements Serializable {
 	@Column(name = "peso_unidade", precision = 19, scale = 3)
 	private BigDecimal pesoUnidade;
 	
-	@NotNull(message = "Categoria é obrigatória")
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;

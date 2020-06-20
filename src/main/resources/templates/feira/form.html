@@ -7,7 +7,7 @@
 	xmlns:an="http://www.anthonini.com.br">
 	
 <head>
-	<link rel="stylesheet" th:href="@{/stylesheets/feira.css}">
+	<link rel="stylesheet" th:href="@{/stylesheets/feira-cadastro.css}">
 </head>
 
 <body>
@@ -145,7 +145,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="feira-nenhum-produto align-items-center" th:if="${#lists.isEmpty(feira.itens)}" >
+						<div class="feira-nenhum-item align-items-center" th:if="${#lists.isEmpty(feira.itens)}" >
 							<div class="text-center text-gray-500">Nenhum produto adicionado.</div>
 						</div>
 					</div>
