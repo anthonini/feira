@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ public class ComprasController {
 	public ModelAndView listar(@RequestParam(defaultValue = "") String nome) {
 		ModelAndView mv = new ModelAndView("compras/listagem");
 		
-		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);		
+		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome, Sort.unsorted());		
 		List<ItemFeira> itens = new ArrayList<>();
 		
 		for(Produto produto : produtos) {

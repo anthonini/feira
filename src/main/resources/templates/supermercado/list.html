@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">
+		<div class="card shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Lista de Supermercados</h6>
+				<a th:href="@{/supermercado/novo}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Cadastrar Supermercado</a>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<div>
+					<form method="GET">
+						<div class="row">						
+							<div class="form-group col-sm-6" >
+								<label class="control-label" for="nome">Nome</label>
+								<input type="text" class="form-control" id="nome" name="nome"/>
+							</div>
+						</div>
+						
+						<button type="submit" class="btn  btn-primary">Pesquisar</button>
+					</form>
+					<br/>
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th class="text-center col-numero">#</th>
+									<th>Nome</th>
+									<th class="table-col-acoes"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item : ${pagina.conteudo}">
+									<td class="text-center" th:text="${item.id}">#</td>
+	                                 <td th:text="${item.nome}">Nome</td>
+	                                 <td>
+	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/supermercado/alterar/{id}(id=${item.id})}" title="Alterar">
+	                                         <i class="fa fa-edit"></i>
+	                                     </a>
+	                                     <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
+	                                     	data:url="@{/supermercado/{id}(id=${item.id})}"
+											data:objeto="${item.nome}">
+	                                         <i class="fa fa-trash-alt"></i>
+	                                     </a>
+	                                 </td>
+	                             </tr>
+	                             <tr th:if="${pagina.vazia}">
+	                             	<td colspan="6"><i>Nenhum supermercado cadastrado.</i></td>
+	                             </tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<an:paginacao pagina="${pagina}"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block layout:fragment="extra-javascript">
+		<script th:src="@{/javascript/feira.dialogo-exclusao.js}"></script>
+	</th:block>
+</body>
