@@ -32,7 +32,11 @@ public class Supermercado implements Serializable {
 
 	@NotEmpty(message = "Categorias não pode estar vazia. É obrigatório adicionar pelo menos uma categoria.")
 	@OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<CategoriaSupermercado> categoriasSupermercado = new ArrayList<>();
+	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();
+	
+	public boolean isNovo() {
+		return id == null;
+	}
 
 	public Long getId() {
 		return id;
@@ -50,12 +54,12 @@ public class Supermercado implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<CategoriaSupermercado> getCategoriasSupermercado() {
-		return categoriasSupermercado;
+	public List<SupermercadoCategoria> getSupermercadoCategorias() {
+		return supermercadoCategorias;
 	}
 
-	public void setCategoriasSupermercado(List<CategoriaSupermercado> categoriasSupermercado) {
-		this.categoriasSupermercado = categoriasSupermercado;
+	public void setSupermercadoCategorias(List<SupermercadoCategoria> supermercadoCategorias) {
+		this.supermercadoCategorias = supermercadoCategorias;
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,43 +15,44 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "categoria_supermercado")
-public class CategoriaSupermercado implements Serializable {
+@Table(name = "supermercado_categoria")
+public class SupermercadoCategoria implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_categoria_supermercado")
-	private Long id;
+	@Column(name = "id_supermercado_categoria")
+	private Long id;	
+	
+	@ManyToOne
+	@JoinColumn(name = "id_supermercado")
+	private Supermercado supermercado;
 	
 	@NotNull(message = "Categoria é obrigatória")
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
-	@NotNull(message = "Supermercado é obrigatório")
-	@ManyToOne
-	@JoinColumn(name = "id_supermercado")
-	private Supermercado supermercado;
+	@NotNull(message = "Corredor é obrigatório")
+	@Column(name = "corredor")
+	private Integer corredor;
 	
-	@Column(name = "numero_corredor")
-	private Integer numeroCorredor;
+	@NotNull(message = "Posição no Corredor é obrigatório")
+	@Column(name = "posicao_corredor")
+	private Integer posicaoCorredor;
 	
+	@NotNull(message = "Sentido é obrigatório")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "sentido")
+	private Sentido sentido;
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
 	}
 
 	public Supermercado getSupermercado() {
@@ -60,12 +63,36 @@ public class CategoriaSupermercado implements Serializable {
 		this.supermercado = supermercado;
 	}
 
-	public Integer getNumeroCorredor() {
-		return numeroCorredor;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setNumeroCorredor(Integer numeroCorredor) {
-		this.numeroCorredor = numeroCorredor;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public Integer getCorredor() {
+		return corredor;
+	}
+
+	public void setCorredor(Integer corredor) {
+		this.corredor = corredor;
+	}
+
+	public Integer getPosicaoCorredor() {
+		return posicaoCorredor;
+	}
+
+	public void setPosicaoCorredor(Integer posicaoCorredor) {
+		this.posicaoCorredor = posicaoCorredor;
+	}
+
+	public Sentido getSentido() {
+		return sentido;
+	}
+
+	public void setSentido(Sentido sentido) {
+		this.sentido = sentido;
 	}
 
 	@Override
@@ -84,7 +111,7 @@ public class CategoriaSupermercado implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CategoriaSupermercado other = (CategoriaSupermercado) obj;
+		SupermercadoCategoria other = (SupermercadoCategoria) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

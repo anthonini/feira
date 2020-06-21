@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<th:block th:fragment="supermercadoCategorias">
+	<div class="table-responsive">
+		<table class="table table-bordered table-striped table-hover js-tabela_supermercado-categorias" style="min-width: 500px;">
+			<thead>
+				<tr>								
+					<th style="min-width: 100px;">Categoria</th>
+					<th style="width: 8%">Corredor</th>
+					<th style="width: 17%">Posição no Corredor</th>						
+					<th style="width: 18%">Sentido</th>
+					<th style="width: 74px; min-width: 74px;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="supermercadoCategoria, stat : *{supermercadoCategorias}">
+					<td th:text="${supermercadoCategoria.categoria.nome}">Categoria</td>
+					<td th:text="${supermercadoCategoria.corredor}">1</td>
+					<td th:text="${supermercadoCategoria.posicaoCorredor}">2</td>
+					<td th:text="${supermercadoCategoria.sentido.descricao}">Da entrada para o fim</td>
+					<td>
+						<a class="btn btn-sm text-primary feira-item-col-acao" title="Alterar" href="#">
+							<i class="fa fa-edit"></i>
+						</a> 
+						<a class="btn btn-sm text-danger js-exclusao-btn feira-item-col-acao" title="Remover" href="#"> 
+							<i class="fa fa-trash-alt"></i>
+						</a>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].id}"/>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].supermercado.id}"/>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].categoria.id}"/>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].categoria.nome}"/>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].corredor}"/>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].posicaoCorredor}"/>
+						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].sentido}"/>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(supermercado.supermercadoCategorias)}" class="js-linha-nenhuma-categoria-adicionada">
+					<td class="text-center" colspan="5">Nenhuma categoria adicionada.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</th:block>
+</html>

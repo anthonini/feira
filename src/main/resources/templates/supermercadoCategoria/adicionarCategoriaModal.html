@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data"
+	xmlns:an="http://www.anthonini.com.br">
+	
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<form method="POST" th:object="${supermercadoCategoria}" th:action="@{/supermercado-categoria/novo}" name="form-adicionar-categoria">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tituloAdicionarCategoriaModal">Adicionar Categoria</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<an:message/>
+				<div class="form-group required">
+					<label for="categoria" class="control-label">Categoria</label>
+					<select class="form-control" th:field="*{categoria}" an:classforerror="categoria">
+						<option value="">Selecione a categoria</option>
+						<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}"></option>
+					</select>
+				</div>
+				<div class="form-group required">
+					<label for="numeroCorredor" class="control-label">Corredor</label>
+					<div class="input-group">
+						<input type="text" id="numeroCorredor" class="form-control js-numero" th:field="*{corredor}" an:classforerror="corredor"/>
+						<div class="input-group-prepend">
+							<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover"
+								title="Corredor" 
+								data-content="Indica o número do corredor onde a categoria está localizada. Esse número ajudará 
+									na ordenação dos itens da feira, por exemplo, um produto de uma categoria no corredor 1 
+									aparecerá primeiro na lista da feira do que um produto que esteja no corredor 2.">
+									<i class="fas fa-question"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group required">
+							<label for="posicaoCorredor" class="control-label">Posição no Corredor</label>
+							<div class="input-group">
+								<input type="text" id="posicaoCorredor" class="form-control js-numero" th:field="*{posicaoCorredor}" an:classforerror="posicaoCorredor">
+								<div class="input-group-prepend">
+									<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover"
+										title="Posição no Corredor" 
+										data-content="Indica a posição que a categoria ocupa no corredor de acordo com o sentido.
+											Quanto maior a posição mais distante o produto dessa categaoria estará em relação ao sentido. 
+											Assim como o número do corredor, a posição no corredor ajudará na ordenação da lista da feira.">
+											<i class="fas fa-question"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group required">
+							<label for="sentido" class="control-label">Sentido</label>
+							<select class="form-control" id="sentido" th:field="*{sentido}" an:classforerror="sentido">
+								<option th:each="sentido : ${sentidos}" th:value="${sentido}" th:text="${sentido.descricao}"></option>
+							</select>
+						</div>
+					</div>											
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+				<button type="submit" class="btn btn-primary js-adicionar-categoria-submit-btn">Adicionar</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(function () {
+	  $('[data-toggle="popover"]').popover()
+	})
+</script>
+<script th:src="@{/javascript/feira.js}"></script>
+<script th:src="@{/javascript/supermercado.adicionar-categoria.js}"></script>
+<script th:inline="javascript">
+$(function() {
+	if([[${sucesso}]]) {
+		var categoriaAdicionada = [[${categoriaAdicionada}]];
+		categoriaAdicionada.descricaoSentido = [[${descricaoSentido}]];
+		$('#adicionarCategoriaModal').trigger('categoria-adicionada', categoriaAdicionada);		
+	}
+});
+</script>
+</html>

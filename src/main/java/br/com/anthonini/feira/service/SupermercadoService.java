@@ -27,6 +27,9 @@ public class SupermercadoService {
 		if(supermercadoOptional.isPresent() && !supermercadoOptional.get().equals(supermercado)) {
 			throw new NomeSupermercadoJaExisteException();
 		}
+		if(supermercado.isNovo()) {
+			supermercado.getSupermercadoCategorias().forEach(sc -> sc.setSupermercado(supermercado));
+		}
 		repository.save(supermercado);
 	}
 	

@@ -41,8 +41,7 @@ public class SupermercadoController extends AbstractController {
 	
 	@GetMapping("/novo")
 	public ModelAndView form(Supermercado supermercado, ModelMap model) {
-		ModelAndView mv = new ModelAndView("supermercado/form");
-		
+		ModelAndView mv = new ModelAndView("supermercado/form");		
 		return mv;
 	}
 	
@@ -93,5 +92,5 @@ public class SupermercadoController extends AbstractController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}		 
 		return ResponseEntity.ok().build();
-	}
+	}	
 }
