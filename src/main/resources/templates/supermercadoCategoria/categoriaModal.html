@@ -66,7 +66,8 @@
 								<option th:each="sentido : ${sentidos}" th:value="${sentido}" th:text="${sentido.descricao}"></option>
 							</select>
 						</div>
-					</div>											
+					</div>
+					<input type="hidden" name="categoriasAdicionadas" th:value="${categoriasAdicionadas}">						
 				</div>
 			</div>
 			<div class="modal-footer">

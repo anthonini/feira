@@ -1,5 +1,6 @@
 package br.com.anthonini.feira.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,33 +30,39 @@ public class SupermercadoCategoriaController extends AbstractController {
 	private CategoriaRepository categoriaRepository;
 	
 	@PutMapping
-	public ModelAndView modal(@RequestBody SupermercadoCategoria supermercadoCategoria, ModelMap model, OperacaoSupermercadoCategoria operacao) {
+	public ModelAndView modal(@RequestBody SupermercadoCategoria supermercadoCategoria, ModelMap model, OperacaoSupermercadoCategoria operacao, Long[] categoriasAdicionadas) {
 		ModelAndView mv = new ModelAndView("supermercadoCategoria/categoriaModal");
 		List<Categoria> categorias = categoriaRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
+		List<Long> categoriasAdicionadasList = Arrays.asList(categoriasAdicionadas);
+		categorias.removeIf(c -> categoriasAdicionadasList.contains(c.getId()));
+		
 		mv.addObject("categorias", categorias);
 		mv.addObject("sentidos", Sentido.values());
 		mv.addObject("operacao", operacao.getDescricao());
 		mv.addObject("metodo", operacao.getMetodo());
+		mv.addObject("categoriasAdicionadas", Arrays.toString(categoriasAdicionadas).replaceAll("\\[", "").replaceAll("\\]",""));
 		
 		return mv;
 	}
 	
 	@PostMapping("/adicionar")
-	public ModelAndView adicionar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model) {
+	public ModelAndView adicionar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model, Long[] categoriasAdicionadas) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
 			model.addAttribute("categoriaAdicionada", supermercadoCategoria);
 			model.addAttribute("descricaoSentido", supermercadoCategoria.getSentido().getDescricao());
 			model.addAttribute("supermercadoCategoria", new SupermercadoCategoria());
+			categoriasAdicionadas = Arrays.copyOf(categoriasAdicionadas, categoriasAdicionadas.length+1);
+			categoriasAdicionadas[categoriasAdicionadas.length-1] = supermercadoCategoria.getCategoria().getId();
 			addMensagemSucess(model, "Categoria adicionada com sucesso!");
 		}
 		
-		return modal(null, model, OperacaoSupermercadoCategoria.ADICIONAR);
+		return modal(null, model, OperacaoSupermercadoCategoria.ADICIONAR, categoriasAdicionadas);
 	}
 	
 	@PostMapping("/alterar")
-	public ModelAndView alterar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model) {
+	public ModelAndView alterar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model, Long[] categoriasAdicionadas) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
@@ -63,7 +70,7 @@ public class SupermercadoCategoriaController extends AbstractController {
 			model.addAttribute("descricaoSentido", supermercadoCategoria.getSentido().getDescricao());
 		}
 		
-		return modal(supermercadoCategoria, model, OperacaoSupermercadoCategoria.ALTERAR);
+		return modal(supermercadoCategoria, model, OperacaoSupermercadoCategoria.ALTERAR, categoriasAdicionadas);
 	}
 	
 	private enum OperacaoSupermercadoCategoria {

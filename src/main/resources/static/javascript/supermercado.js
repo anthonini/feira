@@ -16,7 +16,8 @@ Feira.Supermercado = (function() {
 	
 	function onShowCategoriaModal(event) {
 		var operacao = $(event.relatedTarget).data('operacao') || event.relatedTarget.data['operacao'];
-		var url = this.categoriaModal.data('url') + '?operacao=' + operacao;
+		var categoriasAdicionadas = $('input[name*="].categoria.id"]').map(function(){return $(this).val();}).get();
+		var url = this.categoriaModal.data('url') + '?operacao=' + operacao + '&categoriasAdicionadas=' + categoriasAdicionadas;
 		var response = $.ajax({
 			url: url,
 			contentType: 'application/json',
