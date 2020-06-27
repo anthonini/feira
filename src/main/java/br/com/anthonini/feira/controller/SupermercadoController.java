@@ -92,5 +92,5 @@ public class SupermercadoController extends AbstractController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}		 
 		return ResponseEntity.ok().build();
-	}	
+	}
 }

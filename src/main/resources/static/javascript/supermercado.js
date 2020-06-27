@@ -2,66 +2,65 @@ var Feira = Feira || {};
 
 Feira.Supermercado = (function() {
 	
-	function Supermercado () {
-		this.adicionarCategoriaModal = $('#adicionarCategoriaModal');
-		this.url = this.adicionarCategoriaModal.data('url');
+	function Supermercado() {
+		this.categoriaModal = $('#categoriaModal');
 		this.tbody = $('.js-tabela_supermercado-categorias').find('tbody');
 	}
 	
 	Supermercado.prototype.iniciar = function() {
-		this.adicionarCategoriaModal.on('show.bs.modal', onShowAdicionarCategoriaModal.bind(this));
-		this.adicionarCategoriaModal.on('categoria-adicionada', onCategoriaAdicionada.bind(this));
+		this.categoriaModal.on('show.bs.modal', onShowCategoriaModal.bind(this));
+		this.categoriaModal.on('categoria-adicionada', onCategoriaAdicionada.bind(this));
+		this.categoriaModal.on('categoria-alterada', onCategoriaAlterada.bind(this));
 		iniciarObjetosSupermercadoCategorias.call(this);
 	}
 	
-	function onShowAdicionarCategoriaModal() {
+	function onShowCategoriaModal(event) {
+		var operacao = $(event.relatedTarget).data('operacao') || event.relatedTarget.data['operacao'];
+		var url = this.categoriaModal.data('url') + '?operacao=' + operacao;
 		var response = $.ajax({
-			url: this.url,
-			method: 'PUT'
+			url: url,
+			contentType: 'application/json',
+			method: 'PUT',
+			data: JSON.stringify(event.relatedTarget)
 		});
 		
-		response.done(onAdicionarCategoriaResponse.bind(this));
+		response.done(onCategoriaResponse.bind(this));
 	}
 	
-	function onAdicionarCategoriaResponse(html) {
-		this.adicionarCategoriaModal.html(html);
+	function onCategoriaResponse(html) {
+		this.categoriaModal.html(html);
 	}
 	
 	function onCategoriaAdicionada(event, supermercadoCategoriaAdicionada) {
 		this.linhaNenhumaCategoriaAdicionada.remove();
 		var idx = this.tbody.children().length;
-		
-		var tr = $('<tr>')
-			.append($('<td>').text(supermercadoCategoriaAdicionada.categoria.nome))
-			.append($('<td>').text(supermercadoCategoriaAdicionada.corredor))
-			.append($('<td>').text(supermercadoCategoriaAdicionada.posicaoCorredor))
-			.append($('<td>').text(supermercadoCategoriaAdicionada.descricaoSentido))
-			.append($('<td>')
-				.append($('<a>').attr('class', 'btn btn-sm text-primary feira-item-col-acao').attr('title', 'Alterar').attr('href', '#')
-						.append($('<i>').attr('class', 'fa fa-edit')))
-				.append($('<a>').attr('class', 'btn btn-sm text-danger feira-item-col-acao js-remover-categoria').attr('title', 'Remover').attr('href', '#')
-						.append($('<i>').attr('class', 'fa fa-trash-alt')))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'id')				).attr('name', getName(idx,'id')			 ).attr('value', supermercadoCategoriaAdicionada.id))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'supermercado.id')	).attr('name', getName(idx,'supermercado.id')).attr('value', supermercadoCategoriaAdicionada.supermercado?.id))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'categoria.id')		).attr('name', getName(idx,'categoria.id')	 ).attr('value', supermercadoCategoriaAdicionada.categoria.id))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'categoria.nome')	).attr('name', getName(idx,'categoria.nome') ).attr('value', supermercadoCategoriaAdicionada.categoria.nome))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'corredor')			).attr('name', getName(idx,'corredor')		 ).attr('value', supermercadoCategoriaAdicionada.corredor))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'posicaoCorredor')	).attr('name', getName(idx,'posicaoCorredor')).attr('value', supermercadoCategoriaAdicionada.posicaoCorredor))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'sentido')			).attr('name', getName(idx,'sentido')		 ).attr('value', supermercadoCategoriaAdicionada.sentido))
-			)
+		var tr = gerarLinhaCategoria(supermercadoCategoriaAdicionada, idx);
 		this.tbody.append(tr);
 		iniciarObjetosSupermercadoCategorias.call(this);
+	}
+	
+	function onCategoriaAlterada(event, supermercadoCategoria, acao) {
+		var tr = $('input[name*="].categoria.id"][value='+supermercadoCategoria.categoria.id+']').parent().parent();
+		var idx = tr.index();
+		var novaTr = gerarLinhaCategoria(supermercadoCategoria, idx);
+		tr.html(novaTr.html());
+		iniciarObjetosSupermercadoCategorias.call(this);
+		this.categoriaModal.modal('hide');
+		swal('Categoria alterada com sucesso!', '', 'success');
 	}
 	
 	function iniciarObjetosSupermercadoCategorias() {
 		this.linhaNenhumaCategoriaAdicionada = $('.js-linha-nenhuma-categoria-adicionada');
 		this.removerCategoriaBtn = $('.js-remover-categoria');
+		this.alterarCategoriaBtn = $('.js-alterar-categoria');
 		bindBtnAcoes.call(this);
 	}
 	
 	function bindBtnAcoes() {
 		this.removerCategoriaBtn.off('click');
 		this.removerCategoriaBtn.on('click', onRemoverCategoriaBtnClicked.bind(this));
+		this.alterarCategoriaBtn.off('click');
+		this.alterarCategoriaBtn.on('click', onAlterarCategoriaBtnClicked.bind(this));
 	}
 	
 	function onRemoverCategoriaBtnClicked(event) {
@@ -80,22 +79,67 @@ Feira.Supermercado = (function() {
 		}
 	}
 	
+	function onAlterarCategoriaBtnClicked(event) {
+		event.preventDefault();
+		var idx = $(event.currentTarget).data('idx');
+		var categoria = {
+			id: $('input[name="'+getName(idx,'id')+'"]').val(),
+			supermercado: {
+				id: $('input[name="'+getName(idx,'supermercado.id')+'"]').val()
+			},
+			categoria: {
+				id: $('input[name="'+getName(idx,'categoria.id')+'"]').val(),
+				nome: $('input[name="'+getName(idx,'categoria.nome')+'"]').val()
+			},
+			corredor: $('input[name="'+getName(idx,'corredor')+'"]').val(),
+			posicaoCorredor: $('input[name="'+getName(idx,'posicaoCorredor')+'"]').val(),
+			sentido: $('input[name="'+getName(idx,'sentido')+'"]').val(),
+			data: {
+				operacao: $(event.currentTarget).data('operacao')
+			}
+		}
+		this.categoriaModal.modal({show: true}, categoria);
+	}
+	
 	function getId(idx,obj) {
 		return 'supermercadoCategorias'+idx+'.'+obj;
 	}
 	
-	function getName(idx, obj){
+	function getName(idx, obj) {
 		return 'supermercadoCategorias['+idx+'].'+obj;
 	}
 	
 	function reorganizarIdENameCategorias() {
 		var trs = this.tbody.find('tr');
 		trs.each(function( idx ) {
-			$(this).find('input').each(function(){
+			$(this).find('input').each(function() {
 				$(this).attr('id', $(this).attr('id').replace(/[0-9]/g, idx));
 				$(this).attr('name', $(this).attr('name').replace(/[0-9]/g, idx));
 			});
 		});
+	}
+	
+	function gerarLinhaCategoria(supermercadoCategoria, idx) {	
+		var tr = $('<tr>')
+			.append($('<td>').text(supermercadoCategoria.categoria.nome))
+			.append($('<td>').text(supermercadoCategoria.corredor))
+			.append($('<td>').text(supermercadoCategoria.posicaoCorredor))
+			.append($('<td>').text(supermercadoCategoria.descricaoSentido))
+			.append($('<td>')
+				.append($('<a>').attr('class', 'btn btn-sm text-primary feira-item-col-acao js-alterar-categoria').attr('title', 'Alterar').attr('href', '#').attr('data-idx', idx).attr('data-operacao', 'ALTERAR')
+						.append($('<i>').attr('class', 'fa fa-edit')))
+				.append($('<a>').attr('class', 'btn btn-sm text-danger feira-item-col-acao js-remover-categoria').attr('title', 'Remover').attr('href', '#')
+						.append($('<i>').attr('class', 'fa fa-trash-alt')))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'id')				).attr('name', getName(idx,'id')			 ).attr('value', supermercadoCategoria.id))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'supermercado.id')	).attr('name', getName(idx,'supermercado.id')).attr('value', supermercadoCategoria.supermercado?.id))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'categoria.id')		).attr('name', getName(idx,'categoria.id')	 ).attr('value', supermercadoCategoria.categoria.id))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'categoria.nome')	).attr('name', getName(idx,'categoria.nome') ).attr('value', supermercadoCategoria.categoria.nome))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'corredor')			).attr('name', getName(idx,'corredor')		 ).attr('value', supermercadoCategoria.corredor))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'posicaoCorredor')	).attr('name', getName(idx,'posicaoCorredor')).attr('value', supermercadoCategoria.posicaoCorredor))
+				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'sentido')			).attr('name', getName(idx,'sentido')		 ).attr('value', supermercadoCategoria.sentido))
+			)
+			
+		return tr;
 	}
 	
 	return Supermercado;

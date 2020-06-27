@@ -8,9 +8,9 @@
 	
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
-		<form method="POST" th:object="${supermercadoCategoria}" th:action="@{/supermercado-categoria/novo}" name="form-adicionar-categoria">
+		<form method="POST" th:object="${supermercadoCategoria}" th:action="@{/supermercado-categoria/{metodo}(metodo=${metodo})}" name="form-supermercado-categoria">
 			<div class="modal-header">
-				<h5 class="modal-title" id="tituloAdicionarCategoriaModal">Adicionar Categoria</h5>
+				<h5 class="modal-title">[[${operacao}]] Categoria</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -19,10 +19,12 @@
 				<an:message/>
 				<div class="form-group required">
 					<label for="categoria" class="control-label">Categoria</label>
-					<select class="form-control" th:field="*{categoria}" an:classforerror="categoria">
+					<select class="form-control" th:field="*{categoria}" an:classforerror="categoria" th:if="${operacao=='Adicionar'}">
 						<option value="">Selecione a categoria</option>
 						<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}"></option>
 					</select>
+					<input type="hidden" th:field="*{categoria.id}"  th:unless="${operacao=='Adicionar'}">
+					<input type="text" readonly class="form-control-plaintext" th:field="*{categoria.nome}"  th:unless="${operacao=='Adicionar'}">
 				</div>
 				<div class="form-group required">
 					<label for="numeroCorredor" class="control-label">Corredor</label>
@@ -69,7 +71,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
-				<button type="submit" class="btn btn-primary js-adicionar-categoria-submit-btn">Adicionar</button>
+				<button type="submit" class="btn btn-primary">[[${operacao}]]</button>
 			</div>
 		</form>
 	</div>
@@ -80,13 +82,19 @@
 	})
 </script>
 <script th:src="@{/javascript/feira.js}"></script>
-<script th:src="@{/javascript/supermercado.adicionar-categoria.js}"></script>
+<script th:src="@{/javascript/supermercado.supermercado-categoria.js}"></script>
 <script th:inline="javascript">
 $(function() {
-	if([[${sucesso}]]) {
-		var categoriaAdicionada = [[${categoriaAdicionada}]];
+	var categoriaAdicionada = [[${categoriaAdicionada}]];
+	if(categoriaAdicionada) {
 		categoriaAdicionada.descricaoSentido = [[${descricaoSentido}]];
-		$('#adicionarCategoriaModal').trigger('categoria-adicionada', categoriaAdicionada);		
+		$('#categoriaModal').trigger('categoria-adicionada', categoriaAdicionada);		
+	}
+
+	var categoriaAlterada = [[${categoriaAlterada}]];
+	if(categoriaAlterada) {
+		categoriaAlterada.descricaoSentido = [[${descricaoSentido}]];
+		$('#categoriaModal').trigger('categoria-alterada', categoriaAlterada);
 	}
 });
 </script>

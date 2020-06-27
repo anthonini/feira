@@ -47,6 +47,12 @@ public class SupermercadoCategoria implements Serializable {
 	@Column(name = "sentido")
 	private Sentido sentido;
 
+	@Override
+	public String toString() {
+		return "SupermercadoCategoria [id=" + id + ", " + (supermercado == null ? "supermercado=null" : supermercado) + ", categoria=" + categoria
+				+ ", corredor=" + corredor + ", posicaoCorredor=" + posicaoCorredor + ", sentido=" + sentido + "]";
+	}
+
 	public Long getId() {
 		return id;
 	}

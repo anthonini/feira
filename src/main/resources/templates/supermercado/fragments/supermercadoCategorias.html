@@ -24,7 +24,8 @@
 					<td th:text="${supermercadoCategoria.posicaoCorredor}">2</td>
 					<td th:text="${supermercadoCategoria.sentido.descricao}">Da entrada para o fim</td>
 					<td>
-						<a class="btn btn-sm text-primary feira-item-col-acao" title="Alterar" href="#">
+						<a class="btn btn-sm text-primary feira-item-col-acao js-alterar-categoria" title="Alterar" href="#"
+							data:idx="${stat.index}" data:operacao="ALTERAR">
 							<i class="fa fa-edit"></i>
 						</a> 
 						<a class="btn btn-sm text-danger feira-item-col-acao js-remover-categoria" title="Remover" href="#"> 

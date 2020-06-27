@@ -1,14 +1,13 @@
 var Feira = Feira || {};
 
-Feira.AdicionarCategoria = (function() {
-	function AdicionarCategoria() {
-		this.adicionarCategoriaModal = $('#adicionarCategoriaModal');
-		this.form = $('form[name="form-adicionar-categoria"]');		
+Feira.SupermercadoCategoria = (function() {
+	function SupermercadoCategoria() {
+		this.categoriaModal = $('#categoriaModal');
+		this.form = $('form[name="form-supermercado-categoria"]');		
 		this.url = this.form.attr('action');		
-		this.submitBtn = $('.js-adicionar-categoria-submit-btn');
 	}
 	
-	AdicionarCategoria.prototype.iniciar = function() {
+	SupermercadoCategoria.prototype.iniciar = function() {
 		this.form.submit(onFormSubmitted.bind(this));
 	}
 	
@@ -25,13 +24,13 @@ Feira.AdicionarCategoria = (function() {
 	}
 	
 	function onFormSubmittedResponse(html) {
-		this.adicionarCategoriaModal.html(html);
+		this.categoriaModal.html(html);
 	}
 	
-	return AdicionarCategoria;
+	return SupermercadoCategoria;
 }());
 
 $(function() {
-	var adicionarCategoria = new Feira.AdicionarCategoria();
-	adicionarCategoria.iniciar();
+	var supermercadoCategoria = new Feira.SupermercadoCategoria();
+	supermercadoCategoria.iniciar();
 });

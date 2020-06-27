@@ -24,6 +24,11 @@ public class Categoria implements Serializable {
 	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
+	@Override
+	public String toString() {
+		return "Categoria [id=" + id + ", nome=" + nome + "]";
+	}
+
 	public Long getId() {
 		return id;
 	}

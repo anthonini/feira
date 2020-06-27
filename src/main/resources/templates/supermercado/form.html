@@ -23,7 +23,7 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${supermercado}" class="form-vertical" th:action="@{/supermercado/novo}">
+				<form method="POST" th:object="${supermercado}" class="form-vertical js-form-supermercado" th:action="@{/supermercado/novo}">
 					<div class="form-group required">
 						<label for="nome" class="control-label">Nome</label>
 						<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
@@ -35,7 +35,7 @@
 					</div>
 					
 					<div class="form-group">
-						<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#adicionarCategoriaModal"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Categoria</a>
+						<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#categoriaModal" data:operacao="ADICIONAR"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Categoria</a>
 					</div>
 					
 					<div>
@@ -46,7 +46,7 @@
 					</div>
 				</form>
 				
-				<div class="modal fade" id="adicionarCategoriaModal" role="dialog" aria-labelledby="tituloAdicionarCategoriaModal" aria-hidden="true" data:url="@{/supermercado-categoria/novo}">
+				<div class="modal fade" id="categoriaModal" role="dialog" aria-hidden="true" data:url="@{/supermercado-categoria}">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 						</div>

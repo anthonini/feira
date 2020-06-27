@@ -34,6 +34,13 @@ public class Supermercado implements Serializable {
 	@OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();
 	
+	
+
+	@Override
+	public String toString() {
+		return "Supermercado [id=" + id + ", nome=" + nome + "]";
+	}
+
 	public boolean isNovo() {
 		return id == null;
 	}
