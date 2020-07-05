@@ -61,6 +61,9 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 			if (!StringUtils.isEmpty(filter.getNome())) {
 				where.add(builder.like(builder.upper(produto.get("nome")), "%"+filter.getNome().toUpperCase()+"%"));
 			}
+			if (!StringUtils.isEmpty(filter.getCategoria())) {
+				where.add(builder.like(builder.upper(produto.get("categoria").get("nome")), "%"+filter.getCategoria().toUpperCase()+"%"));
+			}
 		}
 		
 		return where.stream().toArray(Predicate[]::new);
