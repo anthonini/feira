@@ -2,7 +2,9 @@ package br.com.anthonini.feira.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,8 @@ public class ComprasController {
 	public ModelAndView listar(@RequestParam(defaultValue = "") String nome) {
 		ModelAndView mv = new ModelAndView("compras/listagem");
 		
-		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome, Sort.unsorted());		
-		List<ItemFeira> itens = new ArrayList<>();
+		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome, Sort.by("categoria.nome"));
+		Map<String, List<ItemFeira>> categorias = new LinkedHashMap<>();
 		
 		for(Produto produto : produtos) {
 			Optional<ItemFeira> itemOptional = feiraSession.buscarPorProduto(produto);
@@ -48,11 +50,16 @@ public class ComprasController {
 			if(!itemOptional.isPresent()) {
 				item.setProduto(produto);
 				item.setPorPeso(produto.isCobradoPorKG());				
-			}			
-			itens.add(item);
-		}
+			}
+			
+			String categoria = produto.getCategoria() != null ? produto.getCategoria().getNome() : "Não categorizado";
+			if(!categorias.containsKey(categoria)) {
+				categorias.put(categoria, new ArrayList<>());
+			}
+			categorias.get(categoria).add(item);
+		}		
 		
-		mv.addObject("itens", itens);
+		mv.addObject("categorias", categorias);
 		mv.addObject("adicionados", feiraSession.getFeira().getItens());
 			
 		return mv;
