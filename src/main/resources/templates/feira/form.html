@@ -94,6 +94,16 @@
 						</div>
 					</div>
 					
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label for="nome" class="control-label">Supermercado</label>
+							<select class="form-control" th:field="*{supermercado}" an:classforerror="supermercado">
+								<option value="">Selecione o supermercado</option>
+								<option th:each="supermercado : ${supermercados}" th:value="${supermercado.id}" th:text="${supermercado.nome}"></option>
+							</select>
+						</div>
+					</div>
+					
 					<div class="mb-4">
 						<input type="hidden" th:field="*{id}">
 						<input type="submit" class="btn btn-primary" value="Salvar">

@@ -24,6 +24,7 @@ import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
 import br.com.anthonini.feira.model.Feira;
 import br.com.anthonini.feira.repository.FeiraRepository;
+import br.com.anthonini.feira.repository.SupermercadoRepository;
 import br.com.anthonini.feira.repository.filter.FeiraFilter;
 import br.com.anthonini.feira.service.FeiraService;
 import br.com.anthonini.feira.service.FeiraVaziaException;
@@ -45,6 +46,9 @@ public class FeiraController extends AbstractController {
 	@Autowired
 	private FeiraRepository repository;
 	
+	@Autowired
+	private SupermercadoRepository supermercadoRepository;
+	
 	@GetMapping
 	public ModelAndView listar(FeiraFilter feiraFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="dataCompra") Pageable pageable) {
 		ModelAndView mv = new ModelAndView("feira/list");
@@ -57,6 +61,7 @@ public class FeiraController extends AbstractController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Feira feira, ModelMap model) {
 		ModelAndView mv = new ModelAndView("feira/form");
+		mv.addObject("supermercados", supermercadoRepository.findAll());
 		if(feira.isNova())
 			feira.setItens(feiraSession.getFeira().getItens());
 		
@@ -77,7 +82,7 @@ public class FeiraController extends AbstractController {
 		}
 		
 		addMensagemSucess(redirectAttributes, "Feira salva com sucesso!");
-		return new ModelAndView("redirect:");
+		return new ModelAndView("redirect:/feira");
 	}	
 	
 	@GetMapping("/alterar/{id}")

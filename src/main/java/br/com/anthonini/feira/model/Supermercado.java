@@ -32,9 +32,7 @@ public class Supermercado implements Serializable {
 
 	@NotEmpty(message = "É obrigatório adicionar pelo menos uma categoria.")
 	@OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();
-	
-	
+	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();	
 
 	@Override
 	public String toString() {
