@@ -68,7 +68,7 @@ public class ProdutoController extends AbstractController {
 	}
 	
 	@GetMapping
-	public ModelAndView listar(ProdutoFilter produtoFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
+	public ModelAndView listar(ProdutoFilter produtoFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 10) @SortDefault(value="nome") Pageable pageable) {
 		ModelAndView mv = new ModelAndView("produto/list");
 		PageWrapper<Produto> paginaWrapper = new PageWrapper<>(repository.filtrar(produtoFilter,pageable),httpServletRequest);
         mv.addObject("pagina", paginaWrapper);
@@ -76,7 +76,7 @@ public class ProdutoController extends AbstractController {
 		return mv;
 	}
 	
-	@GetMapping("/alterar/{id}")
+	@GetMapping("/{id}")
 	public String alterar(@PathVariable("id") Produto produto, ModelMap model, RedirectAttributes redirect) {
         if (produto == null) {
             addMensagemErro(redirect, "Produto não encontrado");
@@ -90,6 +90,18 @@ public class ProdutoController extends AbstractController {
         model.addAttribute("produto", produto);
         return form(produto, model);
     }
+	
+	@PostMapping("/{\\d+}")
+	public String alterar(@Valid Produto produto, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
+		if(result.hasErrors()) {
+			return retornarErrosValidacao(produto, result, model);
+		}
+		
+		service.cadastrar(produto);
+		
+		addMensagemSucess(redirectAttributes, "Produto alterado com sucesso!");
+		return "redirect:/produto";
+	}
 	
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Produto produto) {

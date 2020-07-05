@@ -24,7 +24,7 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${produto}" class="form-vertical" th:action="@{/produto/novo}">
+				<form method="POST" th:object="${produto}" class="form-vertical" th:action="${produto.novo} ? @{/produto/novo} : @{/produto/{id}(id=${produto.id})}">
 					<div class="row">
 						<div class="col-6 form-group required">
 							<label for="nome" class="control-label">Nome</label>

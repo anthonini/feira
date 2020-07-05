@@ -35,6 +35,7 @@
 								<tr>
 									<th class="table-produtos-col-foto"></th>
 									<th>Nome</th>
+									<td>Categoria</td>
 									<th class="table-produtos-col-cobrado-por">Cobrado por</th>
 									<th class="table-produtos-col-preco">Preço</th>
 									<th class="table-produtos-col-peso-unidade">Peso da Unidade</th>
@@ -47,11 +48,12 @@
 	                                 	<img th:src="${item.urlThumbnailFoto}" class="img-responsive"/>	
 	                                 </td>
 	                                 <td th:text="${item.nome}">Nome</td>
+	                                 <td th:text="${item.categoria?.nome}">Categoria</td>
 	                                 <td th:text="${item.cobradoPor.descricao}">Tipo de Preço</td>
 	                                 <td th:text="|R$ ${{item.preco}}|">Preço</td>
 	                                 <td th:text="${item.descricaoPeso}">Peso da Unidade</td>
 	                                 <td>
-	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/alterar/{id}(id=${item.id})}" title="Alterar">
+	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/produto/{id}(id=${item.id})}" title="Alterar">
 	                                         <i class="fa fa-edit"></i>
 	                                     </a>
 	                                     <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"

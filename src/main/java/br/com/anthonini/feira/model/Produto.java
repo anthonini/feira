@@ -88,6 +88,10 @@ public class Produto implements Serializable {
 	public boolean isCobradoPorKG() {
 		return this.cobradoPor.equals(CobradoPor.KG);
 	}
+	
+	public boolean isNovo() {
+		return id == null;
+	}
 
 	public Long getId() {
 		return id;
