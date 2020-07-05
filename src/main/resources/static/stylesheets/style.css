@@ -45,6 +45,7 @@ div.dataTables_paginate ul.pagination {
 }
 .table-produtos-col-foto {
 	width: 86px;
+	min-width: 86px;
 }
 .table-produtos-col-cobrado-por {
 	width: 16.66%;
@@ -59,6 +60,7 @@ div.dataTables_paginate ul.pagination {
 .table-col-acoes
  {
 	width: 75px;
+	min-width: 75px;
 }
 .col-numero {
 	width: 50px;
