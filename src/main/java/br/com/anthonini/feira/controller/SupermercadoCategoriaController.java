@@ -55,7 +55,7 @@ public class SupermercadoCategoriaController extends AbstractController {
 			model.addAttribute("supermercadoCategoria", new SupermercadoCategoria());
 			categoriasAdicionadas = Arrays.copyOf(categoriasAdicionadas, categoriasAdicionadas.length+1);
 			categoriasAdicionadas[categoriasAdicionadas.length-1] = supermercadoCategoria.getCategoria().getId();
-			addMensagemSucess(model, "Categoria adicionada com sucesso!");
+			addMensagemSucesso(model, "Categoria adicionada com sucesso!");
 		}
 		
 		return modal(null, model, OperacaoSupermercadoCategoria.ADICIONAR, categoriasAdicionadas);

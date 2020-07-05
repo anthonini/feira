@@ -81,7 +81,7 @@ public class FeiraController extends AbstractController {
 			return retornarErrosValidacao(feira, result, model);
 		}
 		
-		addMensagemSucess(redirectAttributes, "Feira salva com sucesso!");
+		addMensagemSucesso(redirectAttributes, "Feira salva com sucesso!");
 		return new ModelAndView("redirect:/feira");
 	}	
 	

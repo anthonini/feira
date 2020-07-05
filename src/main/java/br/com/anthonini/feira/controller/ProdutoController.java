@@ -63,7 +63,7 @@ public class ProdutoController extends AbstractController {
 		
 		service.cadastrar(produto);
 		
-		addMensagemSucess(redirectAttributes, "Produto salvo com sucesso!");
+		addMensagemSucesso(redirectAttributes, "Produto salvo com sucesso!");
 		return "redirect:novo";
 	}
 	
@@ -99,7 +99,7 @@ public class ProdutoController extends AbstractController {
 		
 		service.cadastrar(produto);
 		
-		addMensagemSucess(redirectAttributes, "Produto alterado com sucesso!");
+		addMensagemSucesso(redirectAttributes, "Produto alterado com sucesso!");
 		return "redirect:/produto";
 	}
 	

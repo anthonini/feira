@@ -61,7 +61,7 @@ public class CategoriaController extends AbstractController {
 			return form(categoria, modelMap);
 		}
 		
-		addMensagemSucess(redirectAttributes, "Categoria salva com sucesso!");
+		addMensagemSucesso(redirectAttributes, "Categoria salva com sucesso!");
 		return new ModelAndView("redirect:/categoria/nova");
 	}
 	

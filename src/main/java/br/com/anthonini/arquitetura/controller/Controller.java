@@ -16,7 +16,7 @@ public interface Controller {
         MensagemHolder.getTipoMensagemHolder(mensagemHolder).adicionarMensagem(mensagemHolder, TipoMensagem.ERROR, mensagem);
     }
 
-    default void addMensagemSucess(Object mensagemHolder, String mensagem) {
+    default void addMensagemSucesso(Object mensagemHolder, String mensagem) {
         MensagemHolder.getTipoMensagemHolder(mensagemHolder).adicionarMensagem(mensagemHolder, TipoMensagem.SUCCESS, mensagem);
     }
 

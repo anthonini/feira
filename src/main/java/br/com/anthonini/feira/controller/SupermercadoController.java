@@ -60,7 +60,7 @@ public class SupermercadoController extends AbstractController {
 			return form(supermercado, modelMap);
 		}
 		
-		addMensagemSucess(redirectAttributes, "Supermercado salvo com sucesso!");
+		addMensagemSucesso(redirectAttributes, "Supermercado salvo com sucesso!");
 		return new ModelAndView("redirect:/supermercado/novo");
 	}
 	
