@@ -1,6 +1,5 @@
 package br.com.anthonini.feira.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="feira")
-public class Feira implements Serializable {
+public class Feira implements Entidade {
 	
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,5 @@
 package br.com.anthonini.feira.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "supermercado")
-public class Supermercado implements Serializable {
+public class Supermercado implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,10 +38,6 @@ public class Supermercado implements Serializable {
 	@Override
 	public String toString() {
 		return "Supermercado [id=" + id + ", nome=" + nome + "]";
-	}
-
-	public boolean isNovo() {
-		return id == null;
 	}
 
 	public Long getId() {

@@ -1,6 +1,5 @@
 package br.com.anthonini.feira.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -26,7 +25,7 @@ import br.com.anthonini.feira.repository.listener.ProdutoEntityListener;
 @EntityListeners(ProdutoEntityListener.class)
 @Entity
 @Table(name="produto")
-public class Produto implements Serializable {
+public class Produto implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,10 +86,6 @@ public class Produto implements Serializable {
 	
 	public boolean isCobradoPorKG() {
 		return this.cobradoPor.equals(CobradoPor.KG);
-	}
-	
-	public boolean isNovo() {
-		return id == null;
 	}
 
 	public Long getId() {

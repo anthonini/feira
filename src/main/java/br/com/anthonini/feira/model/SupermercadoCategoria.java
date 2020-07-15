@@ -1,7 +1,5 @@
 package br.com.anthonini.feira.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "supermercado_categoria")
-public class SupermercadoCategoria implements Serializable {
+public class SupermercadoCategoria implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 
