@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,16 +39,11 @@ public class SupermercadoCategoria implements Serializable {
 	@NotNull(message = "Posição no Corredor é obrigatório")
 	@Column(name = "posicao_corredor")
 	private Integer posicaoCorredor;
-	
-	@NotNull(message = "Sentido é obrigatório")
-	@Enumerated(EnumType.STRING)
-	@Column(name = "sentido")
-	private Sentido sentido;
 
 	@Override
 	public String toString() {
 		return "SupermercadoCategoria [id=" + id + ", " + (supermercado == null ? "supermercado=null" : supermercado) + ", categoria=" + categoria
-				+ ", corredor=" + corredor + ", posicaoCorredor=" + posicaoCorredor + ", sentido=" + sentido + "]";
+				+ ", corredor=" + corredor + ", posicaoCorredor=" + posicaoCorredor + "]";
 	}
 
 	public Long getId() {
@@ -91,14 +84,6 @@ public class SupermercadoCategoria implements Serializable {
 
 	public void setPosicaoCorredor(Integer posicaoCorredor) {
 		this.posicaoCorredor = posicaoCorredor;
-	}
-
-	public Sentido getSentido() {
-		return sentido;
-	}
-
-	public void setSentido(Sentido sentido) {
-		this.sentido = sentido;
 	}
 
 	@Override

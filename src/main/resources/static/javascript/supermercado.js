@@ -94,7 +94,6 @@ Feira.Supermercado = (function() {
 			},
 			corredor: $('input[name="'+getName(idx,'corredor')+'"]').val(),
 			posicaoCorredor: $('input[name="'+getName(idx,'posicaoCorredor')+'"]').val(),
-			sentido: $('input[name="'+getName(idx,'sentido')+'"]').val(),
 			data: {
 				operacao: $(event.currentTarget).data('operacao')
 			}
@@ -125,7 +124,6 @@ Feira.Supermercado = (function() {
 			.append($('<td>').text(supermercadoCategoria.categoria.nome))
 			.append($('<td>').text(supermercadoCategoria.corredor))
 			.append($('<td>').text(supermercadoCategoria.posicaoCorredor))
-			.append($('<td>').text(supermercadoCategoria.descricaoSentido))
 			.append($('<td>')
 				.append($('<a>').attr('class', 'btn btn-sm text-primary feira-item-col-acao js-alterar-categoria').attr('title', 'Alterar').attr('href', '#').attr('data-idx', idx).attr('data-operacao', 'ALTERAR')
 						.append($('<i>').attr('class', 'fa fa-edit')))
@@ -137,7 +135,6 @@ Feira.Supermercado = (function() {
 				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'categoria.nome')	).attr('name', getName(idx,'categoria.nome') ).attr('value', supermercadoCategoria.categoria.nome))
 				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'corredor')			).attr('name', getName(idx,'corredor')		 ).attr('value', supermercadoCategoria.corredor))
 				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'posicaoCorredor')	).attr('name', getName(idx,'posicaoCorredor')).attr('value', supermercadoCategoria.posicaoCorredor))
-				.append($('<input>').attr('type','hidden').attr('id', getId(idx,'sentido')			).attr('name', getName(idx,'sentido')		 ).attr('value', supermercadoCategoria.sentido))
 			)
 			
 		return tr;

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -32,7 +33,8 @@ public class Supermercado implements Serializable {
 
 	@NotEmpty(message = "É obrigatório adicionar pelo menos uma categoria.")
 	@OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();	
+	@OrderBy(value = "corredor, posicaoCorredor")
+	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();
 
 	@Override
 	public String toString() {

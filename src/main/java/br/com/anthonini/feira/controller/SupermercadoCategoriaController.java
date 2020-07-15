@@ -51,7 +51,6 @@ public class SupermercadoCategoriaController extends AbstractController {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
 			model.addAttribute("categoriaAdicionada", supermercadoCategoria);
-			model.addAttribute("descricaoSentido", supermercadoCategoria.getSentido().getDescricao());
 			model.addAttribute("supermercadoCategoria", new SupermercadoCategoria());
 			categoriasAdicionadas = Arrays.copyOf(categoriasAdicionadas, categoriasAdicionadas.length+1);
 			categoriasAdicionadas[categoriasAdicionadas.length-1] = supermercadoCategoria.getCategoria().getId();
@@ -67,7 +66,6 @@ public class SupermercadoCategoriaController extends AbstractController {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
 			model.addAttribute("categoriaAlterada", supermercadoCategoria);
-			model.addAttribute("descricaoSentido", supermercadoCategoria.getSentido().getDescricao());
 		}
 		
 		return modal(supermercadoCategoria, model, OperacaoSupermercadoCategoria.ALTERAR, categoriasAdicionadas);
