@@ -82,7 +82,7 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${feira}" class="form-vertical" th:action="@{/feira/nova}">
+				<form method="POST" th:object="${feira}" class="form-vertical" th:action="${feira.nova} ? @{/feira/nova} : @{/feira/{id}(id=${feira.id})}">
 					<div class="row">
 						<div class="col-sm-8 form-group required">
 							<label for="nome" class="control-label">Nome</label>

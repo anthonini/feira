@@ -57,14 +57,7 @@ public class ProdutoController extends AbstractController {
 	
 	@PostMapping("/novo")
 	public String cadastrar(@Valid Produto produto, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
-		if(result.hasErrors()) {
-			return retornarErrosValidacao(produto, result, model);
-		}
-		
-		service.cadastrar(produto);
-		
-		addMensagemSucesso(redirectAttributes, "Produto salvo com sucesso!");
-		return "redirect:novo";
+		return salvar(produto, result, model, redirectAttributes, "redirect:novo");
 	}
 	
 	@GetMapping
@@ -92,15 +85,8 @@ public class ProdutoController extends AbstractController {
     }
 	
 	@PostMapping("/{\\d+}")
-	public String alterar(@Valid Produto produto, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
-		if(result.hasErrors()) {
-			return retornarErrosValidacao(produto, result, model);
-		}
-		
-		service.cadastrar(produto);
-		
-		addMensagemSucesso(redirectAttributes, "Produto alterado com sucesso!");
-		return "redirect:/produto";
+	public String salvarAlteracao(@Valid Produto produto, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
+		return salvar(produto, result, model, redirectAttributes, "redirect:/produto");
 	}
 	
 	@DeleteMapping("/{id}")
@@ -116,5 +102,16 @@ public class ProdutoController extends AbstractController {
 	private String retornarErrosValidacao(Produto produto, BindingResult result, ModelMap model) {
 		addMensagensErroValidacao(model, result);
 		return form(produto, model);
+	}
+	
+	private String salvar(Produto produto, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes, String url) {
+		if(result.hasErrors()) {
+			return retornarErrosValidacao(produto, result, model);
+		}
+		
+		service.cadastrar(produto);
+		
+		addMensagemSucesso(redirectAttributes, "Produto salvo com sucesso!");
+		return url;
 	}
 }

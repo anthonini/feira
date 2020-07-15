@@ -59,7 +59,7 @@ public class FeiraController extends AbstractController {
 	}
 	
 	@GetMapping("/nova")
-	public ModelAndView nova(Feira feira, ModelMap model) {
+	public ModelAndView form(Feira feira, ModelMap model) {
 		ModelAndView mv = new ModelAndView("feira/form");
 		mv.addObject("supermercados", supermercadoRepository.findAll());
 		if(feira.isNova())
@@ -70,6 +70,37 @@ public class FeiraController extends AbstractController {
 	
 	@PostMapping("/nova")
 	public ModelAndView cadastrar(@Valid Feira feira, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
+		return salvar(feira, result, model, redirectAttributes);
+	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView alterar(@PathVariable("id") Feira feira, ModelMap model, RedirectAttributes redirect) {
+		if (feira == null) {
+            addMensagemErro(redirect, "Feira não encontrada");
+            return new ModelAndView("redirect:/feira/list");
+        }
+
+		model.addAttribute("feira", feira);
+        return form(feira, model);
+    }
+	
+	@PostMapping("/{\\d+}")
+	public ModelAndView salvarAlteracao(@Valid Feira feira, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
+		return salvar(feira, result, model, redirectAttributes);
+	}
+	
+	@DeleteMapping("/{id}")
+	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Feira feira) {
+		service.remover(feira);			 
+		return ResponseEntity.ok().build();
+	}
+	
+	private ModelAndView retornarErrosValidacao(Feira feira, BindingResult result, ModelMap model) {
+		addMensagensErroValidacao(model, result);
+		return form(feira, model);
+	}
+	
+	private ModelAndView salvar(Feira feira, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
 		if(result.hasErrors()) {
 			return retornarErrosValidacao(feira, result, model);
 		}
@@ -83,27 +114,5 @@ public class FeiraController extends AbstractController {
 		
 		addMensagemSucesso(redirectAttributes, "Feira salva com sucesso!");
 		return new ModelAndView("redirect:/feira");
-	}	
-	
-	@GetMapping("/alterar/{id}")
-	public ModelAndView alterar(@PathVariable("id") Feira feira, ModelMap model, RedirectAttributes redirect) {
-		if (feira == null) {
-            addMensagemErro(redirect, "Feira não encontrada");
-            return new ModelAndView("redirect:/feira/list");
-        }
-
-		model.addAttribute("feira", feira);
-        return nova(feira, model);
-    }
-	
-	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Feira feira) {
-		service.remover(feira);			 
-		return ResponseEntity.ok().build();
-	}
-	
-	private ModelAndView retornarErrosValidacao(Feira feira, BindingResult result, ModelMap model) {
-		addMensagensErroValidacao(model, result);
-		return nova(feira, model);
 	}
 }

@@ -23,7 +23,7 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${supermercado}" class="form-vertical js-form-supermercado" th:action="@{/supermercado/novo}">
+				<form method="POST" th:object="${supermercado}" class="form-vertical js-form-supermercado" th:action="${supermercado.novo} ? @{/supermercado/novo} : @{/supermercado/{id}(id=${supermercado.id})}">
 					<div class="form-group required">
 						<label for="nome" class="control-label">Nome</label>
 						<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>

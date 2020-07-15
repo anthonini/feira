@@ -22,7 +22,7 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${categoria}" class="form-vertical" th:action="@{/categoria/nova}">
+				<form method="POST" th:object="${categoria}" class="form-vertical" th:action="${categoria.nova} ? @{/categoria/nova} : @{/categoria/{id}(id=${categoria.id})}">
 					<div class="form-group required">
 						<label for="nome" class="control-label">Nome</label>
 						<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>

@@ -63,7 +63,7 @@
                                  <td th:text="${feira.descricaoPesoTotal}">8,750Kg</td>
                                  <td th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 165,00</td>
                                  <td>
-                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/alterar/{id}(id=${feira.id})}" title="Alterar">
+                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/{id}(id=${feira.id})}" title="Alterar">
                                          <i class="fa fa-edit"></i>
                                      </a>
                                      <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
@@ -74,7 +74,7 @@
                                  </td>
                              </tr>
                              <tr th:if="${pagina.vazia}">
-                             	<td colspan="6"><i>Nenhuma feira cadastrada.</i></td>
+                             	<td colspan="6"><i>Nenhuma feira encontrada.</i></td>
                              </tr>
 						</tbody>
 					</table>

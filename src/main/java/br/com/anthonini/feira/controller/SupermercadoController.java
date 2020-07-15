@@ -46,7 +46,46 @@ public class SupermercadoController extends AbstractController {
 	}
 	
 	@PostMapping("/novo")
-	public ModelAndView salvar(@Valid Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+	public ModelAndView cadastrar(@Valid Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+		return salvar(supermercado, bindingResult, modelMap, redirectAttributes, "redirect:/supermercado/novo");
+	}
+	
+	@GetMapping
+	public ModelAndView listar(@RequestParam(defaultValue = "") String nome, HttpServletRequest httpServletRequest, @PageableDefault(size = 5) @SortDefault(value="nome") Pageable pageable) {		
+		ModelAndView mv = new ModelAndView("supermercado/list");
+		PageWrapper<Supermercado> paginaWrapper = new PageWrapper<>(repository.findByNomeContainingIgnoreCase(nome, pageable),httpServletRequest);
+        mv.addObject("pagina", paginaWrapper);
+		
+		return mv;
+	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView alterar(@PathVariable("id") Supermercado supermercado, ModelMap model, RedirectAttributes redirect) {
+        if (supermercado == null) {
+            addMensagemErro(redirect, "Supermercado não encontrada");
+            return new ModelAndView("redirect:/supermercado");
+        }
+
+        model.addAttribute("supermercado", supermercado);
+        return form(supermercado, model);
+    }
+	
+	@PostMapping("/{\\d+}")
+	public ModelAndView salvarAlteracao(@Valid Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+		return salvar(supermercado, bindingResult, modelMap, redirectAttributes, "redirect:/supermercado");
+	}
+	
+	@DeleteMapping("/{id}")
+	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Supermercado supermercado) {
+		try {
+			service.remover(supermercado);
+		} catch (NaoEPossivelRemoverEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}		 
+		return ResponseEntity.ok().build();
+	}
+	
+	private ModelAndView salvar(Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes, String url) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return form(supermercado, modelMap);
@@ -61,36 +100,6 @@ public class SupermercadoController extends AbstractController {
 		}
 		
 		addMensagemSucesso(redirectAttributes, "Supermercado salvo com sucesso!");
-		return new ModelAndView("redirect:/supermercado/novo");
-	}
-	
-	@GetMapping
-	public ModelAndView listar(@RequestParam(defaultValue = "") String nome, HttpServletRequest httpServletRequest, @PageableDefault(size = 5) @SortDefault(value="nome") Pageable pageable) {		
-		ModelAndView mv = new ModelAndView("supermercado/list");
-		PageWrapper<Supermercado> paginaWrapper = new PageWrapper<>(repository.findByNomeContainingIgnoreCase(nome, pageable),httpServletRequest);
-        mv.addObject("pagina", paginaWrapper);
-		
-		return mv;
-	}
-	
-	@GetMapping("/alterar/{id}")
-	public ModelAndView alterar(@PathVariable("id") Supermercado supermercado, ModelMap model, RedirectAttributes redirect) {
-        if (supermercado == null) {
-            addMensagemErro(redirect, "Supermercado não encontrada");
-            return new ModelAndView("redirect:/supermercado");
-        }
-
-        model.addAttribute("supermercado", supermercado);
-        return form(supermercado, model);
-    }
-	
-	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") Supermercado supermercado) {
-		try {
-			service.remover(supermercado);
-		} catch (NaoEPossivelRemoverEntidadeException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}		 
-		return ResponseEntity.ok().build();
+		return new ModelAndView(url);
 	}
 }

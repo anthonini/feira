@@ -43,7 +43,7 @@
 									<td class="text-center" th:text="${item.id}">#</td>
 	                                 <td th:text="${item.nome}">Nome</td>
 	                                 <td>
-	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/supermercado/alterar/{id}(id=${item.id})}" title="Alterar">
+	                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/supermercado/{id}(id=${item.id})}" title="Alterar">
 	                                         <i class="fa fa-edit"></i>
 	                                     </a>
 	                                     <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
@@ -54,7 +54,7 @@
 	                                 </td>
 	                             </tr>
 	                             <tr th:if="${pagina.vazia}">
-	                             	<td colspan="6"><i>Nenhum supermercado cadastrado.</i></td>
+	                             	<td colspan="6"><i>Nenhum supermercado encontrado.</i></td>
 	                             </tr>
 							</tbody>
 						</table>
