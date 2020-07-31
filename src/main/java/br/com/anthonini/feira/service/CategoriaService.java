@@ -36,7 +36,7 @@ public class CategoriaService {
 			repository.delete(categoria);
 			repository.flush();
 		} catch (PersistenceException | DataIntegrityViolationException e) {
-			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover a categoria. Categoria já associada com algum produto.");
+			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover a categoria. Categoria já associada com algum produto ou supermercado.");
 		}
 	}
 }

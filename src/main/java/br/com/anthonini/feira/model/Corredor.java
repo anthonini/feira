@@ -1,12 +1,19 @@
 package br.com.anthonini.feira.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
@@ -33,6 +40,10 @@ public class Corredor implements Entidade {
 	
 	@NotBlank(message = "Descrição é obrigatória")
 	private String descricao;
+	
+	@OneToMany(mappedBy = "corredor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OrderBy(value = "corredor, posicaoCorredor")
+	private List<SupermercadoCategoria> supermercadoCategorias = new ArrayList<>();
 	
 	@Transient
 	private Long numeroAnterior = 0L;
@@ -79,6 +90,14 @@ public class Corredor implements Entidade {
 
 	public void setNumeroAnterior(Long numeroAnterior) {
 		this.numeroAnterior = numeroAnterior;
+	}
+
+	public List<SupermercadoCategoria> getSupermercadoCategorias() {
+		return supermercadoCategorias;
+	}
+
+	public void setSupermercadoCategorias(List<SupermercadoCategoria> supermercadoCategorias) {
+		this.supermercadoCategorias = supermercadoCategorias;
 	}
 
 	@Override
