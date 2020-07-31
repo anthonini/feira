@@ -80,16 +80,41 @@ Feira.Categoria = (function() {
 		event.preventDefault();
 		var btn = $(event.currentTarget);
 		var url = btn.data('url');
-		var response = $.ajax({
-			url: url + '?uuid=' + this.uuid,
-			method: 'DELETE'
-		});
+		var categoria = btn.data('categoria');
 		
-		response.done(onRemoverCategoriaResponse.bind(this));
+		swal({
+			title: 'Tem certeza?',
+			text: 'Excluir a categoria "' + categoria + '"?',
+			icon: 'warning',
+			buttons: ['Cancelar', 
+				{
+					text: 'Sim, exclua agora!',
+				    value: true,
+				    visible: true,
+				    closeModal: false
+				}]
+		}).then((remover) => {
+		  if (remover) {
+			  onRemoverConfirmado.call(this, url)
+		  }
+		});
 	}
 	
-	function onRemoverCategoriaResponse(html) {
-		onCategoriasAtualizadasResponse.call(this,html);
+	function onRemoverConfirmado(url) {
+		$.ajax({
+			url: url + '?uuid=' + this.uuid,
+			method: 'DELETE',
+			success: onRemovidoComSucesso.bind(this),
+			error: onErroRemocao.bind(this)
+		});
+	}
+	
+	function onRemovidoComSucesso() {
+		$('#categoriaModal').trigger('categorias-atualizadas');
+		swal('Categoria removida com sucesso!', '', 'success');
+	}
+	function onErroRemocao(e) {
+		swal('Oops!', e.responseText, 'error');
 	}
 	
 	return Categoria;

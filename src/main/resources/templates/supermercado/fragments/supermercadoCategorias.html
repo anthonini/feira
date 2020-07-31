@@ -28,7 +28,8 @@
 							<i class="fa fa-edit"></i>
 						</a> 
 						<a class="btn btn-sm text-danger feira-item-col-acao js-remover-categoria" title="Remover" href="#"
-							data:url="@{/supermercado-categoria/remover/{categoria}(categoria=${supermercadoCategoria.categoria.id})}"> 
+							data:url="@{/supermercado-categoria/remover/{categoria}(categoria=${supermercadoCategoria.categoria.id})}"
+							data:categoria="${supermercadoCategoria.categoria.nome}"> 
 							<i class="fa fa-trash-alt"></i>
 						</a>
 					</td>

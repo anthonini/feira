@@ -116,6 +116,7 @@ public class SupermercadoController extends AbstractController {
 	
 	@GetMapping("/categorias")
 	public String categorias(String uuid, ModelMap model) {
+		sessao.getSupermercado(uuid).ordernarSupermercadoCategorias();
 		model.addAttribute(sessao.getSupermercado(uuid));
 		return "supermercado/fragments/supermercadoCategorias";
 	}
