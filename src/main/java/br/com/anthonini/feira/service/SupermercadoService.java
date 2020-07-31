@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.anthonini.feira.model.Supermercado;
+import br.com.anthonini.feira.repository.SupermercadoCategoriaRepository;
 import br.com.anthonini.feira.repository.SupermercadoRepository;
 import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverEntidadeException;
 import br.com.anthonini.feira.service.exception.NomeSupermercadoJaExisteException;
@@ -20,6 +21,9 @@ public class SupermercadoService {
 	@Autowired
 	private SupermercadoRepository repository;
 	
+	@Autowired
+	private SupermercadoCategoriaRepository supermercadoCategoriaRepository;
+	
 	@Transactional
 	public void salvar(Supermercado supermercado) {
 		Optional<Supermercado> supermercadoOptional = repository.findByNomeIgnoreCase(supermercado.getNome());
@@ -27,13 +31,16 @@ public class SupermercadoService {
 		if(supermercadoOptional.isPresent() && !supermercadoOptional.get().equals(supermercado)) {
 			throw new NomeSupermercadoJaExisteException();
 		}
+		
 		supermercado.getSupermercadoCategorias().forEach(sc -> sc.setSupermercado(supermercado));
+		supermercado.getCorredores().forEach(c -> c.setSupermercado(supermercado));
 		repository.save(supermercado);
 	}
 	
 	@Transactional
 	public void remover(Supermercado supermercado) {
 		try {
+			supermercadoCategoriaRepository.deleteAll(supermercado.getSupermercadoCategorias());
 			repository.delete(supermercado);
 			repository.flush();
 		} catch (PersistenceException | DataIntegrityViolationException e) {

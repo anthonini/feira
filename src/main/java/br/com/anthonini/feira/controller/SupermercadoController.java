@@ -23,11 +23,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
+import br.com.anthonini.feira.controller.validator.SupermercadoValidator;
 import br.com.anthonini.feira.model.Supermercado;
 import br.com.anthonini.feira.repository.SupermercadoRepository;
 import br.com.anthonini.feira.service.SupermercadoService;
 import br.com.anthonini.feira.service.exception.NaoEPossivelRemoverEntidadeException;
 import br.com.anthonini.feira.service.exception.NomeSupermercadoJaExisteException;
+import br.com.anthonini.feira.session.SupermercadoSession;
 
 @Controller
 @RequestMapping("/supermercado")
@@ -39,15 +41,34 @@ public class SupermercadoController extends AbstractController {
 	@Autowired
 	private SupermercadoRepository repository;
 	
+	@Autowired
+	private SupermercadoSession sessao;
+	
+	@Autowired
+	private SupermercadoValidator supermercadoValidator;
+	
 	@GetMapping("/novo")
 	public ModelAndView form(Supermercado supermercado, ModelMap model) {
-		ModelAndView mv = new ModelAndView("supermercado/form");		
-		return mv;
+		sessao.adicionarSupermercado(supermercado);
+		return new ModelAndView("redirect:/supermercado/edit?id="+supermercado.getUuid());
 	}
+	
+	@GetMapping("/edit")
+    public String edit(String id, ModelMap model, RedirectAttributes redirect) {
+        Supermercado supermercado = sessao.getSupermercado(id);
+        if (supermercado == null) {
+        	addMensagemErro(redirect, "Supermercado não encontrado");
+            return "redirect:/supermercado";
+        }
+
+        model.addAttribute(supermercado);
+        return "supermercado/form";
+    }
+
 	
 	@PostMapping("/novo")
 	public ModelAndView cadastrar(@Valid Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-		return salvar(supermercado, bindingResult, modelMap, redirectAttributes, "redirect:/supermercado/novo");
+		return salvar(supermercado, bindingResult, modelMap, redirectAttributes);
 	}
 	
 	@GetMapping
@@ -62,17 +83,19 @@ public class SupermercadoController extends AbstractController {
 	@GetMapping("/{id}")
 	public ModelAndView alterar(@PathVariable("id") Supermercado supermercado, ModelMap model, RedirectAttributes redirect) {
         if (supermercado == null) {
-            addMensagemErro(redirect, "Supermercado não encontrada");
+            addMensagemErro(redirect, "Supermercado não encontrado");
             return new ModelAndView("redirect:/supermercado");
         }
 
+        supermercado.getCorredores().iterator();
+        supermercado.getSupermercadoCategorias().iterator();
         model.addAttribute("supermercado", supermercado);
         return form(supermercado, model);
     }
 	
 	@PostMapping("/{\\d+}")
 	public ModelAndView salvarAlteracao(@Valid Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-		return salvar(supermercado, bindingResult, modelMap, redirectAttributes, "redirect:/supermercado");
+		return salvar(supermercado, bindingResult, modelMap, redirectAttributes);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -85,9 +108,25 @@ public class SupermercadoController extends AbstractController {
 		return ResponseEntity.ok().build();
 	}
 	
-	private ModelAndView salvar(Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes, String url) {
+	@GetMapping("/corredores")
+	public String corredores(String uuid, ModelMap model) {
+		model.addAttribute(sessao.getSupermercado(uuid));
+		return "supermercado/fragments/corredores";
+	}
+	
+	@GetMapping("/categorias")
+	public String categorias(String uuid, ModelMap model) {
+		model.addAttribute(sessao.getSupermercado(uuid));
+		return "supermercado/fragments/supermercadoCategorias";
+	}
+	
+	private ModelAndView salvar(Supermercado supermercado, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+		String nome = supermercado.getNome(); 
+		supermercado = sessao.getSupermercado(supermercado.getUuid());
+		supermercado.setNome(nome);
+		supermercadoValidator.validate(supermercado, bindingResult);
 		if(bindingResult.hasErrors()) {
-			addMensagensErroValidacao(modelMap, bindingResult);
+			addMensagensErroValidacao(redirectAttributes, bindingResult);
 			return form(supermercado, modelMap);
 		}
 		
@@ -95,11 +134,12 @@ public class SupermercadoController extends AbstractController {
 			service.salvar(supermercado);
 		} catch (NomeSupermercadoJaExisteException e) {
 			bindingResult.rejectValue("nome", e.getMessage(), e.getMessage());
-			addMensagensErroValidacao(modelMap, bindingResult);
+			addMensagensErroValidacao(redirectAttributes, bindingResult);
 			return form(supermercado, modelMap);
 		}
 		
+		sessao.remover(supermercado.getUuid());
 		addMensagemSucesso(redirectAttributes, "Supermercado salvo com sucesso!");
-		return new ModelAndView(url);
+		return new ModelAndView("redirect:/supermercado");
 	}
 }

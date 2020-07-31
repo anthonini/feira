@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<th:block th:fragment="corredores">
+	<div class="table-responsive">
+		<table class="table table-bordered table-striped table-hover" style="min-width: 500px;">
+			<thead>
+				<tr>								
+					<th style="width: 8%">Número</th>
+					<th style="min-width: 100px;">Descrição</th>
+					<th style="width: 74px; min-width: 74px;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="corredor, stat : *{supermercado.corredores}">
+					<td th:text="${corredor.numero}">1</td>
+					<td th:text="${corredor.descricao}">Descrição</td>
+					<td>
+						<a class="btn btn-sm text-primary feira-item-col-acao js-alterar-corredor" title="Alterar" href="#"
+							data:id="${corredor.id}" data:numero="${corredor.numero}" data:descricao="${corredor.descricao}" data:operacao="ALTERAR">
+							<i class="fa fa-edit"></i>
+						</a> 
+						<a class="btn btn-sm text-danger feira-item-col-acao js-remover-corredor" title="Remover" href="#"
+							data:url="@{/corredor/remover/{numero}(numero=${corredor.numero})}" data:numero="${corredor.numero}"> 
+							<i class="fa fa-trash-alt"></i>
+						</a>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(supermercado.corredores)}" class="js-linha-nenhuma-categoria-adicionada">
+					<td class="text-center" colspan="5">Nenhum corredor adicionado.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</th:block>
+</html>

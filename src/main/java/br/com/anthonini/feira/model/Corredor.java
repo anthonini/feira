@@ -8,45 +8,37 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "supermercado_categoria")
-public class SupermercadoCategoria implements Entidade {
+@Table(name = "corredor")
+public class Corredor implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_supermercado_categoria")
-	private Long id;	
+	@Column(name = "id_corredor")
+	private Long id;
 	
+	@NotNull(message = "Supermercado é obrigatório")
 	@ManyToOne
 	@JoinColumn(name = "id_supermercado")
 	private Supermercado supermercado;
 	
-	@NotNull(message = "Categoria é obrigatória")
-	@ManyToOne
-	@JoinColumn(name = "id_categoria")
-	private Categoria categoria;
+	@NotNull(message = "Número é obrigatório")
+	private Long numero;
 	
-	@NotNull(message = "Corredor é obrigatório")
-	@ManyToOne
-	@JoinColumn(name = "id_corredor")
-	private Corredor corredor;
+	@NotBlank(message = "Descrição é obrigatória")
+	private String descricao;
 	
-	@NotNull(message = "Posição é obrigatória")
-	@Column(name = "posicao_corredor")
-	private Integer posicaoCorredor;
-
-	@Override
-	public String toString() {
-		return "SupermercadoCategoria [id=" + id + ", " + (supermercado == null ? "supermercado=null" : supermercado) + ", categoria=" + categoria
-				+ ", " + (corredor == null ? "corredor=null" : corredor) + ", posicaoCorredor=" + posicaoCorredor + "]";
-	}
+	@Transient
+	private Long numeroAnterior = 0L;
 	
-	public Long getNumeroCorredor() {
-		return corredor.getNumero();
+	public String getDescricaoCompleta() {
+		return String.format("%d - %s", numero, descricao);
 	}
 
 	public Long getId() {
@@ -65,28 +57,28 @@ public class SupermercadoCategoria implements Entidade {
 		this.supermercado = supermercado;
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
+	public Long getNumero() {
+		return numero;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
+	public void setNumero(Long numero) {
+		this.numero = numero;
 	}
 
-	public Corredor getCorredor() {
-		return corredor;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setCorredor(Corredor corredor) {
-		this.corredor = corredor;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public Integer getPosicaoCorredor() {
-		return posicaoCorredor;
+	public Long getNumeroAnterior() {
+		return numeroAnterior;
 	}
 
-	public void setPosicaoCorredor(Integer posicaoCorredor) {
-		this.posicaoCorredor = posicaoCorredor;
+	public void setNumeroAnterior(Long numeroAnterior) {
+		this.numeroAnterior = numeroAnterior;
 	}
 
 	@Override
@@ -105,7 +97,7 @@ public class SupermercadoCategoria implements Entidade {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SupermercadoCategoria other = (SupermercadoCategoria) obj;
+		Corredor other = (Corredor) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

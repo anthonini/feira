@@ -27,28 +27,20 @@
 					<input type="text" readonly class="form-control-plaintext" th:field="*{categoria.nome}"  th:unless="${operacao=='Adicionar'}">
 				</div>
 				<div class="form-group required">
-					<label for="numeroCorredor" class="control-label">Corredor</label>
-					<div class="input-group">
-						<input type="text" id="numeroCorredor" class="form-control js-numero" th:field="*{corredor}" an:classforerror="corredor"/>
-						<div class="input-group-prepend">
-							<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover"
-								title="Corredor" 
-								data-content="Indica o número do corredor onde a categoria está localizada. Esse número ajudará 
-									na ordenação dos itens da feira, por exemplo, um produto de uma categoria no corredor 1 
-									aparecerá primeiro na lista da feira do que um produto que esteja no corredor 2.">
-									<i class="fas fa-question"></i>
-							</button>
-						</div>
-					</div>
+					<label for="corredor" class="control-label">Corredor</label>
+					<select class="form-control" th:field="*{corredor.numero}" an:classforerror="corredor">
+						<option value="">Selecione o corredor</option>
+						<option th:each="corredor : ${corredores}" th:value="${corredor.numero}" th:text="${corredor.descricaoCompleta}"></option>
+					</select>
 				</div>
 				<div class="form-group required">
 					<label for="posicaoCorredor" class="control-label">Posição no Corredor</label> 
 					<div class="input-group">
 						<input type="text" id="posicaoCorredor" class="form-control js-numero" th:field="*{posicaoCorredor}" an:classforerror="posicaoCorredor">
 						<div class="input-group-prepend">
-							<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover"
+							<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="focus hover"
 								title="Posição no Corredor" 
-								data-content="Indica a posição que a categoria ocupa no corredor olhando o corredor a partir dos caixas.
+								data-content="Indica a posição que a categoria ocupa no corredor tendo como ponto de referência os caixas.
 									Quanto maior a posição mais distante o produto dessa categoria estará em relação aos caixas. 
 									Assim como o número do corredor, a posição no corredor ajudará na ordenação da lista da feira.">
 									<i class="fas fa-question"></i>
@@ -71,17 +63,18 @@
 	})
 </script>
 <script th:src="@{/javascript/feira.js}"></script>
-<script th:src="@{/javascript/supermercado.supermercado-categoria.js}"></script>
+<script th:src="@{/javascript/supermercado.supermercadoCategoriaModal.js}"></script>
 <script th:inline="javascript">
 $(function() {
 	var categoriaAdicionada = [[${categoriaAdicionada}]];
 	if(categoriaAdicionada) {
-		$('#categoriaModal').trigger('categoria-adicionada', categoriaAdicionada);		
+		$('#categoriaModal').trigger('categorias-atualizadas');		
 	}
 
 	var categoriaAlterada = [[${categoriaAlterada}]];
 	if(categoriaAlterada) {
-		$('#categoriaModal').trigger('categoria-alterada', categoriaAlterada);
+		$('#categoriaModal').trigger('categorias-atualizadas');
+		$('#categoriaModal').trigger('categoria-alterada');
 	}
 });
 </script>

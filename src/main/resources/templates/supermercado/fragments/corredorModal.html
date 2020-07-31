@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data"
+	xmlns:an="http://www.anthonini.com.br">
+	
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<form method="POST" th:object="${corredor}" th:action="@{/corredor/{metodo}(metodo=${metodo})}" name="form-corredor">
+			<div class="modal-header">
+				<h5 class="modal-title">[[${operacao}]] Corredor</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<an:message/>
+				<div class="form-group required">
+					<label for="descricao" class="control-label">Descrição</label>
+					<input id="descricao" type="text" class="form-control" th:field="*{descricao}" an:classforerror="descricao"/>
+				</div>
+				<input type="hidden" th:field="*{supermercado.id}">
+				<input type="hidden" th:field="*{numeroAnterior}">
+				<div class="form-group required">
+					<label for="numero" class="control-label">Número</label>
+					<div class="input-group">
+						<input type="text" id="numero" class="form-control js-numero" th:field="*{numero}" an:classforerror="numero">
+						<div class="input-group-prepend">
+							<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="hover focus"
+								title="Corredor" 
+								data-content="Indica o número do corredor. Esse número ajudará 
+									na ordenação dos itens da feira, por exemplo, um produto de uma categoria no corredor 1 
+									aparecerá primeiro na lista da feira do que um produto que esteja no corredor 2.">
+									<i class="fas fa-question"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+				<button type="submit" class="btn btn-primary">[[${operacao}]]</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(function () {
+	  $('[data-toggle="popover"]').popover()
+	})
+</script>
+<script th:src="@{/javascript/feira.js}"></script>
+<script th:src="@{/javascript/supermercado.corredorModal.js}"></script>
+<script th:inline="javascript">
+$(function() {
+	var corredorAdicionado = [[${corredorAdicionado}]];
+	if(corredorAdicionado) {
+		$('#corredorModal').trigger('corredores-atualizados');
+	}
+	
+	var corredorAlterado = [[${corredorAlterado}]];
+	if(corredorAlterado) {
+		$('#corredorModal').trigger('corredores-atualizados');
+		$('#corredorModal').trigger('corredor-alterado');
+	}
+});
+</script>
+</html>

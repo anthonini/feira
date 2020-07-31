@@ -1,8 +1,8 @@
 package br.com.anthonini.feira.model;
 
 public enum Sentido {
-	ENTRADA_FIM("Da entrada ao fim"),
-	FIM_ENTRADA("Do fim à entrada");
+	CAIXA_FIM("Do caixa ao fim do supermercado"),
+	FIM_CAIXA("Do fim ao caixa do supermercado");
 
 	private String descricao;
 	

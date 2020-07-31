@@ -12,29 +12,25 @@
 				<tr>								
 					<th style="min-width: 100px;">Categoria</th>
 					<th style="width: 8%">Corredor</th>
-					<th style="width: 17%">Posição no Corredor</th>
+					<th style="width: 17%">Posição</th>
 					<th style="width: 74px; min-width: 74px;"></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="supermercadoCategoria, stat : *{supermercadoCategorias}">
+				<tr th:each="supermercadoCategoria, stat : *{supermercado.supermercadoCategorias}">
 					<td th:text="${supermercadoCategoria.categoria.nome}">Categoria</td>
-					<td th:text="${supermercadoCategoria.corredor}">1</td>
+					<td th:text="${supermercadoCategoria.corredor.numero}">1</td>
 					<td th:text="${supermercadoCategoria.posicaoCorredor}">2</td>
 					<td>
 						<a class="btn btn-sm text-primary feira-item-col-acao js-alterar-categoria" title="Alterar" href="#"
-							data:idx="${stat.index}" data:operacao="ALTERAR">
+							data:id="${supermercadoCategoria.id}" data:categoria-id="${supermercadoCategoria.categoria.id}"
+							data:operacao="ALTERAR">
 							<i class="fa fa-edit"></i>
 						</a> 
-						<a class="btn btn-sm text-danger feira-item-col-acao js-remover-categoria" title="Remover" href="#"> 
+						<a class="btn btn-sm text-danger feira-item-col-acao js-remover-categoria" title="Remover" href="#"
+							data:url="@{/supermercado-categoria/remover/{categoria}(categoria=${supermercadoCategoria.categoria.id})}"> 
 							<i class="fa fa-trash-alt"></i>
 						</a>
-						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].id}"/>
-						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].supermercado.id}"/>
-						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].categoria.id}"/>
-						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].categoria.nome}"/>
-						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].corredor}"/>
-						<input type="hidden" th:field="*{supermercadoCategorias[__${stat.index}__].posicaoCorredor}"/>
 					</td>
 				</tr>
 				<tr th:if="${#lists.isEmpty(supermercado.supermercadoCategorias)}" class="js-linha-nenhuma-categoria-adicionada">

@@ -31,22 +31,47 @@
 					
 					<div class="form-group">
 						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{uuid}">
 						<input type="submit" class="btn btn-primary" value="Salvar">
-					</div>
-					
-					<div class="form-group">
-						<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#categoriaModal" data:operacao="ADICIONAR"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Categoria</a>
-					</div>
-					
-					<div>
-						<h6 class="feira-header">Categorias Adicionadas</h6>
-						<div id="categorias-adicionadas">
-							<th:block th:replace="~{supermercado/fragments/supermercadoCategorias :: supermercadoCategorias}"></th:block>
-						</div>
 					</div>
 				</form>
 				
-				<div class="modal fade" id="categoriaModal" role="dialog" aria-hidden="true" data:url="@{/supermercado-categoria}">
+				<div class="row">
+					<div class="col-12 col-lg-6 mb-4">
+						<div class="form-group">
+							<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#corredorModal" data:operacao="ADICIONAR"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Corredor</a>
+						</div>
+						
+						<div>
+							<h6 class="feira-header">Corredores</h6>
+							<div id="corredores-adicionados">
+								<th:block th:replace="~{supermercado/fragments/corredores :: corredores}"></th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-12 col-lg-6">
+						<div class="form-group">
+							<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#categoriaModal" data:operacao="ADICIONAR"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Categoria</a>
+						</div>
+						
+						<div>
+							<h6 class="feira-header">Categorias</h6>
+							<div id="categorias-adicionadas">
+								<th:block th:replace="~{supermercado/fragments/supermercadoCategorias :: supermercadoCategorias}"></th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal fade" id="corredorModal" role="dialog" aria-hidden="true" data:url="@{/corredor}" tabindex="-1">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal fade" id="categoriaModal" role="dialog" aria-hidden="true" data:url="@{/supermercado-categoria}" tabindex="-1">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 						</div>
@@ -56,7 +81,8 @@
 		</div>
 	</div>
 	<th:block layout:fragment="extra-javascript">
-		<script th:src="@{/javascript/supermercado.js}"></script>
+		<script th:src="@{/javascript/supermercado.corredor.js}"></script>
+		<script th:src="@{/javascript/supermercado.supermercadoCategoria.js}"></script>
 	</th:block>
 </body>
 </html>

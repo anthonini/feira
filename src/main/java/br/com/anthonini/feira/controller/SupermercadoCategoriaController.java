@@ -1,7 +1,8 @@
 package br.com.anthonini.feira.controller;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
+import br.com.anthonini.feira.controller.supermercado.OperacaoDadosSupermercado;
 import br.com.anthonini.feira.model.Categoria;
-import br.com.anthonini.feira.model.Sentido;
+import br.com.anthonini.feira.model.Supermercado;
 import br.com.anthonini.feira.model.SupermercadoCategoria;
 import br.com.anthonini.feira.repository.CategoriaRepository;
+import br.com.anthonini.feira.session.SupermercadoSession;
 
 @Controller
 @RequestMapping("/supermercado-categoria")
@@ -29,64 +32,78 @@ public class SupermercadoCategoriaController extends AbstractController {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
+	@Autowired
+	private SupermercadoSession sessao;
+	
 	@PutMapping
-	public ModelAndView modal(@RequestBody SupermercadoCategoria supermercadoCategoria, ModelMap model, OperacaoSupermercadoCategoria operacao, Long[] categoriasAdicionadas) {
-		ModelAndView mv = new ModelAndView("supermercadoCategoria/categoriaModal");
+	public ModelAndView modal(@RequestBody SupermercadoCategoria supermercadoCategoria, ModelMap model, OperacaoDadosSupermercado operacao, String uuid) {
+		Supermercado supermercado = sessao.getSupermercado(uuid);
+		supermercadoCategoria = getSupermercadoCategoria(supermercado, supermercadoCategoria);
+		if(supermercadoCategoria != null) {
+			model.addAttribute(supermercadoCategoria);
+		}
+		
+		ModelAndView mv = new ModelAndView("supermercado/fragments/supermercadoCategoriaModal");
 		List<Categoria> categorias = categoriaRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
-		List<Long> categoriasAdicionadasList = Arrays.asList(categoriasAdicionadas);
-		categorias.removeIf(c -> categoriasAdicionadasList.contains(c.getId()));
+		
+		List<Categoria> categoriasAdicionadas = supermercado.getSupermercadoCategorias().stream()
+													.map(SupermercadoCategoria::getCategoria)
+													.collect(Collectors.toList());
+		categorias.removeIf(c -> categoriasAdicionadas.contains(c));
 		
 		mv.addObject("categorias", categorias);
-		mv.addObject("sentidos", Sentido.values());
+		mv.addObject("corredores", supermercado.getCorredores());
 		mv.addObject("operacao", operacao.getDescricao());
 		mv.addObject("metodo", operacao.getMetodo());
-		mv.addObject("categoriasAdicionadas", Arrays.toString(categoriasAdicionadas).replaceAll("\\[", "").replaceAll("\\]",""));
 		
 		return mv;
 	}
 	
 	@PostMapping("/adicionar")
-	public ModelAndView adicionar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model, Long[] categoriasAdicionadas) {
+	public ModelAndView adicionar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model, String uuid) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
-			model.addAttribute("categoriaAdicionada", supermercadoCategoria);
+			Supermercado supermercado = sessao.getSupermercado(uuid);
+			supermercadoCategoria.setCorredor(supermercado.getCorredor(supermercadoCategoria.getCorredor().getNumero()).get());
+			supermercado.getSupermercadoCategorias().add(supermercadoCategoria);
+			supermercado.ordernarSupermercadoCategorias();
+			model.addAttribute("categoriaAdicionada", true);
 			model.addAttribute("supermercadoCategoria", new SupermercadoCategoria());
-			categoriasAdicionadas = Arrays.copyOf(categoriasAdicionadas, categoriasAdicionadas.length+1);
-			categoriasAdicionadas[categoriasAdicionadas.length-1] = supermercadoCategoria.getCategoria().getId();
 			addMensagemSucesso(model, "Categoria adicionada com sucesso!");
 		}
 		
-		return modal(null, model, OperacaoSupermercadoCategoria.ADICIONAR, categoriasAdicionadas);
+		return modal(null, model, OperacaoDadosSupermercado.ADICIONAR, uuid);
 	}
 	
 	@PostMapping("/alterar")
-	public ModelAndView alterar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model, Long[] categoriasAdicionadas) {
+	public ModelAndView alterar(@Valid SupermercadoCategoria supermercadoCategoria, BindingResult bindingResult, ModelMap model, String uuid) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
-			model.addAttribute("categoriaAlterada", supermercadoCategoria);
+			Supermercado supermercado = sessao.getSupermercado(uuid);
+			supermercado.getSupermercadoCategorias().removeIf(c -> c.getCategoria().equals(supermercadoCategoria.getCategoria()));
+			supermercado.getSupermercadoCategorias().add(supermercadoCategoria);
+			supermercado.ordernarSupermercadoCategorias();
+			model.addAttribute("categoriaAlterada", true);
 		}
 		
-		return modal(supermercadoCategoria, model, OperacaoSupermercadoCategoria.ALTERAR, categoriasAdicionadas);
+		return modal(supermercadoCategoria, model, OperacaoDadosSupermercado.ALTERAR, uuid);
 	}
-	
-	private enum OperacaoSupermercadoCategoria {
-		ADICIONAR("Adicionar"),
-		ALTERAR("Alterar");
-		
-		private String descricao;
-		
-		private OperacaoSupermercadoCategoria(String descricao) {
-			this.descricao = descricao;
-		}
 
-		public String getDescricao() {
-			return descricao;
+	private SupermercadoCategoria getSupermercadoCategoria(Supermercado supermercado, SupermercadoCategoria supermercadoCategoria) {
+		if(supermercadoCategoria != null) {
+			if(!supermercadoCategoria.isNovo() && supermercado.getSupermercadoCategorias().contains(supermercadoCategoria)) {
+				return supermercado.getSupermercadoCategorias().get(supermercado.getSupermercadoCategorias().indexOf(supermercadoCategoria));
+			} else if(supermercadoCategoria.getCategoria() != null && !supermercadoCategoria.getCategoria().isNova()) {
+				Categoria categoria = supermercadoCategoria.getCategoria();
+				Optional<SupermercadoCategoria> scOptional = supermercado.getSupermercadoCategorias().stream()
+						.filter(sc -> sc.getCategoria().equals(categoria)).findFirst();
+				if(scOptional.isPresent())
+					return scOptional.get();
+			}
 		}
 		
-		public String getMetodo() {
-			return descricao.toLowerCase();
-		}
+		return null;
 	}
 }
