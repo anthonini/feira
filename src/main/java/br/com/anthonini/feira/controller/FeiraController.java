@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
+import br.com.anthonini.feira.dto.ListaCompras;
 import br.com.anthonini.feira.model.Feira;
 import br.com.anthonini.feira.repository.FeiraRepository;
 import br.com.anthonini.feira.repository.SupermercadoRepository;
@@ -94,6 +95,20 @@ public class FeiraController extends AbstractController {
 		service.remover(feira);			 
 		return ResponseEntity.ok().build();
 	}
+	
+	@GetMapping("/lista/{id}")
+	public ModelAndView listaCompras(@PathVariable("id") Feira feira, ModelMap model, RedirectAttributes redirect) {
+		if (feira == null) {
+            addMensagemErro(redirect, "Feira não encontrada");
+            return new ModelAndView("redirect:/feira");
+        }
+		
+		ListaCompras listaCompras = new ListaCompras(feira);
+
+		model.addAttribute(feira);
+		model.addAttribute(listaCompras);
+        return new ModelAndView("feira/lista-feira");
+    }
 	
 	private ModelAndView retornarErrosValidacao(Feira feira, BindingResult result, ModelMap model) {
 		addMensagensErroValidacao(model, result);

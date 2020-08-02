@@ -49,7 +49,7 @@ public class Corredor implements Entidade {
 	private Long numeroAnterior = 0L;
 	
 	public String getDescricaoCompleta() {
-		return String.format("%d - %s", numero, descricao);
+		return String.format("%s%s", (numero != null ? numero + " - " : ""), descricao);
 	}
 
 	public Long getId() {

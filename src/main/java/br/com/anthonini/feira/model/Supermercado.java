@@ -47,6 +47,24 @@ public class Supermercado implements Entidade {
 		return corredores.stream().filter(c -> c.getNumero().equals(numero)).findFirst();
 	}
 	
+	public SupermercadoCategoria getSupermercadoCategoria(Categoria categoria) {
+		if(categoria != null) {
+			Optional<SupermercadoCategoria> supermercadoCategoria = supermercadoCategorias.stream().filter(c -> c.getCategoria().equals(categoria)).findFirst();
+			if(supermercadoCategoria.isPresent()) {
+				return supermercadoCategoria.get();
+			}
+		}
+		return null;
+	}
+	
+	public Corredor getCorredor(Categoria categoria) {
+		SupermercadoCategoria supermercadoCategoria = getSupermercadoCategoria(categoria);
+		if(supermercadoCategoria != null) {
+			return supermercadoCategoria.getCorredor();
+		}
+		return null;
+	}
+	
 	public void ordernarSupermercadoCategorias() {
 		Comparator<SupermercadoCategoria> comparator = Comparator
 						.comparing( SupermercadoCategoria::getNumeroCorredor )

@@ -7,6 +7,15 @@
 	xmlns:an="http://www.anthonini.com.br"
 	xmlns:data="http://www.thymeleaf.com/extras/data">
 
+<head>
+	<style>
+		.table-col-acoes {
+			    width: 105px;
+    			min-width: 105px;
+		}
+	</style>
+</head>
+
 <body>
 	<div layout:fragment="conteudo" class="container-fluid">
 		<div class="card shadow mb-4">
@@ -63,6 +72,9 @@
                                  <td th:text="${feira.descricaoPesoTotal}">8,750Kg</td>
                                  <td th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 165,00</td>
                                  <td>
+                                 	<a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/lista/{id}(id=${feira.id})}" title="Lista">
+                                         <i class="fa fa-list"></i>
+                                     </a>
                                      <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/{id}(id=${feira.id})}" title="Alterar">
                                          <i class="fa fa-edit"></i>
                                      </a>
