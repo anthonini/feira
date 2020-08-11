@@ -86,7 +86,7 @@ public class ListaCompras {
 	private Corredor corredorNaoCategorizado() {
 		Corredor corredor = new Corredor();
 		corredor.setNumero(Long.MAX_VALUE);
-		corredor.setDescricao("Não Categorizado");
+		corredor.setDescricao("Sem Corredor");
 		
 		return corredor;
 	}

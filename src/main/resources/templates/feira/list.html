@@ -10,8 +10,8 @@
 <head>
 	<style>
 		.table-col-acoes {
-			    width: 105px;
-    			min-width: 105px;
+			    width: 130px;
+    			min-width: 130px;
 		}
 	</style>
 </head>
@@ -72,6 +72,9 @@
                                  <td th:text="${feira.descricaoPesoTotal}">8,750Kg</td>
                                  <td th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 165,00</td>
                                  <td>
+                                 	<a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/email/{id}(id=${feira.id})}" title="Enviar lista por email">
+                                         <i class="fa fa-envelope"></i>
+                                     </a>
                                  	<a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/lista/{id}(id=${feira.id})}" title="Lista">
                                          <i class="fa fa-list"></i>
                                      </a>

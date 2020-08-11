@@ -18,6 +18,12 @@ public class MailConfig {
 	
 	@Value("${external.mail.password:mail.password}")
 	private String password;
+	
+	@Value("${external.from.mail:from.mail}")
+	private String fromEmail;
+	
+	@Value("${external.to.mail:to.mail}")
+	private String toEmail;
 
 	@Bean
 	public JavaMailSender mailSender() {
@@ -37,5 +43,13 @@ public class MailConfig {
 		mailSender.setJavaMailProperties(props);
 		
 		return mailSender;
+	}
+
+	public String getFromEmail() {
+		return fromEmail;
+	}
+
+	public String getToEmail() {
+		return toEmail;
 	}
 }

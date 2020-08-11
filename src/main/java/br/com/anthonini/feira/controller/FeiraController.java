@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
 import br.com.anthonini.feira.dto.ListaCompras;
+import br.com.anthonini.feira.mail.Mailer;
 import br.com.anthonini.feira.model.Feira;
 import br.com.anthonini.feira.repository.FeiraRepository;
 import br.com.anthonini.feira.repository.SupermercadoRepository;
@@ -49,6 +52,9 @@ public class FeiraController extends AbstractController {
 	
 	@Autowired
 	private SupermercadoRepository supermercadoRepository;
+	
+	@Autowired
+	private Mailer mailer;
 	
 	@GetMapping
 	public ModelAndView listar(FeiraFilter feiraFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="dataCompra") Pageable pageable) {
@@ -108,6 +114,25 @@ public class FeiraController extends AbstractController {
 		model.addAttribute(feira);
 		model.addAttribute(listaCompras);
         return new ModelAndView("feira/lista-feira");
+    }
+	
+	@GetMapping("/email/{id}")
+	public ModelAndView email(@PathVariable("id") Feira feira, ModelMap model, RedirectAttributes redirect) {
+		if (feira == null) {
+            addMensagemErro(redirect, "Feira não encontrada");
+            return new ModelAndView("redirect:/feira");
+        }
+		
+		try {
+			mailer.send(feira);
+			addMensagemSucesso(redirect, "Email enviado com sucesso");
+		} catch (MailSendException e) {
+			addMensagemErro(redirect, "Falha ao enviar email. Verifique as configurações de email e se o seu antivírus bloqueou o envio.");
+		} catch (MailAuthenticationException e) {
+			addMensagemErro(redirect, "Falha ao autenticar com o servidor de email. Verifique as credenciais e se o seu servidor de email está bloqueando o acesso.");
+		}
+	
+		return new ModelAndView("redirect:../lista/"+feira.getId());
     }
 	
 	private ModelAndView retornarErrosValidacao(Feira feira, BindingResult result, ModelMap model) {

@@ -76,6 +76,8 @@ public class Produto implements Entidade {
 	@Transient
 	private String fotoOriginal;
 	
+	private String fotoBase64;
+	
 	public String getDescricaoPeso() {
 		return this.unidadePeso.getDescricaoAbreviada(pesoUnidade);
 	}
@@ -182,6 +184,14 @@ public class Produto implements Entidade {
 
 	public void setFotoOriginal(String fotoOriginal) {
 		this.fotoOriginal = fotoOriginal;
+	}
+
+	public String getFotoBase64() {
+		return fotoBase64;
+	}
+
+	public void setFotoBase64(String fotoBase64) {
+		this.fotoBase64 = fotoBase64;
 	}
 
 	@Override
