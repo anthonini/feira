@@ -13,16 +13,16 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @PropertySource(value = { "file:./.feira-mail.properties" }, ignoreResourceNotFound = true)
 public class MailConfig {
 	
-	@Value("${external.mail.username:mail.username}")
+	@Value("${external.feira.mail.username:feira.mail.username}")
 	private String username;
 	
-	@Value("${external.mail.password:mail.password}")
+	@Value("${external.feira.mail.password:feira.mail.password}")
 	private String password;
 	
-	@Value("${external.from.mail:from.mail}")
+	@Value("${external.feira.from.mail:feira.from.mail}")
 	private String fromEmail;
 	
-	@Value("${external.to.mail:to.mail}")
+	@Value("${external.feira.to.mail:feira.to.mail}")
 	private String toEmail;
 
 	@Bean
