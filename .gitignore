@@ -32,3 +32,4 @@ build/
 /.fotos/
 /h2/
 /.feira-mail.properties
+/debug.log
