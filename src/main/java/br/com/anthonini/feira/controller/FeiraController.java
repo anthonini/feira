@@ -57,7 +57,7 @@ public class FeiraController extends AbstractController {
 	private Mailer mailer;
 	
 	@GetMapping
-	public ModelAndView listar(FeiraFilter feiraFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="dataCompra") Pageable pageable) {
+	public ModelAndView listar(FeiraFilter feiraFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 10) @SortDefault(value="dataCompra") Pageable pageable) {
 		ModelAndView mv = new ModelAndView("feira/list");
 		PageWrapper<Feira> paginaWrapper = new PageWrapper<>(repository.filtrar(feiraFilter,pageable),httpServletRequest);
         mv.addObject("pagina", paginaWrapper);

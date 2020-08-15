@@ -52,7 +52,7 @@ public class CategoriaController extends AbstractController {
 	}
 	
 	@GetMapping
-	public ModelAndView listar(@RequestParam(defaultValue = "") String nome, HttpServletRequest httpServletRequest, @PageableDefault(size = 5) @SortDefault(value="nome") Pageable pageable) {		
+	public ModelAndView listar(@RequestParam(defaultValue = "") String nome, HttpServletRequest httpServletRequest, @PageableDefault(size = 10) @SortDefault(value="nome") Pageable pageable) {		
 		ModelAndView mv = new ModelAndView("categoria/list");
 		PageWrapper<Categoria> paginaWrapper = new PageWrapper<>(repository.findByNomeContainingIgnoreCase(nome, pageable),httpServletRequest);
         mv.addObject("pagina", paginaWrapper);

@@ -61,7 +61,7 @@ public class ProdutoController extends AbstractController {
 	}
 	
 	@GetMapping
-	public ModelAndView listar(ProdutoFilter produtoFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 10) @SortDefault(value="nome") Pageable pageable) {
+	public ModelAndView listar(ProdutoFilter produtoFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 30) @SortDefault(value="nome") Pageable pageable) {
 		ModelAndView mv = new ModelAndView("produto/list");
 		PageWrapper<Produto> paginaWrapper = new PageWrapper<>(repository.filtrar(produtoFilter,pageable),httpServletRequest);
         mv.addObject("pagina", paginaWrapper);
