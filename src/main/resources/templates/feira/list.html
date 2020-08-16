@@ -7,6 +7,15 @@
 	xmlns:an="http://www.anthonini.com.br"
 	xmlns:data="http://www.thymeleaf.com/extras/data">
 
+<head>
+	<style>
+		.table-col-acoes {
+			    width: 130px;
+    			min-width: 130px;
+		}
+	</style>
+</head>
+
 <body>
 	<div layout:fragment="conteudo" class="container-fluid">
 		<div class="card shadow mb-4">
@@ -35,7 +44,7 @@
 						</div>
 						<div class="row">
 							<div class="form-group col-sm-4" >
-								<label class="control-label" for="nome">Nome do item</label>
+								<label class="control-label" for="nome">Nome do Produto</label>
 								<input type="text" class="form-control" id="nome" th:field="*{nomeItem}"/>
 							</div>
 						</div>
@@ -52,7 +61,7 @@
 								<th style="width: 14%">Itens</th>								
 								<th style="width: 14%">Peso</th>
 								<th style="width: 14%">Valor Total</th>
-								<th style="width: 78px;"></th>
+								<th class="table-col-acoes"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -63,7 +72,13 @@
                                  <td th:text="${feira.descricaoPesoTotal}">8,750Kg</td>
                                  <td th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 165,00</td>
                                  <td>
-                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/alterar/{id}(id=${feira.id})}" title="Alterar">
+                                 	<a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/email/{id}(id=${feira.id})}" title="Enviar lista por email">
+                                         <i class="fa fa-envelope"></i>
+                                     </a>
+                                 	<a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/lista/{id}(id=${feira.id})}" title="Lista">
+                                         <i class="fa fa-list"></i>
+                                     </a>
+                                     <a class="btn btn-sm text-primary" style="padding: .20rem;" th:href="@{/feira/{id}(id=${feira.id})}" title="Alterar">
                                          <i class="fa fa-edit"></i>
                                      </a>
                                      <a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
@@ -74,7 +89,7 @@
                                  </td>
                              </tr>
                              <tr th:if="${pagina.vazia}">
-                             	<td colspan="6"><i>Nenhuma feira cadastrada.</i></td>
+                             	<td colspan="6"><i>Nenhuma feira encontrada.</i></td>
                              </tr>
 						</tbody>
 					</table>

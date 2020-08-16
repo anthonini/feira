@@ -2,15 +2,19 @@ package br.com.anthonini.feira.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,12 +38,11 @@ public class ComprasController {
 	private ProdutoRepository produtoRepository;
 	
 	@GetMapping
-	public ModelAndView listar(String nome) {
+	public ModelAndView listar(@RequestParam(defaultValue = "") String nome) {
 		ModelAndView mv = new ModelAndView("compras/listagem");
-		nome = nome != null ? nome : "";
 		
-		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);		
-		List<ItemFeira> itens = new ArrayList<>();
+		List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome, Sort.by("categoria.nome"));
+		Map<String, List<ItemFeira>> categorias = new LinkedHashMap<>();
 		
 		for(Produto produto : produtos) {
 			Optional<ItemFeira> itemOptional = feiraSession.buscarPorProduto(produto);
@@ -47,11 +50,16 @@ public class ComprasController {
 			if(!itemOptional.isPresent()) {
 				item.setProduto(produto);
 				item.setPorPeso(produto.isCobradoPorKG());				
-			}			
-			itens.add(item);
-		}
+			}
+			
+			String categoria = produto.getCategoria() != null ? produto.getCategoria().getNome() : "Não categorizado";
+			if(!categorias.containsKey(categoria)) {
+				categorias.put(categoria, new ArrayList<>());
+			}
+			categorias.get(categoria).add(item);
+		}		
 		
-		mv.addObject("itens", itens);
+		mv.addObject("categorias", categorias);
 		mv.addObject("adicionados", feiraSession.getFeira().getItens());
 			
 		return mv;

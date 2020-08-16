@@ -40,9 +40,12 @@ div.dataTables_paginate ul.pagination {
     cursor: pointer;
     font-size: 500px;
 }
+.tabela-lista-produtos {
+	min-width: 495px;
+}
 .table-produtos-col-foto {
-	min-width: 50px;
-	width: 8.33%;
+	width: 86px;
+	min-width: 86px;
 }
 .table-produtos-col-cobrado-por {
 	width: 16.66%;
@@ -53,8 +56,14 @@ div.dataTables_paginate ul.pagination {
 .table-produtos-col-peso-unidade {
 	width: 16.66%;
 }
-.table-produtos-col-acoes {
-	width: 78px;
+.table-produtos-col-acoes,
+.table-col-acoes
+ {
+	width: 75px;
+	min-width: 75px;
+}
+.col-numero {
+	width: 50px;
 }
 i.mock {
 	font-size: 3em;

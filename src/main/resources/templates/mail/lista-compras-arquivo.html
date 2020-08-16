@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" th:attr="content=#{descricao}">
+  <meta name="author" th:attr="content=#{autor}">
+
+  <title th:text="#{titulo}">Título do Sistema</title>
+  <style type="text/css">
+		body {
+		    margin: 0;
+		    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+		    font-size: 1rem;
+		    font-weight: 400;
+		    line-height: 1.5;
+		    color: #858796;
+		    text-align: left;
+		    background-color: #fff;
+		}
+		.container, .container-fluid {
+		    padding-left: 1.5rem;
+		    padding-right: 1.5rem;
+		}
+		.row {
+			display: flex;
+		    flex-wrap: wrap;
+		    margin-right: -.75rem;
+		    margin-left: -.75rem;
+		}
+		.row.no-gutters {
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #858796;
+			text-align: left;
+			box-sizing: border-box;
+			display: flex;
+			flex-wrap: wrap;
+			margin-right: 0;
+			margin-left: 0;
+			align-items: center!important;
+		}
+		.col {
+			flex-basis: 0;
+		    flex-grow: 1;
+		    max-width: 100%;
+		}
+		.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+		    position: relative;
+		    width: 100%;
+		    padding-right: .75rem;
+		    padding-left: .75rem;
+		}
+		.col-auto {
+		    flex: 0 0 auto;
+		    width: auto;
+		    max-width: 100%;
+		}
+		.offset-4 {
+		    margin-left: 33.33333%;
+		}
+		.col-1 {
+		    flex: 0 0 8.33333%;
+		    max-width: 8.33333%;
+		}
+		.col-3 {
+		    flex: 0 0 25%;
+		    max-width: 25%;
+		}
+		.col-8 {
+		    flex: 0 0 66.66667%;
+		    max-width: 66.66667%;
+		}
+		.col-12 {
+		    flex: 0 0 100%;
+		    max-width: 100%;
+		}
+		.card-body {
+			padding: 1.0rem;
+			width: 100%;
+		}
+		.card.lista-itens-feira {
+			border-radius: 0px; 
+			border-top: none;
+		}
+		.card.lista-itens-feira:hover {
+			color: #2e2f37;
+		    text-decoration: none;
+		    background-color: #f8f9fc;
+		}
+		@media (max-width: 575px){
+			.feira-quantidade {
+				padding-left: .75rem;
+			}
+			.hide-sm {
+				display: none;
+			}
+		}
+		
+		@media (min-width: 576px) and (max-width: 620px){
+			.feira-quantidade {
+				padding-left: 0px;
+			}
+		}
+		@media (min-width: 576px) {
+			.text-sm-right {
+			    text-align: right!important;
+			}
+			.offset-sm-0 {
+			    margin-left: 0;
+			}
+			.col-sm-2 {
+			    flex: 0 0 16.66667%;
+			    max-width: 16.66667%;
+			}
+			.col-sm-3 {
+			    flex: 0 0 25%;
+			    max-width: 25%;
+			}
+			.col-sm-6 {
+			    flex: 0 0 50%;
+			    max-width: 50%;
+			}
+		}
+		@media (min-width: 768px){
+			.col-md-6 {
+			    flex: 0 0 50%;
+			    max-width: 50%;
+			}
+		}
+		@media (min-width: 1200px){
+			.col-xl-2 {
+			    flex: 0 0 16.66667%;
+			    max-width: 16.66667%;
+			}
+			.col-xl-3 {
+			    flex: 0 0 25%;
+			    max-width: 25%;
+			}
+			.col-xl-4 {
+			    flex: 0 0 33.33333%;
+			    max-width: 33.33333%;
+			}
+			.col-xl-6 {
+			    flex: 0 0 50%;
+			    max-width: 50%;
+			}
+		}
+		.mb-4, .my-4 {
+		    margin-bottom: 1.5rem!important;
+		}
+		.py-2 {
+			padding-top: .5rem!important;
+			padding-bottom: .5rem!important;
+		}
+		.shadow {
+			box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
+		}
+		.h-100{
+			height: 100%!important;
+		}
+		.card-new {	
+			position: relative;
+		    display: flex;
+		    flex-direction: column;
+		    min-width: 0;
+		    word-wrap: break-word;
+		    background-color: #fff;
+		    background-clip: border-box;
+		    border: 1px solid #e3e6f0;
+		    border-radius: .35rem;
+		}
+		.card-new.lista-itens-feira {
+		    border-radius: 0px;
+		    border-top: none;
+		}
+		.card-new.primary {
+			border-left: .25rem solid #4e73df!important;
+		}
+		.card-new.success {
+			border-left: .25rem solid #1cc88a!important;
+		}
+		.card-new.info {
+			border-left: .25rem solid #36b9cc!important;
+		}
+		.card-new-header {
+			padding: .75rem 1.25rem;
+			margin-bottom: 0;
+			background-color: #f8f9fc;
+			border-bottom: 1px solid #e3e6f0;
+			display: flex!important;
+			flex-direction: row!important;
+			justify-content: space-between!important;
+			align-items: center!important;
+			padding-top: 1rem!important;
+			padding-bottom: 1rem!important;
+			border-radius: calc(.35rem - 1px) calc(.35rem - 1px) 0 0;
+			font-size: 1rem;
+		}
+		.card-new-body {
+			flex: 1 1 auto;
+		  		padding: 1.0rem;
+		}
+		.card-row {
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			text-align: left;
+			box-sizing: border-box;
+			display: flex;
+			flex-wrap: wrap;
+			margin-right: 0;
+			margin-left: 0;
+			align-items: center!important;
+		}
+		.card-col {
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			text-align: left;
+			box-sizing: border-box;
+			position: relative;
+			width: 100%;
+			flex-basis: 0;
+			flex-grow: 1;
+			max-width: 100%;
+			margin-right: .5rem!important;
+			padding-right: 0;
+			padding-left: 0;
+		}
+		.card-col-title {
+			line-height: 1.5;
+			text-align: left;
+			box-sizing: border-box;
+			margin-bottom: .25rem!important;
+			text-transform: uppercase!important;
+			font-weight: 700!important;
+			font-size: .7rem;
+		}
+		*, ::after, ::before {
+		    box-sizing: border-box;
+		}
+		.primary {
+			color: #4e73df!important;
+		}
+		.success {
+			color: #1cc88a!important;
+		}
+		.info {
+			color: #36b9cc!important;
+		}
+		.card-col-corpo {
+			text-align: left;
+			box-sizing: border-box;
+			line-height: 1.2;
+			font-size: 1.25rem;
+			margin-bottom: 0!important;
+			font-weight: 700!important;
+			color: #5a5c69!important;
+		}
+		.card-col-auto {
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #858796;
+			text-align: left;
+			box-sizing: border-box;
+			position: relative;
+			flex: 0 0 auto;
+			width: auto;
+			max-width: 100%;
+			padding-right: 0;
+			padding-left: 0;
+		}
+		.progress {
+			color: #36b9cc!important;
+			display: flex;
+			overflow: hidden;
+			font-size: .75rem;
+			background-color: #eaecf4;
+			border-radius: .35rem;
+			margin-right: .5rem!important;
+			height: .5rem;
+		}
+		.progress-bar {
+			box-sizing: border-box;
+		    display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		    color: #fff;
+		    text-align: center;
+		    white-space: nowrap;
+		    transition: width .6s ease;
+		    background-color: #36b9cc!important;
+		}
+		.control-label {
+			font-weight: 700!important;
+			display: inline-block;
+		  		margin-bottom: .5rem;
+		}
+		.feira-header {
+		    text-transform: uppercase;
+		    font-weight: 800;
+		    font-size: .75rem;
+		    background-color: #4e73df;
+		    border: 1px solid #4e73df;
+		    padding-top: .75rem;
+		    padding-bottom: .75rem;
+		    padding: .5rem 1.5rem;
+		    color: #fff;
+		    margin-bottom: 0px;
+		}
+		.corredor {
+		    padding-left: 24px;
+		    color: #3a3b45!important;
+		    background-color: #eaecf4!important;
+		}
+		.text-left {
+		    text-align: left!important;
+		}
+		.text-center {
+		    text-align: center!important;
+		}
+		.text-gray-900 {
+		    color: #3a3b45!important;
+		}
+		.font-weight-bold {
+		    font-weight: 700!important;
+		}
+		.badge-secondary {
+		    color: #fff;
+		    background-color: #858796;
+		}
+		.badge {
+		    display: inline-block;
+		    padding: .25em .4em;
+		    font-size: 75%;
+		    font-weight: 700;
+		    line-height: 1;
+		    text-align: center;
+		    white-space: nowrap;
+		    vertical-align: baseline;
+		    border-radius: .35rem;
+		    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		}
+		.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+		    margin-bottom: .5rem;
+		    font-weight: 400;
+		    line-height: 1.2;
+		}
+		h1, h2, h3, h4, h5, h6 {
+		    margin-top: 0;
+		    margin-bottom: .5rem;
+		}
+		.align-middle {
+		    vertical-align: middle!important;
+		    line-height: 72px;
+		}
+		.lista-itens-feira {
+			cursor: pointer;
+		}
+  </style>
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<div class="container-fluid" style="margin-top: 30px;">
+					<div class="row">
+						<div class="col-xl-3 col-md-6 mb-4">
+							<div class="card-new shadow primary py-2 h-100">
+								<div class="card-new-body">
+									<div class="card-row">
+										<div class="card-col">
+											<div class="card-col-title primary">Quantidade de Produtos</div>
+											<div class="card-col-corpo" th:text="${feira.quantidadeItens}">15</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+			
+						<div class="col-xl-3 col-md-6 mb-4">
+							<div class="card-new shadow success py-2 h-100">
+								<div class="card-new-body">
+									<div class="card-row">
+										<div class="card-col">
+											<div class="card-col-title success">Valor Total</div>
+											<div class="card-col-corpo" th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 215,00</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+			
+						<div class="col-xl-4 col-md-6 mb-4">
+							<div class="card-new shadow info py-2 h-100">
+								<div class="card-new-body">
+									<div class="card-row">
+										<div class="card-col">
+											<div class="card-col-title info">Peso</div>
+											<div class="row">
+												<div class="col-auto">
+													<div class="card-col-corpo" th:text="${feira.descricaoPesoTotal}">8,750Kg</div>
+												</div>
+												<div class="col">
+													<div class="progress">
+														<div class="progress-bar bg-info" role="progressbar" th:style="|width: ${feira.pesoTotal/9*100}%|" th:attr="aria-valuenow=${feira.pesoTotal}" aria-valuemin="0" aria-valuemax="9"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="card-new">
+						<!-- Card Header - Dropdown -->
+						<div class="card-new-header">
+							<h6 style="color: #4e73df!important; font-weight: 700!important; margin: 0!important; font-size: 1rem;">Feira</h6>
+						</div>
+						<!-- Card Body -->
+						<div class="card-new-body">
+							<div class="row">
+								<div class="col-12">
+									<label class="control-label">Nome:</label> [[${feira.nome}]]
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<label class="control-label">Data da Compra:</label> [[${feira.dataCompra}]]
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<label class="control-label">Supermercado:</label> [[${feira.supermercado?.nome}]]
+								</div>
+							</div>
+							
+							<div>
+								<h6 class="feira-header">Lista de Compras</h6>
+								<th:block th:each="corredor : ${listaCompras.corredores}">
+									<div class="corredor bg-gray-200 text-gray-900">
+										[[${corredor.corredor.descricaoCompleta}]]<br/>							
+									</div>
+									<div class="card-new lista-itens-feira" th:each="item, itemStat : ${corredor.itens}">
+										<div class="card-body">
+											<div class="row" >
+												<div class="text-center align-middle col-1">
+													<input type="checkbox" />
+												</div>
+												<div class="text-center col-3 col-sm-2 col-xl-2 feira-imagem">
+													<img th:src="${item.produto.fotoBase64}" class="img-fluid" style="height: 4rem;">
+												</div>
+												<div class="text-left col-8 col-sm-6 col-xl-6">
+													<div class="font-weight-bold text-gray-900" th:text="${item.produto.nome}">Café Kimimo - 250g</div>
+													<div class="text-gray-900">
+														<span th:text="|R$ ${{item.produto.preco}}|">R$ 3,50</span>
+														<span class="badge badge-secondary" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
+													</div>
+													<div class="text-gray-900">
+														<span class="hide-sm" th:unless="${item.produto.pesoUnidade > 0}" th:text="'&nbsp'"></span>
+														<span th:if="${item.produto.pesoUnidade > 0}" th:text="|Peso unidade: ${{item.produto.descricaoPeso}}|">250g</span>
+													</div>
+												</div>
+												<div class="text-sm-right offset-4 offset-sm-0 col-8 col-sm-3 col-xl-3 text-gray-900 feira-quantidade">
+													<div>
+														<div th:if="${item.porPeso}" class="hide-sm">
+															<span th:text="'&nbsp'"></span>
+														</div>
+														<div th:unless="${item.porPeso}">
+															<span class="font-weight-bold">Quantidade:</span>
+															<span th:text="${item.quantidade}">5</span>
+														</div>
+													</div>
+													<div>
+														<span class="font-weight-bold">Peso: </span>
+														<span id="peso-produto-1" th:text="${item.descricaoPeso}">250g</span>
+													</div>
+													<div class="font-weight-bold">
+														<span id="valor-total-produto-1" th:text="${#numbers.formatCurrency(item.valorTotal)}">R$ 3,50</span>
+													</div>									
+												</div>
+											</div>
+										</div>
+									</div>
+								</th:block>
+								<div class="feira-nenhum-item align-items-center" th:if="${listaCompras.vazia}" >
+									<div class="text-center text-gray-500">Nenhum produto adicionado.</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Footer -->
+			<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var itensFeira = document.getElementsByClassName('lista-itens-feira');
+		for(item of itensFeira) {
+			item.onclick = function() {
+				var checkbox = this.children[0].children[0].children[0].children[0];
+				if(this.style.backgroundColor) {
+					this.style.backgroundColor = null;
+					checkbox.checked = false;
+				} else {
+					this.style.backgroundColor = '#b5b7bd';
+					checkbox.checked = true;
+				}
+			}
+		}
+	</script>
+</body>
+</html>

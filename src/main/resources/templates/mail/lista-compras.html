@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" th:attr="content=#{descricao}">
+  <meta name="author" th:attr="content=#{autor}">
+
+  <title th:text="#{titulo}">Título do Sistema</title>
+  
+  <!-- Custom fonts for this template-->
+  <!-- <script src="https://kit.fontawesome.com/92c0d87022.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"> -->
+  
+  <style type="text/css">
+  	*, ::after, ::before {
+	    box-sizing: border-box;
+	}
+  </style>
+</head>
+
+<body style="height:100%;width:100%; margin: 0;font-weight: 400;line-height: 1.5;color: #858796;text-align: left;background-color: #fff;font-family: Nunito,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';">
+	<div style="width: 100%;margin-top: 30px;margin-right: auto;margin-left: auto;padding-left: 0.5rem;padding-right: 0.5rem;">
+		<div style="display: flex;flex-wrap: wrap;margin-right: -0.5rem;margin-left: -0.5rem;">
+
+			<div style="min-width: 300px;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem; margin-bottom: 1.5rem!important;flex: 0 0 33%;max-width: 33%;">
+				<div style="border-left: .25rem solid #4e73df!important; padding-bottom: .5rem!important; padding-top: .5rem!important; height: 100%!important; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #e3e6f0;border-radius: .35rem;">
+					<div style="padding: 1.0rem;flex: 1 1 auto;">
+						<div style="align-items: center!important; margin-right: 0;margin-left: 0; display: flex;flex-wrap: wrap;">
+							<div style="padding-right: 0;padding-left: 0;margin-right: .5rem!important;flex-basis: 0;flex-grow: 1;max-width: 100%;position: relative;width: 100%;">
+								<div style="color: #4e73df!important;font-size: .7rem;font-weight: 700!important;text-transform: uppercase!important;margin-bottom: .25rem!important;">Quantidade de Produtos</div>
+								<div style="color: #5a5c69!important;font-weight: 700!important;margin-bottom: 0!important;font-size: 1.25rem;line-height: 1.2;" th:text="${feira.quantidadeItens}">15</div>
+							</div>
+							<div style="flex: 0 0 auto;width: auto;max-width: 100%;position: relative;padding-right: 0;padding-left: 0;">
+								<i class="fas fa-shopping-basket fa-2x" style="color: #dddfeb!important;"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div style="min-width: 300px;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem; margin-bottom: 1.5rem!important;flex: 0 0 33%;max-width: 33%;">
+				<div style="border-left: .25rem solid #1cc88a!important;padding-bottom: .5rem!important; padding-top: .5rem!important; height: 100%!important; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #e3e6f0;border-radius: .35rem;">
+					<div style="padding: 1.0rem;flex: 1 1 auto;">
+						<div style="align-items: center!important; margin-right: 0;margin-left: 0; display: flex;flex-wrap: wrap;">
+							<div style="padding-right: 0;padding-left: 0;margin-right: .5rem!important;flex-basis: 0;flex-grow: 1;max-width: 100%;position: relative;width: 100%;">
+								<div style="color: #1cc88a!important;font-size: .7rem;font-weight: 700!important;text-transform: uppercase!important;margin-bottom: .25rem!important;">Valor Total</div>
+								<div style="color: #5a5c69!important;font-weight: 700!important;margin-bottom: 0!important;font-size: 1.25rem;line-height: 1.2;" th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 215,00</div>
+							</div>
+							<div style="flex: 0 0 auto;width: auto;max-width: 100%;position: relative;padding-right: 0;padding-left: 0;">
+								<i class="fas fa-dollar-sign fa-2x" style="color: #dddfeb!important;"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div style="min-width: 300px;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem; margin-bottom: 1.5rem!important;flex: 0 0 34%;max-width: 34%;">
+				<div style="border-left: .25rem solid #36b9cc!important;padding-bottom: .5rem!important; padding-top: .5rem!important; height: 100%!important; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #e3e6f0;border-radius: .35rem;">
+					<div style="padding: 1.0rem;flex: 1 1 auto;">
+						<div style="align-items: center!important; margin-right: 0;margin-left: 0; display: flex;flex-wrap: wrap;">
+							<div style="padding-right: 0;padding-left: 0;margin-right: .5rem!important;flex-basis: 0;flex-grow: 1;max-width: 100%;">
+								<div style="color: #36b9cc!important;font-size: .7rem;font-weight: 700!important;text-transform: uppercase!important;margin-bottom: .25rem!important;">Peso</div>
+								<div style="align-items: center!important; margin-right: 0;margin-left: 0;display: flex;flex-wrap: wrap;">
+									<div style="padding-right: 0;padding-left: 0;flex: 0 0 auto;width: auto;max-width: 100%;position: relative;">
+										<div style="margin-right: 1rem!important;color: #5a5c69!important;font-weight: 700!important;margin-bottom: 0!important;font-size: 1.25rem;line-height: 1.2;" th:text="${feira.descricaoPesoTotal}">8,750Kg</div>
+									</div>
+									<div style="padding-right: 0;padding-left: 0;flex-basis: 0;flex-grow: 1;max-width: 100%;position: relative;width: 100%;">
+										<div style="height: .5rem;margin-right: .5rem!important;display: flex;overflow: hidden;font-size: .75rem;background-color: #eaecf4;border-radius: .35rem;">
+											<div role="progressbar" th:style="|width: ${feira.pesoTotal/9*100}%;background-color: #36b9cc!important;display: flex;flex-direction: column;justify-content: center;color: #fff;text-align: center;white-space: nowrap;transition: width .6s ease;|" th:attr="aria-valuenow=${feira.pesoTotal}" aria-valuemin="0" aria-valuemax="9"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div style="flex: 0 0 auto;width: auto;max-width: 100%;position: relative;padding-right: 0;padding-left: 0;">
+								<i class="fas fa-weight-hanging fa-2x" style="color: #dddfeb!important;"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div style="margin-bottom: 1.5rem!important; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;position: relative;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #e3e6f0;border-radius: .35rem;">
+			<!-- Card Header - Dropdown -->
+			<div style="border-radius: calc(.35rem - 1px) calc(.35rem - 1px) 0 0;padding-bottom: 1rem!important;padding-top: 1rem!important;align-items: center!important;justify-content: space-between!important;flex-direction: row!important;display: flex!important;padding: .75rem 1.25rem;margin-bottom: 0;background-color: #f8f9fc;border-bottom: 1px solid #e3e6f0;position: relative;flex-direction: column;">
+				<h6 style="color: #4e73df!important;font-weight: 700!important;margin: 0!important;font-size: 1rem;line-height: 1.2;">Feira</h6>
+			</div>
+			<!-- Card Body -->
+			<div style="padding: 1.0rem 0.5rem; flex: 1 1 auto;">				
+				<div style="display: flex;flex-wrap: wrap;margin-right: -.75rem;margin-left: -.75rem;">
+					<div style="flex: 0 0 100%;max-width: 100%;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem;">
+						<label style="font-weight: 700!important;display: inline-block;margin-bottom: .5rem;">Nome:</label> [[${feira.nome}]]
+					</div>
+				</div>
+				<div style="display: flex;flex-wrap: wrap;margin-right: -.75rem;margin-left: -.75rem;">
+					<div style="flex: 0 0 100%;max-width: 100%;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem;">
+						<label style="font-weight: 700!important;display: inline-block;margin-bottom: .5rem;">Data da Compra:</label> [[${#temporals.format(feira.dataCompra,'dd/MM/yyyy')}]]
+					</div>
+				</div>
+				<div style="display: flex;flex-wrap: wrap;margin-right: -.75rem;margin-left: -.75rem;">
+					<div style="flex: 0 0 100%;max-width: 100%;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem;">
+						<label style="font-weight: 700!important;display: inline-block;margin-bottom: .5rem;">Supermercado:</label> [[${feira.supermercado?.nome}]]
+					</div>
+				</div>
+				
+				<div style="width: 100%">
+					<h6 style="text-transform: uppercase;font-weight: 800;font-size: .75rem;background-color: #4e73df;border: 1px solid #4e73df;padding-top: .75rem;padding-bottom: .75rem;padding: .5rem 1.5rem;color: #fff;margin-bottom: 0px;line-height: 1.2;margin-top: 0;">Lista de Compras</h6>
+					<th:block th:each="corredor : ${listaCompras.corredores}">
+						<div style="padding-left: 24px;color: #3a3b45!important;background-color: #eaecf4!important;">
+							[[${corredor.corredor.descricaoCompleta}]]<br/>							
+						</div>
+						<div th:each="item, itemStat : ${corredor.itens}" style="position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #e3e6f0;border-radius: 0px;border-top: none;">
+							<div style="padding: 1%;flex: 1 1 auto;width: 100%;">
+								<div style="display: flex;flex-wrap: wrap;margin-right: -.75rem;margin-left: -.75rem;">
+									<div style="text-align: center!important;margin-bottom: auto!important;margin-top: auto!important;flex: 0 0 5%;max-width: 5%;position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem;">
+										<input type="checkbox" th:id="|p_${item.produto.id}|"/>
+									</div>
+									<label th:for="|p_${item.produto.id}|" style="text-align: center!important;margin-bottom: auto!important;margin-top: auto!important;max-width: 94%;position: relative;width: 94%">
+										<div style="display: flex;flex-wrap: wrap;margin-right: -.75rem;margin-left: -.75rem;">
+											<div style="text-align: center!important;margin-bottom: auto!important;margin-top: auto!important;flex: 0 0 20%;max-width: 20%;width:20%;min-width:80px; position: relative;width: 100%;padding-right: .75rem;padding-left: .75rem;">
+												<th:block th:if="${item.produto.temFoto}">
+													<!-- <img th:src="${item.produto.urlThumbnailFoto}" style="height: 60px;max-width: 100%;vertical-align: middle;border-style: none;"> -->
+													<img th:src="|cid:foto-${item.produto.id}|" style="height: 60px;max-width: 100%;vertical-align: middle;border-style: none;">
+												</th:block>
+												<th:block th:unless="${item.produto.temFoto}">
+													<img th:src="|cid:${produtoMock}|" style="height: 60px;max-width: 100%;vertical-align: middle;border-style: none;">
+												</th:block>
+											</div>
+											<div style="max-width: 53.5%;width:53.5%;text-align: left!important;">
+												<div th:text="${item.produto.nome}" style="color: #3a3b45!important;font-weight: 700!important;text-align: left!important;">Café Kimimo - 250g</div>
+												<div style="color: #3a3b45!important;">
+													<span th:text="|R$ ${{item.produto.preco}}|">R$ 3,50</span>
+													<span style="color: #fff;background-color: #858796;display: inline-block;padding: .25em .4em;font-size: 75%;font-weight: 700;line-height: 1;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: .35rem;transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
+												</div>
+												<div style="color: #3a3b45!important;">
+													<span class="hide-sm" th:unless="${item.produto.pesoUnidade > 0}" th:text="'&nbsp'"></span>
+													<span th:if="${item.produto.pesoUnidade > 0}" th:text="|Peso unidade: ${{item.produto.descricaoPeso}}|">250g</span>
+												</div>
+											</div>
+											<div style="max-width: 25%;width:25%;color: #3a3b45!important;text-align: right!important;position: relative;">
+												<div>
+													<div th:if="${item.porPeso}" class="hide-sm">
+														<span th:text="'&nbsp'"></span>
+													</div>
+													<div th:unless="${item.porPeso}">
+														<span style="font-weight: 700!important;">Quantidade:</span>
+														<span th:text="${item.quantidade}">5</span>
+													</div>
+												</div>
+												<div>
+													<span style="font-weight: 700!important;">Peso: </span>
+													<span id="peso-produto-1" th:text="${item.descricaoPeso}">250g</span>
+												</div>
+												<div style="font-weight: 700!important;">
+													<span id="valor-total-produto-1" th:text="${#numbers.formatCurrency(item.valorTotal)}">R$ 3,50</span>
+												</div>
+											</div>								
+										</div>
+									</label>
+								</div>
+							</div>
+						</div>
+					</th:block>
+					<div th:if="${listaCompras.vazia}" style="align-items: center!important;display: block;width: 100%;padding: .25rem 1.5rem;clear: both;font-weight: 400;text-align: inherit;white-space: nowrap;border: 1px solid #e3e6f0;color: #3a3b45;background-color: transparent;">
+						<div style="color: #b7b9cc!important;text-align: center!important;">Nenhum produto adicionado.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

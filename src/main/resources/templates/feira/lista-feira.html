@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+	
+<head>
+	<link rel="stylesheet" th:href="@{/stylesheets/feira-cadastro.css}">
+	<link rel="stylesheet" th:href="@{/stylesheets/feira-lista_compras.css}">
+</head>
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">
+		<div class="row">
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Quantidade de Produtos</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${feira.quantidadeItens}">15</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-shopping-basket fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-success shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Valor Total</div>
+								<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatCurrency(feira.valorTotal)}">R$ 215,00</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-4 col-md-6 mb-4">
+				<div class="card border-left-info shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-2">
+								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Peso</div>
+								<div class="row no-gutters align-items-center">
+									<div class="col-auto">
+										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${feira.descricaoPesoTotal}">8,750Kg</div>
+									</div>
+									<div class="col">
+										<div class="progress progress-sm mr-2">
+											<div class="progress-bar bg-info" role="progressbar" th:style="|width: ${feira.pesoTotal/9*100}%|" th:attr="aria-valuenow=${feira.pesoTotal}" aria-valuemin="0" aria-valuemax="9"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-auto">
+								<i class="fas fa-weight-hanging fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Feira</h6>
+				<a th:href="@{/feira}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+					<i class="fas fa-search fa-sm text-white-50"></i> Pesquisar Feira
+				</a>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<div class="mb-4">
+					<a th:href="@{/feira/email/{id}(id=${feira.id})}" class="btn btn-primary">
+						<i class="fas fa-envelope fa-sm text-white-50"></i> Enviar por email
+					</a>
+				</div>
+				
+				<div class="row">
+					<div class="col-12">
+						<label class="control-label font-weight-bold text-secundary">Nome:</label> [[${feira.nome}]]
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label class="control-label font-weight-bold text-secundary">Data da Compra:</label> [[${{feira.dataCompra}}]]
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label class="control-label font-weight-bold text-secundary">Supermercado:</label> [[${{feira.supermercado.nome}}]]
+					</div>
+				</div>
+				
+				<div>
+					<h6 class="feira-header">Lista de Compras</h6>
+					<th:block th:each="corredor : ${listaCompras.corredores}">
+						<div class="corredor bg-gray-200 text-gray-900">
+							[[${corredor.corredor.descricaoCompleta}]]<br/>							
+						</div>
+						<div class="card lista-itens-feira" th:each="item, itemStat : ${corredor.itens}">
+							<div class="card-body">
+								<div class="row" >
+									<div class="text-center col-4 col-sm-2 col-xl-2 feira-imagem">
+										<img th:src="${item.produto.urlFoto}" class="img-fluid" style="height: 4rem;">
+									</div>
+									<div class="text-left col-8 col-sm-6 col-xl-7">
+										<div class="font-weight-bold text-gray-900" th:text="${item.produto.nome}">Café Kimimo - 250g</div>
+										<div class="text-gray-900">
+											<span th:text="|R$ ${{item.produto.preco}}|">R$ 3,50</span>
+											<span class="badge badge-secondary" th:text="${item.produto.cobradoPor.descricao}">Unidade</span>
+										</div>
+										<div class="text-gray-900">
+											<span class="hide-sm" th:unless="${item.produto.pesoUnidade > 0}" th:text="'&nbsp'"></span>
+											<span th:if="${item.produto.pesoUnidade > 0}" th:text="|Peso unidade: ${{item.produto.descricaoPeso}}|">250g</span>
+										</div>
+									</div>
+									<div class="text-sm-right offset-4 offset-sm-0 col-8 col-sm-4 col-xl-3 text-gray-900 feira-quantidade">
+										<div>
+											<div th:if="${item.porPeso}" class="hide-sm">
+												<span th:text="'&nbsp'"></span>
+											</div>
+											<div th:unless="${item.porPeso}">
+												<span class="font-weight-bold">Quantidade:</span>
+												<span th:text="${item.quantidade}">5</span>
+											</div>
+										</div>
+										<div>
+											<span class="font-weight-bold">Peso: </span>
+											<span id="peso-produto-1" th:text="${item.descricaoPeso}">250g</span>
+										</div>
+										<div class="font-weight-bold">
+											<span id="valor-total-produto-1" th:text="${#numbers.formatCurrency(item.valorTotal)}">R$ 3,50</span>
+										</div>									
+									</div>
+								</div>
+							</div>
+						</div>
+					</th:block>
+					<div class="feira-nenhum-item align-items-center" th:if="${listaCompras.vazia}" >
+						<div class="text-center text-gray-500">Nenhum produto adicionado.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

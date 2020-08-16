@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data"
+	xmlns:an="http://www.anthonini.com.br">
+	
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<form method="POST" th:object="${supermercadoCategoria}" th:action="@{/supermercado-categoria/{metodo}(metodo=${metodo})}" name="form-supermercado-categoria">
+			<div class="modal-header">
+				<h5 class="modal-title">[[${operacao}]] Categoria</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<an:message/>
+				<div class="form-group required">
+					<label for="categoria" class="control-label">Categoria</label>
+					<select class="form-control" th:field="*{categoria}" an:classforerror="categoria" th:if="${operacao=='Adicionar'}">
+						<option value="">Selecione a categoria</option>
+						<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}"></option>
+					</select>
+					<input type="hidden" th:field="*{categoria.id}"  th:unless="${operacao=='Adicionar'}">
+					<input type="text" readonly class="form-control-plaintext" th:field="*{categoria.nome}"  th:unless="${operacao=='Adicionar'}">
+				</div>
+				<div class="form-group required">
+					<label for="corredor" class="control-label">Corredor</label>
+					<select class="form-control" th:field="*{corredor.numero}" an:classforerror="corredor">
+						<option value="">Selecione o corredor</option>
+						<option th:each="corredor : ${corredores}" th:value="${corredor.numero}" th:text="${corredor.descricaoCompleta}"></option>
+					</select>
+				</div>
+				<div class="form-group required">
+					<label for="posicaoCorredor" class="control-label">Posição no Corredor</label> 
+					<div class="input-group">
+						<input type="text" id="posicaoCorredor" class="form-control js-numero" th:field="*{posicaoCorredor}" an:classforerror="posicaoCorredor">
+						<div class="input-group-prepend">
+							<button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-trigger="focus hover"
+								title="Posição no Corredor" 
+								data-content="Indica a posição que a categoria ocupa no corredor tendo como ponto de referência os caixas.
+									Quanto maior a posição mais distante o produto dessa categoria estará em relação aos caixas. 
+									Assim como o número do corredor, a posição no corredor ajudará na ordenação da lista da feira.">
+									<i class="fas fa-question"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="categoriasAdicionadas" th:value="${categoriasAdicionadas}">						
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+				<button type="submit" class="btn btn-primary">[[${operacao}]]</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(function () {
+	  $('[data-toggle="popover"]').popover()
+	})
+</script>
+<script th:src="@{/javascript/feira.js}"></script>
+<script th:src="@{/javascript/supermercado.supermercadoCategoriaModal.js}"></script>
+<script th:inline="javascript">
+$(function() {
+	var categoriaAdicionada = [[${categoriaAdicionada}]];
+	if(categoriaAdicionada) {
+		$('#categoriaModal').trigger('categorias-atualizadas');		
+	}
+
+	var categoriaAlterada = [[${categoriaAlterada}]];
+	if(categoriaAlterada) {
+		$('#categoriaModal').trigger('categorias-atualizadas');
+		$('#categoriaModal').trigger('categoria-alterada');
+	}
+});
+</script>
+</html>

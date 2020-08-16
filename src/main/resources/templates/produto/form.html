@@ -24,10 +24,19 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${produto}" class="form-vertical" th:action="@{/produto/novo}">
-					<div class="form-group required">
-						<label for="nome" class="control-label">Nome</label>
-						<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
+				<form method="POST" th:object="${produto}" class="form-vertical" th:action="${produto.novo} ? @{/produto/novo} : @{/produto/{id}(id=${produto.id})}">
+					<div class="row">
+						<div class="col-6 form-group required">
+							<label for="nome" class="control-label">Nome</label>
+							<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
+						</div>
+						<div class="col-sm-6  form-group">
+							<label for="categoria" class="control-label">Categoria</label>
+							<select class="form-control" th:field="*{categoria}" an:classforerror="categoria">
+								<option value="">Selecione a categoria</option>
+								<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}"></option>
+							</select>
+						</div>
 					</div>
 					
 					<div class="row">
@@ -57,9 +66,8 @@
 								<option th:each="unidadePeso : ${unidadesPeso}" th:value="${unidadePeso}" th:text="${unidadePeso.descricao}"></option>
 							</select>
 						</div>
-						
 						<div class="col-sm-6  form-group required">
-							<label for="pesoUnidade" class="control-label">Peso por unidade</label>
+							<label for="pesoUnidade" class="control-label">Peso da unidade</label>
 							<input id="pesoUnidade" type="text" class="form-control js-peso" th:field="*{pesoUnidade}" an:classforerror="pesoUnidade"/>
 						</div>
 					</div>

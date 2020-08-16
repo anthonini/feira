@@ -7,7 +7,7 @@
 	xmlns:an="http://www.anthonini.com.br">
 	
 <head>
-	<link rel="stylesheet" th:href="@{/stylesheets/feira.css}">
+	<link rel="stylesheet" th:href="@{/stylesheets/feira-cadastro.css}">
 </head>
 
 <body>
@@ -82,15 +82,25 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<form method="POST" th:object="${feira}" class="form-vertical" th:action="@{/feira/nova}">
+				<form method="POST" th:object="${feira}" class="form-vertical" th:action="${feira.nova} ? @{/feira/nova} : @{/feira/{id}(id=${feira.id})}">
 					<div class="row">
 						<div class="col-sm-8 form-group required">
 							<label for="nome" class="control-label">Nome</label>
 							<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
 						</div>
 						<div class="col-sm-4 form-group required">
-							<label for="nome" class="control-label">Data da Compra</label>
-							<input id="nome" type="text" class="form-control js-data" th:field="*{dataCompra}" an:classforerror="dataCompra"/>
+							<label for="dataCompra" class="control-label">Data da Compra</label>
+							<input id="dataCompra" type="text" class="form-control js-data" th:field="*{dataCompra}" an:classforerror="dataCompra"/>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label for="supermercado" class="control-label">Supermercado</label>
+							<select class="form-control" th:field="*{supermercado}" an:classforerror="supermercado">
+								<option value="">Selecione o supermercado</option>
+								<option th:each="supermercado : ${supermercados}" th:value="${supermercado.id}" th:text="${supermercado.nome}"></option>
+							</select>
 						</div>
 					</div>
 					
@@ -145,7 +155,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="feira-nenhum-produto align-items-center" th:if="${#lists.isEmpty(feira.itens)}" >
+						<div class="feira-nenhum-item align-items-center" th:if="${#lists.isEmpty(feira.itens)}" >
 							<div class="text-center text-gray-500">Nenhum produto adicionado.</div>
 						</div>
 					</div>

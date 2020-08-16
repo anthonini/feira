@@ -1,6 +1,5 @@
 package br.com.anthonini.feira.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -20,7 +19,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 @Entity
 @Table(name="item_feira")
-public class ItemFeira implements Serializable {
+public class ItemFeira implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 

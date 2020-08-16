@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:data="http://www.thymeleaf.com/extras/data"
+	xmlns:an="http://www.anthonini.com.br">
+
+<head>
+	<link rel="stylesheet" th:href="@{/stylesheets/feira.css}">
+</head>
+
+<body>
+	<div layout:fragment="conteudo" class="container-fluid">		
+		<div class="card shadow mb-4">
+			<!-- Card Header  -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Cadastro de Supermercado</h6>
+				<a th:href="@{/supermercado}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+					<i class="fas fa-search fa-sm text-white-50"></i> Pesquisar Supermercado
+				</a>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="POST" th:object="${supermercado}" class="form-vertical js-form-supermercado" th:action="${supermercado.novo} ? @{/supermercado/novo} : @{/supermercado/{id}(id=${supermercado.id})}">
+					<div class="form-group required">
+						<label for="nome" class="control-label">Nome</label>
+						<input id="nome" type="text" class="form-control" th:field="*{nome}" an:classforerror="nome"/>
+					</div>
+					
+					<div class="form-group">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{uuid}">
+						<input type="submit" class="btn btn-primary" value="Salvar">
+					</div>
+				</form>
+				
+				<div class="row">
+					<div class="col-12 col-lg-6 mb-4">
+						<div class="form-group">
+							<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#corredorModal" data:operacao="ADICIONAR"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Corredor</a>
+						</div>
+						
+						<div>
+							<h6 class="feira-header">Corredores</h6>
+							<div id="corredores-adicionados">
+								<th:block th:replace="~{supermercado/fragments/corredores :: corredores}"></th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-12 col-lg-6">
+						<div class="form-group">
+							<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#categoriaModal" data:operacao="ADICIONAR"><i class="fas fa-plus fa-sm text-white-50"></i> Adicionar Categoria</a>
+						</div>
+						
+						<div>
+							<h6 class="feira-header">Categorias</h6>
+							<div id="categorias-adicionadas">
+								<th:block th:replace="~{supermercado/fragments/supermercadoCategorias :: supermercadoCategorias}"></th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal fade" id="corredorModal" role="dialog" aria-hidden="true" data:url="@{/corredor}" tabindex="-1">
+					<div class="modal-dialog" role="document">
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+							<button type="submit" class="btn btn-primary">Salvar</button>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal fade" id="categoriaModal" role="dialog" aria-hidden="true" data:url="@{/supermercado-categoria}" tabindex="-1">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-footer">
+								<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+								<button type="submit" class="btn btn-primary">Salvar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block layout:fragment="extra-javascript">
+		<script th:src="@{/javascript/supermercado.corredor.js}"></script>
+		<script th:src="@{/javascript/supermercado.supermercadoCategoria.js}"></script>
+	</th:block>
+</body>
+</html>

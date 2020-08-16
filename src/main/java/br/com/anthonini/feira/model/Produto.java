@@ -1,6 +1,5 @@
 package br.com.anthonini.feira.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -11,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
@@ -24,7 +25,7 @@ import br.com.anthonini.feira.repository.listener.ProdutoEntityListener;
 @EntityListeners(ProdutoEntityListener.class)
 @Entity
 @Table(name="produto")
-public class Produto implements Serializable {
+public class Produto implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +58,10 @@ public class Produto implements Serializable {
 	@Column(name = "peso_unidade", precision = 19, scale = 3)
 	private BigDecimal pesoUnidade;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_categoria")
+	private Categoria categoria;
+	
 	private String foto;
 	
 	@Column(name = "content_type")
@@ -70,6 +75,8 @@ public class Produto implements Serializable {
 	
 	@Transient
 	private String fotoOriginal;
+	
+	private String fotoBase64;
 	
 	public String getDescricaoPeso() {
 		return this.unidadePeso.getDescricaoAbreviada(pesoUnidade);
@@ -131,6 +138,14 @@ public class Produto implements Serializable {
 		this.pesoUnidade = pesoUnidade;
 	}
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
 	public String getFoto() {
 		return foto;
 	}
@@ -169,6 +184,14 @@ public class Produto implements Serializable {
 
 	public void setFotoOriginal(String fotoOriginal) {
 		this.fotoOriginal = fotoOriginal;
+	}
+
+	public String getFotoBase64() {
+		return fotoBase64;
+	}
+
+	public void setFotoBase64(String fotoBase64) {
+		this.fotoBase64 = fotoBase64;
 	}
 
 	@Override
